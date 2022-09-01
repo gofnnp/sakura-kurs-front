@@ -1,0 +1,34 @@
+<div class="woocommerce">
+    <nav *ngIf="currentPage.code !== PageCode.Auth" class="woocommerce-MyAccount-navigation">
+      <ul>
+        <ng-container *ngFor="let page of pageList; let index = index;">
+            <li
+                *ngIf="page.onSideBar"
+                class="woocommerce-MyAccount-navigation-link"
+                [ngClass]="{
+                    'is-active': page === currentPage,
+                    'first': index === 1
+                }"
+                (click)="changePage($event, page)"
+            >
+            <a href="#">{{page.name}}</a>
+          </li>
+        </ng-container>
+        <li class="woocommerce-MyAccount-navigation-link">
+          <a href="#" (click)="logout($event)">Выход</a>
+        </li>
+      </ul>
+    </nav>
+    <div [ngSwitch]="currentPage.code" class="">
+      <ng-container *ngSwitchCase="PageCode.Auth">
+        <app-auth [handleHttpError]="handleHttpErrorFunc" (phoneConfirmed)="phoneConfirmed()"></app-auth>
+      </ng-container>
+      <ng-container *ngSwitchCase="PageCode.Orders">
+        <app-orders></app-orders>
+      </ng-container>
+      <ng-container *ngSwitchCase="PageCode.BonusProgram">
+        <app-bonus-program></app-bonus-program>
+      </ng-container>
+    </div>
+  </div>
+  

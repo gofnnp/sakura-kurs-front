@@ -1,0 +1,94 @@
+<div class="woocommerce-notices-wrapper"></div>
+<h2>Вход</h2>
+<ng-container *ngIf="!isCodeConfirm; else confirmPhoneField">
+  <form
+    class="woocommerce-form woocommerce-form-login login"
+    (submit)="getCode($event)"
+  >
+    <p
+      class="woocommerce-form-row woocommerce-form-row--wide form-row form-row-wide"
+    >
+      <label for="phone"
+        >Номер телефона&nbsp;<span class="required">*</span></label
+      >
+      <p-inputMask
+        mask="+7 (999) 999-99-99"
+        characterPattern="[0-9]"
+        styleClass="woocommerce-Input woocommerce-Input--text input-text"
+        name="phone"
+        inputId="phone"
+        autocomplete="phone"
+        placeholder="+7 (___) ___-__-__"
+        [unmask]="true"
+        [(ngModel)]="phone"
+      ></p-inputMask>
+    </p>
+    <p class="form-row">
+      <button
+        type="submit"
+        class="woocommerce-button button woocommerce-form-login__submit"
+        name="login"
+        value="Получить код"
+        [disabled]="loading || phone.length < 10"
+      >
+        {{ loading ? "" : "Получить код" }}
+        <p-progressSpinner
+          *ngIf="loading"
+          [style]="{ width: '16px', height: '16px' }"
+          strokeWidth="2"
+          styleClass="angular-spinner"
+        ></p-progressSpinner>
+      </button>
+    </p>
+  </form>
+</ng-container>
+<ng-template #confirmPhoneField>
+  <form
+    class="woocommerce-form woocommerce-form-login login"
+    action="false"
+    (submit)="confirmCode($event)"
+  >
+    <p
+      class="woocommerce-form-row woocommerce-form-row--wide form-row form-row-wide"
+    >
+      <label for="code">
+        Введите 4 последних цифры позвонившего вам номера телефона. На звонок
+        отвечать не нужно.<br />
+        Например: +7 (XXX) XXX-<span style="color: #d7120b">XX</span>-<span
+          style="color: #d7120b"
+          >XX</span
+        >
+      </label>
+      <input
+        pInputText
+        type="text"
+        class="woocommerce-Input woocommerce-Input--text input-text"
+        name="code"
+        id="code"
+        autocomplete="code"
+        placeholder="****"
+        [(ngModel)]="code"
+      />
+    </p>
+    <p class="form-row">
+      <button
+        type="submit"
+        class="woocommerce-button button woocommerce-form-login__submit"
+        name="login"
+        value="Войти"
+        [disabled]="loading"
+      >
+        {{ loading ? "" : "Войти" }}
+        <p-progressSpinner
+          *ngIf="loading"
+          [style]="{ width: '16px', height: '16px' }"
+          strokeWidth="2"
+          styleClass="angular-spinner"
+        ></p-progressSpinner>
+      </button>
+    </p>
+    <p style="color: red; margin: 0" *ngIf="errorConfirmCode">
+      Пароль введен неверно
+    </p>
+  </form>
+</ng-template>
