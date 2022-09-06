@@ -4,7 +4,7 @@ export const environment = {
   appBonusEndpoint: 'https://customerapi2.mi.crm4retail.ru/json.rpc/',
   appWPEndpoint: 'http://213.239.210.240:4500/wp-json/woofood/v1/',
   hasBonusProgram: true,
-  systemId: 'dfe16ca16a3598b812',
+  systemId: 'g6zyv8tj53w28ov7cl',
   firebase: {
     apiKey: "AIzaSyCujHg9GtN8Uxi-JcCN8zggvXlfNQRKc04",
     authDomain: "push-notification-test2-56dac.firebaseapp.com",
