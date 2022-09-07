@@ -1,4 +1,6 @@
 :host {
+    display: flex;
+    justify-content: center;
   .woocommerce-form-login__submit {
     width: 150px;
   }
@@ -35,9 +37,11 @@
     background: #ffffff;
     box-shadow: 0px 0px 10px rgb(0 0 0 / 15%);
     border-radius: 15px;
-    height: 262px;
+    min-height: 262px;
+    max-width: 400px;
     overflow: auto;
     position: relative;
+    padding-bottom: 10px;
   }
 
   .form-row {
@@ -85,9 +89,6 @@
     }
   }
   .decoration-pattern {
-    position: absolute;
-    bottom: 10px;
-    left: 0;
     width: 100%;
     height: 34px;
     background: url("../../../../assets/card-decorative-pattern.png") repeat-x;

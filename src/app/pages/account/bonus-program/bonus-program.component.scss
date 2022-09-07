@@ -22,6 +22,8 @@
       height: 466px;
       margin-top: 11px;
       overflow: hidden;
+      max-width: 400px;
+      width: 100%;
       &__header {
         height: 62px;
         color: #fff;
@@ -79,7 +81,7 @@
         align-items: center;
         padding: 33px 0;
         #barcode {
-            border-radius: 16px;
+          border-radius: 16px;
         }
       }
     }

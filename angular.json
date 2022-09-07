@@ -34,7 +34,9 @@
               "node_modules/primeng/resources/primeng.min.css",
               "src/styles.scss"
             ],
-            "scripts": [],
+            "scripts": [
+              "src/assets/firebase-messaging-sw.js"
+            ],
             "serviceWorker": true,
             "ngswConfigPath": "ngsw-config.json"
           },
