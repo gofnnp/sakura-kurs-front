@@ -3,13 +3,15 @@
 export enum PageCode {
     Auth,
     Orders,
-    BonusProgram
+    BonusProgram,
+    RefSystem
 }
   
 export interface Page {
     code: PageCode;
     component?: any;
     name: string;
+    description?: string;
     getMethod?: string;
     resName?: string;
     onSideBar: boolean

@@ -1,34 +1,57 @@
 <div class="woocommerce">
-    <nav *ngIf="currentPage.code !== PageCode.Auth" class="woocommerce-MyAccount-navigation">
-      <ul>
-        <ng-container *ngFor="let page of pageList; let index = index;">
-            <li
-                *ngIf="page.onSideBar"
-                class="woocommerce-MyAccount-navigation-link"
-                [ngClass]="{
-                    'is-active': page === currentPage,
-                    'first': index === 1
-                }"
-                (click)="changePage($event, page)"
-            >
-            <a href="#">{{page.name}}</a>
-          </li>
-        </ng-container>
-        <li class="woocommerce-MyAccount-navigation-link">
-          <a href="#" (click)="logout($event)">Выход</a>
-        </li>
-      </ul>
-    </nav>
-    <div [ngSwitch]="currentPage.code" class="">
-      <ng-container *ngSwitchCase="PageCode.Auth">
-        <app-auth [handleHttpError]="handleHttpErrorFunc" (phoneConfirmed)="phoneConfirmed()"></app-auth>
-      </ng-container>
-      <ng-container *ngSwitchCase="PageCode.Orders">
-        <app-orders></app-orders>
-      </ng-container>
-      <ng-container *ngSwitchCase="PageCode.BonusProgram">
-        <app-bonus-program></app-bonus-program>
-      </ng-container>
-    </div>
+  <div *ngIf="currentPage.code !== PageCode.Auth" class="top-left-attribute"></div>
+  <div [ngSwitch]="currentPage.code" class="">
+    <ng-container *ngSwitchCase="PageCode.Auth">
+      <app-auth
+        [handleHttpError]="handleHttpErrorFunc"
+        (phoneConfirmed)="phoneConfirmed()"
+      ></app-auth>
+    </ng-container>
+    <ng-container *ngSwitchCase="PageCode.Orders">
+      <app-orders></app-orders>
+    </ng-container>
+    <ng-container *ngSwitchCase="PageCode.BonusProgram">
+      <app-bonus-program></app-bonus-program>
+    </ng-container>
   </div>
-  
+  <nav
+    *ngIf="currentPage.code !== PageCode.Auth"
+    class="woocommerce-MyAccount-navigation"
+  >
+    <ul>
+      <ng-container *ngFor="let page of pageList; let index = index">
+        <li
+          *ngIf="page.onSideBar"
+          class="woocommerce-MyAccount-navigation-link"
+          [ngClass]="{
+            'is-active': page === currentPage,
+            first: index === 1
+          }"
+          (click)="changePage($event, page)"
+        >
+          <div class="container">
+            <img
+              src="{{ '../../../assets/menu-icons/' + page.resName + '.png' }}"
+              alt="Иконка меню"
+            />
+            <div class="menu-item-info">
+              <a href="#">{{ page.name }}</a>
+              <p>{{ page.description }}</p>
+            </div>
+          </div>
+        </li>
+      </ng-container>
+      <li class="woocommerce-MyAccount-navigation-link">
+        <div class="container">
+          <img
+            src="../../../assets/menu-icons/exit.png"
+            alt="Иконка меню"
+          />
+          <div class="menu-item-info">
+            <a href="#" (click)="logout($event)">Выход</a>
+          </div>
+        </div>
+      </li>
+    </ul>
+  </nav>
+</div>

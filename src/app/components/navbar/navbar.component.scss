@@ -1,18 +1,14 @@
 .container {
-    display: flex;
     box-sizing: border-box;
-    padding: 12px 16px;
+    padding: 7px 0 0 5px;
     width: 100%;
-    flex-direction: row;
-    align-items: center;
-    white-space: nowrap;
-    height: 64px;
-    background: #008376;
+    height: 39px;
+    background: #09467F;
     color: #fff;
 }
 
 .title {
     font-weight: 400;
-    font-size: 20px;
+    font-size: 18px;
     margin-left: 12px;
 }

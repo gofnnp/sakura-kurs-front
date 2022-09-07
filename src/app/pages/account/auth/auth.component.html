@@ -1,16 +1,14 @@
 <div class="woocommerce-notices-wrapper"></div>
-<h2>Вход</h2>
 <ng-container *ngIf="!isCodeConfirm; else confirmPhoneField">
   <form
     class="woocommerce-form woocommerce-form-login login"
     (submit)="getCode($event)"
   >
+    <h2>Вход</h2>
     <p
       class="woocommerce-form-row woocommerce-form-row--wide form-row form-row-wide"
     >
-      <label for="phone"
-        >Номер телефона&nbsp;<span class="required">*</span></label
-      >
+      <label for="phone">Введите Ваш номер телефона</label>
       <p-inputMask
         mask="+7 (999) 999-99-99"
         characterPattern="[0-9]"
@@ -18,7 +16,7 @@
         name="phone"
         inputId="phone"
         autocomplete="phone"
-        placeholder="+7 (___) ___-__-__"
+        placeholder="+7 (000) 000-00-00"
         [unmask]="true"
         [(ngModel)]="phone"
       ></p-inputMask>
@@ -40,24 +38,23 @@
         ></p-progressSpinner>
       </button>
     </p>
+    <div class="decoration-pattern"></div>
   </form>
 </ng-container>
 <ng-template #confirmPhoneField>
   <form
     class="woocommerce-form woocommerce-form-login login"
     action="false"
+    style="height: 334px;"
     (submit)="confirmCode($event)"
   >
+  <h2>Вход</h2>
     <p
       class="woocommerce-form-row woocommerce-form-row--wide form-row form-row-wide"
     >
       <label for="code">
         Введите 4 последних цифры позвонившего вам номера телефона. На звонок
-        отвечать не нужно.<br />
-        Например: +7 (XXX) XXX-<span style="color: #d7120b">XX</span>-<span
-          style="color: #d7120b"
-          >XX</span
-        >
+        отвечать не нужно.
       </label>
       <input
         pInputText
@@ -66,11 +63,11 @@
         name="code"
         id="code"
         autocomplete="code"
-        placeholder="****"
+        placeholder="00-00"
         [(ngModel)]="code"
       />
     </p>
-    <p class="form-row">
+    <p class="form-row" style="margin-bottom: 6px;">
       <button
         type="submit"
         class="woocommerce-button button woocommerce-form-login__submit"
@@ -90,5 +87,6 @@
     <p style="color: red; margin: 0" *ngIf="errorConfirmCode">
       Пароль введен неверно
     </p>
+    <div class="decoration-pattern"></div>
   </form>
 </ng-template>

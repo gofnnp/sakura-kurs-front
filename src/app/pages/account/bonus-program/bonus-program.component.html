@@ -1,6 +1,34 @@
 <div class="woocommerce-MyAccount-content">
-    <span class="explanation">*Нажмите на карту, чтобы перевернуть её</span>
-    <div [ngClass]="{
+    <h2>{{currentPage.name}}</h2>
+    <p>{{currentPage.description}}</p>
+    <div class="card-container">
+        <div class="card-container__header">
+            <img src="../../../../assets/logo.svg" alt="Логотип карта">
+            <span *ngIf="accountData">#{{accountData.CardNumber}}</span>
+        </div>
+        <div class="card-container__decorative-pattern">
+            <div class="imgs-row"></div>
+            <div class="imgs-row" style="background-position-x: -22px;"></div>
+            <div class="imgs-row"></div>
+        </div>
+        <div class="card-container__content">
+            <div class="info" *ngIf="accountData">
+                <div class="row">
+                    <span class="key">Имя</span>
+                    <span class="value" *ngIf="accountData.BonusProgramName">{{accountData.BonusProgramName}}</span>
+                    <span class="value" *ngIf="!accountData.BonusProgramName">Не задано</span>
+                </div>
+                <div class="row">
+                    <span class="key">Баланс карты</span>
+                    <span class="value">{{accountData.Bonuses}}</span>
+                </div>
+            </div>
+            <div class="card-container__barcode-container">
+                <svg id="barcode"></svg>
+            </div>
+        </div>
+    </div>
+    <!-- <div [ngClass]="{
         'card-content': true,
         'active_back': isCardBack
     }" (click)="rotateCard()">
@@ -47,17 +75,11 @@
                     </div>
                 </div>
             </div>
-            <!-- <div class="bonus-account__container">
-                <h3>Доступно</h3>
-                <div *ngIf="accountData" class="bonus-account__value">
-                    {{ accountData.Bonuses }}
-                </div>
-            </div> -->
         </div>
         <div class="card-content__back">
             <div class="card-content__barcode-container">
                 <svg id="barcode"></svg>
             </div>
         </div>
-    </div>
+    </div> -->
 </div>

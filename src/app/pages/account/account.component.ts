@@ -32,12 +32,12 @@ export class AccountComponent implements OnInit {
   readonly pageList = environment.hasBonusProgram ? PageListWithBonus : PageList;
 
   ngOnInit(): void {
-    this.currentPage = this.getToken() ? this.pageList[2] : this.pageList[0];
+    this.currentPage = this.getToken() ? this.pageList[1] : this.pageList[0];
     document.body.classList.add('woocommerce-account', 'woocommerce-page', 'woocommerce-orders');
   }
 
   phoneConfirmed(): void{
-      this.currentPage = this.pageList[2];
+      this.currentPage = this.pageList[1];
   }
 
   changePage(event: MouseEvent, page: Page): void{

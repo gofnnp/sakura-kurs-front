@@ -23,15 +23,24 @@ export const PageListWithBonus: Page[] = [
         onSideBar: false,
     },
     {
+        code: PageCode.BonusProgram,
+        name: 'Ваша карта лояльности',
+        description: 'Lorem Ipsum - это текст-"рыба", часто используемый в печати и вэб-дизайне.',
+        resName: 'bonus-program',
+        onSideBar: true,
+    },
+    {
         code: PageCode.Orders,
-        name: 'Заказы',
+        name: 'Ваши чеки',
+        description: 'Lorem Ipsum - это текст-"рыба", часто используемый в печати и вэб-дизайне.',
         resName: 'orders',
         onSideBar: true,
     },
     {
-        code: PageCode.BonusProgram,
-        name: 'Бонусная карта',
-        resName: 'bonus-program',
+        code: PageCode.RefSystem,
+        name: 'Пригласить друга',
+        description: 'Lorem Ipsum - это текст-"рыба", часто используемый в печати и вэб-дизайне.',
+        resName: 'ref-system',
         onSideBar: true,
     },
 ];

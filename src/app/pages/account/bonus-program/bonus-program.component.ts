@@ -1,10 +1,11 @@
 import { Component, OnInit } from '@angular/core';
 import { lastValueFrom } from 'rxjs';
-import { orderStatuses } from 'src/app/app.constants';
-import { BonusProgramAccount, Purchase, Transaction } from 'src/app/interface/data';
+import { orderStatuses, PageList, PageListWithBonus } from 'src/app/app.constants';
+import { BonusProgramAccount, Page, Purchase, Transaction } from 'src/app/interface/data';
 import { JsonrpcService, RpcService } from 'src/app/services/jsonrpc.service';
 import * as moment from 'moment-timezone';
 import * as barcode from 'jsbarcode';
+import { environment } from 'src/environments/environment';
 
 @Component({
   selector: 'app-bonus-program',
@@ -19,6 +20,8 @@ export class BonusProgramComponent implements OnInit {
   public isCardBack: boolean = false;
   readonly orderStatuses = orderStatuses;
   readonly moment = moment;
+  readonly pageList = environment.hasBonusProgram ? PageListWithBonus : PageList;
+  public currentPage: Page = this.pageList[1];
 
   constructor(
     private jsonrpc: JsonrpcService,

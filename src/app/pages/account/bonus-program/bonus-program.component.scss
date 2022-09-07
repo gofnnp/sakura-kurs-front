@@ -1,87 +1,169 @@
 :host {
-    .woocommerce-MyAccount-content {
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-        .card-content {
-            position: relative;
-            height: 200px;
-            width: 100%;
-            max-width: 400px;
-            -moz-user-select: none;
-            -webkit-user-select: none;
-            -ms-user-select: none;
-            -o-user-select: none;
-            user-select: none;
-            &__front, &__back {
-                display: block;
-                transition-timing-function: cubic-bezier(.175, .885, .32, 1.275);
-                transition-duration: .7s;
-                transition-property: transform, opacity;
-                color: #fff;
-                width: 100%;
-                height: 100%;
-                background: #fdfdfd;
-                border-radius: 12px;
-                border: solid #a3a3a3 1px;
-                box-shadow: 0 0 3px 1px #fff;
-                padding: 12px;
-                background-size: cover;
-            }
-            &__front {
-                transform: rotateY(0deg);
-                background-image: url(../../../../assets/background.svg);
-            }
-            &__back {
-                position: absolute;
-                opacity: 0;
-                top: 0px;
-                left: 0px;
-                transform: rotateY(-180deg);
-                background: #000;
-            }
-            &.active_back {
-                > .card-content__front {
-                    transform: rotateY(180deg);
-                    opacity: 0;
-                }
-                > .card-content__back {
-                    opacity: 1;
-                    transform: rotateY(0deg);
-                }
-            }
-            &__logo {
-                height: 30px;
-                display: flex;
-                align-items: center;
-                justify-content: space-between;
-                .title {
-                    color: #03d1be;
-                    font-weight: 600;
-                    letter-spacing: 2px;
-                }
-            }
-            &__footer {
-                display: flex;
-                justify-content: space-between;
-                align-items: flex-end;
-                position: absolute;
-                bottom: 12px;
-                width: calc(100% - 24px);
-                .count {
-                    font-size: 22px;
-                }
-            }
-            &__barcode-container {
-                display: flex;
-                justify-content: center;
-                align-items: center;
-                height: 100%;
-            }
-        }
-        .explanation {
-            font-size: 12px;
-            margin-bottom: 8px;
-        }
+  .woocommerce-MyAccount-content {
+    display: flex;
+    flex-direction: column;
+    & > h2 {
+      font-style: normal;
+      font-weight: 700;
+      font-size: 20px;
+      line-height: 24px;
     }
+    & > p {
+      font-style: normal;
+      font-weight: 400;
+      font-size: 15px;
+      line-height: 18px;
+      margin-top: 8px;
+    }
+    .card-container {
+      background: #09467f;
+      box-shadow: 0px 0px 5px rgb(0 0 0 / 15%);
+      border-radius: 15px;
+      height: 466px;
+      margin-top: 11px;
+      overflow: hidden;
+      &__header {
+        height: 62px;
+        color: #fff;
+        display: flex;
+        justify-content: space-between;
+        img {
+          height: 38px;
+          margin-top: 15px;
+        }
+        span {
+          font-style: normal;
+          font-weight: 400;
+          font-size: 20px;
+          line-height: 24px;
+          margin-top: 19px;
+          margin-right: 18px;
+        }
+      }
+      &__decorative-pattern {
+        height: 122px;
+        background-color: #fff;
+        padding-top: 9px;
+        .imgs-row {
+          background: url("../../../../assets/card-decorative-pattern.png")
+            repeat-x;
+          height: 32%;
+        }
+      }
+      &__content {
+        background-color: #b8deff;
+        .info {
+          height: 79px;
+          border-bottom: solid #0d457e 1px;
+          padding: 14px 18px;
+          .row {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 7px;
+            .key {
+              font-size: 14px;
+              line-height: 17px;
+              font-weight: 400;
+            }
+            .value {
+              font-size: 18px;
+              font-weight: 600;
+            }
+          }
+        }
+      }
+      &__barcode-container {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        padding: 33px 0;
+        #barcode {
+            border-radius: 16px;
+        }
+      }
+    }
+
+    .card-content {
+      position: relative;
+      height: 200px;
+      width: 100%;
+      max-width: 400px;
+      -moz-user-select: none;
+      -webkit-user-select: none;
+      -ms-user-select: none;
+      -o-user-select: none;
+      user-select: none;
+      &__front,
+      &__back {
+        display: block;
+        transition-timing-function: cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        transition-duration: 0.7s;
+        transition-property: transform, opacity;
+        color: #fff;
+        width: 100%;
+        height: 100%;
+        background: #fdfdfd;
+        border-radius: 12px;
+        border: solid #a3a3a3 1px;
+        box-shadow: 0 0 3px 1px #fff;
+        padding: 12px;
+        background-size: cover;
+      }
+      &__front {
+        transform: rotateY(0deg);
+        background-image: url(../../../../assets/background.svg);
+      }
+      &__back {
+        position: absolute;
+        opacity: 0;
+        top: 0px;
+        left: 0px;
+        transform: rotateY(-180deg);
+        background: #000;
+      }
+      &.active_back {
+        > .card-content__front {
+          transform: rotateY(180deg);
+          opacity: 0;
+        }
+        > .card-content__back {
+          opacity: 1;
+          transform: rotateY(0deg);
+        }
+      }
+      &__logo {
+        height: 30px;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        .title {
+          color: #03d1be;
+          font-weight: 600;
+          letter-spacing: 2px;
+        }
+      }
+      &__footer {
+        display: flex;
+        justify-content: space-between;
+        align-items: flex-end;
+        position: absolute;
+        bottom: 12px;
+        width: calc(100% - 24px);
+        .count {
+          font-size: 22px;
+        }
+      }
+      &__barcode-container {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        height: 100%;
+      }
+    }
+    .explanation {
+      font-size: 12px;
+      margin-bottom: 8px;
+    }
+  }
 }
