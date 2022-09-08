@@ -13,6 +13,9 @@
     <ng-container *ngSwitchCase="PageCode.BonusProgram">
       <app-bonus-program></app-bonus-program>
     </ng-container>
+    <ng-container *ngSwitchCase="PageCode.UserData">
+      <app-user-data></app-user-data>
+    </ng-container>
   </div>
   <nav
     *ngIf="currentPage.code !== PageCode.Auth"

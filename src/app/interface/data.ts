@@ -4,7 +4,8 @@ export enum PageCode {
     Auth,
     Orders,
     BonusProgram,
-    RefSystem
+    RefSystem,
+    UserData
 }
   
 export interface Page {
@@ -15,6 +16,12 @@ export interface Page {
     getMethod?: string;
     resName?: string;
     onSideBar: boolean
+}
+
+export interface UserDataForm {
+    name: string;
+    birthdate: string;
+    gender: string;
 }
 
 export interface BonusProgramAccount {

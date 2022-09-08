@@ -10,7 +10,7 @@ import { CardComponent } from './components/card/card.component';
 import {InputMaskModule} from "primeng/inputmask";
 import { AuthComponent } from './pages/account/auth/auth.component';
 import {ProgressSpinnerModule} from "primeng/progressspinner";
-import { FormsModule } from '@angular/forms';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { AccountComponent } from './pages/account/account.component';
 import { ExitComponent } from './components/exit/exit.component';
 import { HttpClientModule } from '@angular/common/http';
@@ -26,6 +26,7 @@ import { AngularFireMessagingModule } from '@angular/fire/compat/messaging';
 import {ToastModule} from 'primeng/toast';
 import { MessageService } from 'primeng/api';
 import { FooterButtonsComponent } from './components/footer-buttons/footer-buttons.component';
+import { UserDataComponent } from './pages/account/user-data/user-data.component';
 
 @NgModule({
   declarations: [
@@ -40,6 +41,7 @@ import { FooterButtonsComponent } from './components/footer-buttons/footer-butto
     OrdersComponent,
     OrderInfoComponent,
     FooterButtonsComponent,
+    UserDataComponent,
   ],
   imports: [
     BrowserModule,
@@ -65,6 +67,7 @@ import { FooterButtonsComponent } from './components/footer-buttons/footer-butto
     AngularFireModule.initializeApp(environment.firebase),
     AngularFireMessagingModule,
     ToastModule,
+    ReactiveFormsModule
   ],
   providers: [DialogService, MessageService],
   bootstrap: [AppComponent]

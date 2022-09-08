@@ -36,7 +36,7 @@ export class MainComponent implements OnInit {
     })
     route.queryParams.subscribe( (params) => {
       console.log('####: ', params)
-      this.token = params['token']
+      if (params['token']) this.token = params['token']
     });
   }
 

@@ -37,6 +37,13 @@ export const PageListWithBonus: Page[] = [
         onSideBar: true,
     },
     {
+        code: PageCode.UserData,
+        name: 'Заполнить анкету',
+        description: '',
+        resName: 'user-data',
+        onSideBar: true
+    },
+    {
         code: PageCode.RefSystem,
         name: 'Пригласить друга',
         description: '',
