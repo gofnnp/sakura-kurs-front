@@ -17,7 +17,8 @@
         "build": {
           "builder": "@angular-devkit/build-angular:browser",
           "options": {
-            "outputPath": "dist/fashion-logica",
+            "outputPath": "/var/www/lk/fashion-logica",
+            "baseHref": "/fashion-logica/",
             "index": "src/index.html",
             "main": "src/main.ts",
             "polyfills": "src/polyfills.ts",
