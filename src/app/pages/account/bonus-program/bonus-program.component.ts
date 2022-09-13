@@ -49,7 +49,6 @@ export class BonusProgramComponent implements OnInit {
     .options({font: "OCR-B"}) // Will affect all barcodes
     .EAN13(`${this.accountData.CardNumber}`.padStart(12, "0"), {fontSize: 18, textMargin: 0})
     .render();
-    console.log(this.accountData)
     this.loadingBonuses = false;
     const transactions: Transaction[] = (await lastValueFrom(
       this.jsonrpc.rpc(

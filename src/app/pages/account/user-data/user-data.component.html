@@ -1,33 +1,87 @@
-<form class="woocommerce-form woocommerce-form-login login" action="false" (ngSubmit)="saveData()"
-    [formGroup]="userDataFormGroup">
-    <h2>Личные данные</h2>
-    <p class="woocommerce-form-row woocommerce-form-row--wide form-row form-row-wide">
-        <label for="phone">Заполните поля анкеты</label>
-        <input formControlName="name" pInputText type="text"
-            class="woocommerce-Input woocommerce-Input--text input-text" name="name" id="name" placeholder="Имя" />
-    </p>
-    <p class="woocommerce-form-row woocommerce-form-row--wide form-row form-row-wide">
-        <input formControlName="birthdate" pInputText type="text"
-            class="woocommerce-Input woocommerce-Input--text input-text" name="birthdate" id="birthdate"
-            placeholder="Дата рождения (00.00.00)" />
-    </p>
-    <p class="woocommerce-form-row woocommerce-form-row--wide form-row form-row-wide">
-        <select formControlName="gender" name="gender" id="gender" required>
-            <option value="" disabled selected>Выберите пол</option>
-            <option value="Мужской">Мужской</option>
-            <option value="Женский">Женский</option>
-        </select>
-    </p>
-    <p class="form-row" style="margin-bottom: 6px;">
-        <button type="submit" class="woocommerce-button button woocommerce-form-login__submit" name="save"
-            value="Сохранить" [disabled]="false">
-            Сохранить
-        </button>
-    </p>
-    <span class="policy">Нажимая кнопку, Вы соглашаетесь с Политикой
-        обработки персональных данных.</span>
-    <div class="decoration-pattern">
-        <img style="height: 34px;" src="../../../../assets/card-decorative-pattern.svg" alt="">
-        <img style="height: 16px; margin-left: 2px;" src="../../../../assets/card-decorative-pattern.svg" alt="">
-    </div>
+<form
+  class="woocommerce-form woocommerce-form-login login"
+  action="false"
+  (ngSubmit)="saveData()"
+  [formGroup]="userDataFormGroup"
+>
+  <h2>Личные данные</h2>
+  <p
+    class="woocommerce-form-row woocommerce-form-row--wide form-row form-row-wide"
+  >
+    <label for="phone">Заполните поля анкеты</label>
+    <input
+      formControlName="first_name"
+      pInputText
+      type="text"
+      class="woocommerce-Input woocommerce-Input--text input-text"
+      name="first_name"
+      id="first_name"
+      placeholder="Имя"
+    />
+  </p>
+  <p
+    class="woocommerce-form-row woocommerce-form-row--wide form-row form-row-wide"
+  >
+    <!-- <p-inputMask
+      type="text"
+      class="woocommerce-Input woocommerce-Input--text"
+      name="birthdate"
+      inputId="birthdate"
+      placeholder="Дата рождения (00.00.00)"
+      mask="99.99.99"
+      [styleClass]="datevalid ? '' : 'invalid'"
+      [(ngModel)]="birthdate"
+      [ngModelOptions]="{standalone: true}"
+    ></p-inputMask> -->
+    <input
+      type="date"
+      formControlName="birthdate"
+      class="woocommerce-Input woocommerce-Input--text input-text"
+      pInputText
+      name="birthdate"
+      id="birthdate"
+      placeholder="Дата рождения"
+    />
+  </p>
+  <p
+    class="woocommerce-form-row woocommerce-form-row--wide form-row form-row-wide"
+  >
+    <span class="select-wrapper" [ngClass]="{
+      'select-wrapper': true,
+      'hidden': userDataFormGroup.value.gender.length
+    }">
+      <select formControlName="gender" name="gender" id="gender" required>
+        <!-- <option hidden value="" disabled selected>Выберите пол</option> -->
+        <option value="Мужской">Мужской</option>
+        <option value="Женский">Женский</option>
+      </select>
+    </span>
+  </p>
+  <p class="form-row" style="margin-bottom: 6px">
+    <button
+      type="submit"
+      class="woocommerce-button button woocommerce-form-login__submit"
+      name="save"
+      value="Сохранить"
+      [disabled]="false"
+    >
+      Сохранить
+    </button>
+  </p>
+  <span class="policy"
+    >Нажимая кнопку, Вы соглашаетесь с Политикой обработки персональных
+    данных.</span
+  >
+  <div class="decoration-pattern">
+    <img
+      style="height: 34px"
+      src="./assets/card-decorative-pattern.svg"
+      alt=""
+    />
+    <img
+      style="height: 16px; margin-left: 2px"
+      src="./assets/card-decorative-pattern.svg"
+      alt=""
+    />
+  </div>
 </form>

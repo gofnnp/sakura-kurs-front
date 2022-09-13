@@ -51,7 +51,7 @@
 
       &__decorative-pattern {
         height: 122px;
-        background-color: #B8DEFF;
+        background-color: #fff;
         // padding-top: 9px;
         display: flex;
         justify-content: center;
@@ -61,7 +61,7 @@
         }
 
         // .imgs-row {
-        //   background: url("../../../../assets/card-decorative-pattern.png") repeat-x;
+        //   background: url("./assets/card-decorative-pattern.png") repeat-x;
         //   height: 32%;
         // }
       }
@@ -135,10 +135,10 @@
         background-size: cover;
       }
 
-      &__front {
-        transform: rotateY(0deg);
-        background-image: url(../../../../assets/background.svg);
-      }
+      // &__front {
+      //   transform: rotateY(0deg);
+      //   background-image: url(./assets/background.svg);
+      // }
 
       &__back {
         position: absolute;

@@ -83,14 +83,22 @@
                 "Segoe UI Symbol";
             font-size: 1rem;
             color: #495057;
-            background: #ffffff;
             padding: 0.5rem 0.75rem;
-            border: 1px solid #ced4da;
             transition: background-color 0.15s, border-color 0.15s, box-shadow 0.15s;
             -webkit-appearance: none;
             appearance: none;
             border-radius: 4px;
             width: 100%;
+            height: 45px;
+            background: #FFFFFF;
+            border: 1px solid #B8DEFF;
+            border-radius: 15px;
+            &.ng-dirty.ng-invalid {
+                border-color: red;
+            }
+            &.ng-invalid.ng-touched {
+                border-color: red;
+            }
         }
 
         select {
@@ -101,13 +109,23 @@
             height: 45px;
             padding: 0 10px;
 
-            option[value=""][disabled] {
-                display: none;
+            // option[value=""][disabled] {
+            //     display: none;
+            // }
+            &.ng-dirty.ng-invalid {
+                border-color: red;
+            }
+            &.ng-invalid.ng-touched {
+                border-color: red;
+            }
+            &::before {
+                content: 'jgbfgb';
+                color: red;
             }
         }
 
         select:required:invalid {
-            color: #7D7D7D;
+            color: #6c757d;
         }
     }
 
@@ -124,8 +142,38 @@
     .decoration-pattern {
         margin-top: 12px;
         display: flex;
-        align-items: end;
+        align-items: flex-end;
         margin-left: 0;
         width: 92%;
     }
+
+    input[type="date"]::before { 
+    	content: attr(placeholder);
+    	width: 100%;
+        color: #6c757d;
+    }
+
+    input[type="date"]:focus::before,
+    input[type="date"].ng-valid::before {
+        display: none;
+    }
+
+    .select-wrapper {
+        position: relative;
+        &::before {
+            content: 'Выберете пол';
+            top: 0;
+            position: absolute;
+            left: 12px;
+        }
+        &.hidden::before {
+            display: none;
+        }
+    }
+    
+    /* hide our custom/fake placeholder text when in focus to show the default
+     * 'mm/dd/yyyy' value and when valid to show the users' date of birth value.
+     */
+    // input[type="date"]:focus::before,
+    // input[type="date"]:valid::before { display: none }
 }
