@@ -1,10 +1,10 @@
 import { HttpErrorResponse } from '@angular/common/http';
 import { Component, Input, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
-import { AcceptedOrder } from 'src/app/interface/data';
-import { WpJsonService } from 'src/app/services/wp-json.service';
+import { Purchase } from 'src/app/interface/data';
 import * as moment from 'moment-timezone';
-import { orderStatuses } from 'src/app/app.constants';
+import { lastValueFrom } from 'rxjs';
+import { JsonrpcService, RpcService } from 'src/app/services/jsonrpc.service';
 
 @Component({
   selector: 'app-orders',
@@ -13,86 +13,47 @@ import { orderStatuses } from 'src/app/app.constants';
 })
 export class OrdersComponent implements OnInit {
   @Input() handleHttpError!: (error: HttpErrorResponse) => void;
-  
-  public orders: AcceptedOrder[] = [];
-  public ordersShortArray: AcceptedOrder[] = [];
-  public lastViewOrder: number = 4;
-  public selectedOrder: AcceptedOrder|null = null;
-  public selectedOrderId: number|null = null;
+  public lastViewOrder: number = 3;
   public ordersLoadingStatus: boolean = true;
   readonly moment = moment;
-  private timer!: any;
+  public purchases: Purchase[] = [];
+  public purchasesShortArray: Purchase[] = [];
 
   constructor(
-    private wpJson: WpJsonService,
     private route: ActivatedRoute,
     private router: Router,
+    private jsonrpc: JsonrpcService,
   ) { }
 
   ngOnInit(): void {
-    this.getOrders();
-    this.route.queryParams.subscribe({
-      next: (queryParams:any) => {
-        this.setSelectedOrder(queryParams.order);
-      }
-    });
-    // this.requestTimer(1);
+    this.getOrders()
   }
 
-  requestTimer(interval: number) {
-    this.timer = setInterval(() => {
-      if (this.permissionToRequest()) this.getOrders()
-    }, interval * 60000);
-  }
-
-  permissionToRequest() {
-    for (let order of this.ordersShortArray) {
-      if (order.status !== 'Delivered' && order.status !== 'Closed' && order.status !== 'Cancelled' ) {
-        return true
-      }
-    }
-    return false
-  }
-
-  getOrders(): void{
-    this.wpJson.getOrders().subscribe({
-        next: (result) => {
-          this.orders = result;
-          this.ordersShortArray = this.orders.slice(0, this.lastViewOrder);
-          this.setSelectedOrder(this.selectedOrderId);
+  async getOrders(){
+    const purchases: Purchase[] = (await lastValueFrom(
+      this.jsonrpc.rpc(
+        {
+          method: 'GetAccountPurchase',
+          params: []
         },
-        error: this.handleHttpError
-      }
-    );
+        RpcService.bonusService
+      )))['Purchases'];
+
+    this.purchases = purchases.map<Purchase>((purchase) => {
+      const id = purchase.ID.slice(0,36).toLowerCase();
+      // purchase.Transactions = transactions.filter((transaction) => {
+      //   const same = transaction.Purchase === id;
+      //   transaction.HasPurchase = same;
+      //   return same;
+      // });
+      return purchase;
+    });
+    this.purchasesShortArray = this.purchases.slice(0, this.lastViewOrder)
     this.ordersLoadingStatus = false;
-  }
-
-  setSelectedOrder(orderId?:number|null): void{
-    this.selectedOrderId = orderId ?? null;
-    this.selectedOrder = this.orders.find((el) => el.id == this.selectedOrderId) ?? null;
-  }
-
-  showOrderDetails(event: MouseEvent, orderId: number): void{
-    event.preventDefault();
-    this.router.navigate([], {
-      relativeTo: this.route,
-      queryParams: {
-        order: orderId
-      },
-      queryParamsHandling: 'merge',
-    })
-  }
-
-  formatStatus(status: string): string|undefined{
-    const key = Object.keys(orderStatuses).find((el) => status === el) ?? '';
-    if (key === '') {
-      return orderStatuses['InProcessing']
-    }
-    return orderStatuses[key];
   }
 
   getMoreOrders() {
     this.lastViewOrder += 4;
-    this.ordersShortArray = this.orders.slice(0, this.lastViewOrder);
+    this.purchasesShortArray = this.purchases.slice(0, this.lastViewOrder);
   }
 }

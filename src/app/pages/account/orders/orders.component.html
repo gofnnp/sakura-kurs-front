@@ -1,22 +1,9 @@
-<ng-container
-  *ngIf="orders.length !== 0 && !ordersLoadingStatus && selectedOrder === null"
->
-  <app-order-info [order]="orders[0]!" [loadingStatus]="true"></app-order-info>
-</ng-container>
-<div
-  *ngIf="selectedOrder === null; else orderInfo"
-  class="woocommerce-MyAccount-content"
->
+<div class="orders">
   <table
     class="woocommerce-orders-table woocommerce-MyAccount-orders shop_table shop_table_responsive my_account_orders account-orders-table"
   >
     <thead>
       <tr>
-        <th
-          class="woocommerce-orders-table__header woocommerce-orders-table__header-order-number"
-        >
-          <span class="nobr">Заказ</span>
-        </th>
         <th
           class="woocommerce-orders-table__header woocommerce-orders-table__header-order-date"
         >
@@ -25,94 +12,77 @@
         <th
           class="woocommerce-orders-table__header woocommerce-orders-table__header-order-status"
         >
-          <span class="nobr">Статус</span>
+          <span class="nobr">Место покупки</span>
         </th>
         <th
           class="woocommerce-orders-table__header woocommerce-orders-table__header-order-total"
         >
-          <span class="nobr">Итого</span>
+          <span class="nobr">Сумма чека</span>
         </th>
         <th
           class="woocommerce-orders-table__header woocommerce-orders-table__header-order-actions"
         >
-          <span class="nobr">Действия</span>
+          <span class="nobr">Бонусы</span>
         </th>
       </tr>
     </thead>
     <tbody>
       <tr
-        *ngFor="let order of ordersShortArray"
+        *ngFor="let purchase of purchasesShortArray"
         class="woocommerce-orders-table__row woocommerce-orders-table__row--status-processing order"
       >
-        <td
-          class="woocommerce-orders-table__cell woocommerce-orders-table__cell-order-number"
-          data-title="Заказ"
-        >
-          <a href="#" (click)="showOrderDetails($event, order.id)">{{
-            order.id
-          }}</a>
-        </td>
         <td
           class="woocommerce-orders-table__cell woocommerce-orders-table__cell-order-date"
           data-title="Дата"
         >
-          <time [dateTime]="order.date_created">{{
-            moment(order.date_created).format("DD.MM.YYYY")
+          <time [dateTime]="purchase.PurchaseDate">{{
+            moment(purchase.PurchaseDate).format("DD.MM.YYYY")
           }}</time>
         </td>
         <td
           class="woocommerce-orders-table__cell woocommerce-orders-table__cell-order-status"
-          data-title="Статус"
+          data-title="Место покупки"
         >
-          {{ formatStatus(order.status) }}
+          {{ purchase.Address }}
         </td>
         <td
           class="woocommerce-orders-table__cell woocommerce-orders-table__cell-order-total"
-          data-title="Итого"
+          data-title="Сумма чека"
         >
-          <span class="woocommerce-Price-amount amount"
-            ><span class="woocommerce-Price-currencySymbol">{{
-              order.currency_symbol
-            }}</span
-            >{{ order.total }}</span
-          >
+          <span class="woocommerce-Price-amount amount">
+            {{ purchase.CheckSummary }}
+          </span>
         </td>
         <td
           class="woocommerce-orders-table__cell woocommerce-orders-table__cell-order-actions"
-          data-title="Действия"
+          data-title="Бонусы"
+          [ngClass]="{
+            'red-color': purchase.BonusSummary ? purchase.BonusSummary < 0 : false,
+            'green-color': purchase.BonusSummary ? purchase.BonusSummary > 0 : false
+          }"
         >
-          <a
-            href="#"
-            class="woocommerce-button button view"
-            (click)="showOrderDetails($event, order.id)"
-            >Просмотр</a
-          >
+          {{ purchase.BonusSummary }}
         </td>
       </tr>
     </tbody>
   </table>
   <p
-    *ngIf="orders.length !== ordersShortArray.length"
+    *ngIf="purchases.length !== purchasesShortArray.length"
     class="show-more-orders"
     (click)="getMoreOrders()"
   >
     Показать больше
   </p>
-  <div
+  <p-progressSpinner
     *ngIf="ordersLoadingStatus"
-    class="angular-spinner-container"
-    style="width: 100%; height: 100%; position: static"
-  >
-    <p-progressSpinner styleClass="angular-spinner"></p-progressSpinner>
-  </div>
+    [style]="{ width: '100%' }"
+    strokeWidth="2"
+    styleClass="angular-spinner"
+  ></p-progressSpinner>
   <p
-    *ngIf="orders.length === 0 && !ordersLoadingStatus"
+    *ngIf="purchases.length === 0 && !ordersLoadingStatus"
     style="width: 100%; text-align: center"
   >
     Нет заказов
   </p>
 </div>
-
-<ng-template #orderInfo>
-  <app-order-info [order]="selectedOrder!"></app-order-info>
-</ng-template>

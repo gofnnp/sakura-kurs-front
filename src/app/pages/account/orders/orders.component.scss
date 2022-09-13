@@ -1,8 +1,8 @@
 .show-more-orders {
     text-align: center;
     cursor: pointer;
-    color: #009688;
-    margin-top: 8px;
+    color: #09467f;
+    margin-top: 16px;
 }
 .woocommerce-MyAccount-content {
     max-width: 400px;
@@ -16,6 +16,9 @@
     text-align: left;
     margin-top: 8px;
     width: 100%;
+    max-width: 400px;
+    margin-left: auto;
+    margin-right: auto;
     thead {
         display: none;
     }
@@ -33,9 +36,20 @@
         }
         &__row {
             display: block;
+            &:nth-child(even) {
+                background: #ebebeb;
+            }
         }
-        &__cell-order-actions::before {
-            display: none;
+        // &__cell-order-actions::before {
+        //     display: none;
+        // }
+        &__cell-order-actions {
+            &.red-color {
+                color: #ed0000;
+            }
+            &.green-color {
+                color: #00a700
+            }
         }
         &__cell-order-number a {
             text-decoration: none;
