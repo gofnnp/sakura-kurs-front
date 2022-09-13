@@ -26,8 +26,8 @@
           color: #000;
           border-radius: 15px;
           &.is-active {
-            // background-color: #009688;
-            display: none;
+            border: solid #09467f 1px;
+            // display: none;
           }
           &.first {
             // border-radius: 7px 0 0 7px;

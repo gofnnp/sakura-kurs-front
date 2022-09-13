@@ -19,7 +19,7 @@ export interface Page {
 }
 
 export interface UserDataForm {
-    name: string;
+    first_name: string;
     birthdate: string;
     gender: string;
 }

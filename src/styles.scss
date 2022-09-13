@@ -18,6 +18,9 @@ table{border-collapse:collapse;border-spacing:0}
     border-radius: 15px;
     height: 45px;
 }
+.p-inputtext.invalid {
+    border-color: red;
+}
 
 mark {
     padding: 4px;
@@ -27,4 +30,33 @@ mark {
 
 ::-webkit-scrollbar {
     width: 0;
+}
+
+button {
+    cursor: pointer;
+}
+
+.p-toast-message-custom {
+    background-color: #fff;
+    border: solid #09467F;
+    border-width: 0 0 0 6px;
+    color: #09467F;
+    .p-toast-icon-close {
+        color: #09467F;
+    }
+}
+
+.p-toast.p-component.p-toast-top-center {
+    max-width: 96vw;
+}
+
+.qrcode {
+    display: flex;
+    justify-content: center;
+}
+
+.sb-group {
+    width: 100%;
+    justify-content: space-between;
+    max-width: 400px;
 }

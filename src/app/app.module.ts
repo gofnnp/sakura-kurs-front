@@ -27,6 +27,10 @@ import {ToastModule} from 'primeng/toast';
 import { MessageService } from 'primeng/api';
 import { FooterButtonsComponent } from './components/footer-buttons/footer-buttons.component';
 import { UserDataComponent } from './pages/account/user-data/user-data.component';
+import { RefSystemComponent } from './pages/account/ref-system/ref-system.component';
+import { QRCodeModule } from 'angularx-qrcode';
+import { ShareButtonsModule   } from 'ngx-sharebuttons/buttons';
+import { ShareIconsModule } from 'ngx-sharebuttons/icons';
 
 @NgModule({
   declarations: [
@@ -42,6 +46,7 @@ import { UserDataComponent } from './pages/account/user-data/user-data.component
     OrderInfoComponent,
     FooterButtonsComponent,
     UserDataComponent,
+    RefSystemComponent
   ],
   imports: [
     BrowserModule,
@@ -67,9 +72,14 @@ import { UserDataComponent } from './pages/account/user-data/user-data.component
     AngularFireModule.initializeApp(environment.firebase),
     AngularFireMessagingModule,
     ToastModule,
-    ReactiveFormsModule
+    ReactiveFormsModule,
+    QRCodeModule,
+    ShareButtonsModule.withConfig({
+      debug: true
+    }),
+    ShareIconsModule
   ],
-  providers: [DialogService, MessageService],
+  providers: [DialogService, MessageService, ],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

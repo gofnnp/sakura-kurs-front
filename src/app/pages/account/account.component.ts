@@ -1,27 +1,32 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
-import {CookiesService} from "../../services/cookies.service";
-import {ActivatedRoute, Router} from "@angular/router";
-import {Page, PageCode} from "../../interface/data";
-import {environment} from "../../../environments/environment";
-import {PageList, PageListWithBonus} from "../../app.constants";
-import {HttpErrorResponse} from "@angular/common/http";
-import {ExitComponent} from "../../components/exit/exit.component";
+import { CookiesService } from '../../services/cookies.service';
+import { ActivatedRoute, Router } from '@angular/router';
+import { Page, PageCode } from '../../interface/data';
+import { environment } from '../../../environments/environment';
+import { PageList, PageListWithBonus } from '../../app.constants';
+import { HttpErrorResponse, HttpParams } from '@angular/common/http';
+import { ExitComponent } from '../../components/exit/exit.component';
 import { DialogService, DynamicDialogRef } from 'primeng/dynamicdialog';
+import { JsonrpcService, RpcService } from 'src/app/services/jsonrpc.service';
+import { MessageService } from 'primeng/api';
 
 @Component({
   selector: 'app-account',
   templateUrl: './account.component.html',
   styleUrls: ['./account.component.scss'],
-  providers:[DialogService],
+  providers: [DialogService],
 })
 export class AccountComponent implements OnInit {
   @Output() setUserDataOrderPage = new EventEmitter<null>();
+  public refSystemId: string = '';
 
   constructor(
     private cookiesService: CookiesService,
     private router: Router,
     private route: ActivatedRoute,
     private dialogService: DialogService,
+    private jsonRpcService: JsonrpcService,
+    private messageService: MessageService
   ) {}
 
   public currentPage!: Page;
@@ -29,20 +34,101 @@ export class AccountComponent implements OnInit {
   private ref!: DynamicDialogRef;
 
   readonly PageCode = PageCode;
-  readonly pageList = environment.hasBonusProgram ? PageListWithBonus : PageList;
+  readonly pageList = environment.hasBonusProgram
+    ? PageListWithBonus
+    : PageList;
 
   ngOnInit(): void {
-    this.currentPage = this.getToken() ? this.pageList[1] : this.pageList[0];
-    document.body.classList.add('woocommerce-account', 'woocommerce-page', 'woocommerce-orders');
+    if (!this.getToken()) {
+      this.currentPage = this.pageList[0];
+    } else {
+      this.route.queryParams.subscribe((params) => {
+        if (!params['activePage']) {
+          this.currentPage = this.pageList[1];
+          return;
+        }
+        const currentPage = this.pageList.find((page) => {
+          return page.code === Number(params['activePage']);
+        });
+        if (!currentPage) {
+          this.currentPage = this.pageList[1];
+        } else {
+          this.currentPage = currentPage;
+        }
+      });
+    }
+    document.body.classList.add(
+      'woocommerce-account',
+      'woocommerce-page',
+      'woocommerce-orders'
+    );
   }
 
-  phoneConfirmed(): void{
-      this.currentPage = this.pageList[1];
+  phoneConfirmed(): void {
+    this.refSystem();
+    this.currentPage = this.pageList[1];
   }
 
-  changePage(event: MouseEvent, page: Page): void{
+  refSystem() {
+    this.route.queryParams.subscribe((params) => {
+      if (params['refCardNumber']) {
+        this.refSystemId = params['refCardNumber'];
+        this.jsonRpcService
+          .rpc(
+            {
+              method: 'updateAdditionalInfo',
+              params: [
+                {
+                  refSystem: {
+                    code: this.refSystemId,
+                  },
+                },
+              ],
+            },
+            RpcService.authService,
+            true
+          )
+          .subscribe({
+            next: () => {
+              this.router.navigate([], {
+                queryParams: {
+                  refCardNumber: null,
+                },
+                queryParamsHandling: 'merge',
+              });
+              this.messageService.add({
+                severity: 'custom',
+                summary:
+                  'Регистрация прошла успешна! Бонусы скоро будут начислены',
+              });
+            },
+            error: (err) => {
+              console.error('Error: ', err);
+              this.messageService.add({
+                severity: 'error',
+                summary: 'Произошла ошибка, попробуйте позже',
+              });
+            },
+          });
+      }
+    });
+  }
+
+  changePage(event: MouseEvent, page: Page): void {
     event.preventDefault();
     this.currentPage = page;
+    // let params = new HttpParams();
+    // params = params.append('activePage', this.currentPage.code);
+    this.router.navigate(['.'], {
+      relativeTo: this.route,
+      queryParams: {
+        activePage: this.currentPage.code,
+      },
+      queryParamsHandling: 'merge',
+      // preserve the existing query params in the route
+      // skipLocationChange: true
+      // do not trigger navigation
+    });
   }
 
   handleHttpError(error: HttpErrorResponse): void {
@@ -51,23 +137,23 @@ export class AccountComponent implements OnInit {
     }
   }
 
-  setToken(token: string): void{
+  setToken(token: string): void {
     this.cookiesService.setCookie('token', token);
   }
 
-  getToken(): string|void{
-    return  this.cookiesService.getItem('token');
+  getToken(): string | void {
+    return this.cookiesService.getItem('token');
   }
 
-  deleteToken(): void{
+  deleteToken(): void {
     this.cookiesService.deleteCookie('token');
-    this.router.navigate([''], {
-      queryParams: {},
-    });
+    // this.router.navigate(['.'], {
+    //   queryParams: {},
+    // });
   }
 
-  logout(event?: MouseEvent){
-    if(event){
+  logout(event?: MouseEvent) {
+    if (event) {
       event.preventDefault();
     }
     this.ref = this.dialogService.open(ExitComponent, {
@@ -89,14 +175,11 @@ export class AccountComponent implements OnInit {
       closeOnEscape: true,
       showHeader: false,
     });
-    this.ref.onClose.subscribe(
-      result => {
-        if (result) {
-          this.currentPage = this.pageList[0];
-          this.deleteToken();
-        }
+    this.ref.onClose.subscribe((result) => {
+      if (result) {
+        this.deleteToken();
+        this.currentPage = this.pageList[0];
       }
-    );
+    });
   }
-
 }

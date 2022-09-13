@@ -1,5 +1,8 @@
 <div class="woocommerce">
-  <div *ngIf="currentPage.code !== PageCode.Auth" class="top-left-attribute"></div>
+  <div
+    *ngIf="currentPage.code !== PageCode.Auth"
+    class="top-left-attribute"
+  ></div>
   <div [ngSwitch]="currentPage.code" class="">
     <ng-container *ngSwitchCase="PageCode.Auth">
       <app-auth
@@ -15,6 +18,9 @@
     </ng-container>
     <ng-container *ngSwitchCase="PageCode.UserData">
       <app-user-data></app-user-data>
+    </ng-container>
+    <ng-container *ngSwitchCase="PageCode.RefSystem">
+      <app-ref-system></app-ref-system>
     </ng-container>
   </div>
   <nav
@@ -34,7 +40,7 @@
         >
           <div class="container">
             <img
-              src="{{ '../../../assets/menu-icons/' + page.resName + '.png' }}"
+              src="{{ './assets/menu-icons/' + page.resName + '.png' }}"
               alt="Иконка меню"
             />
             <div class="menu-item-info">
@@ -44,14 +50,14 @@
           </div>
         </li>
       </ng-container>
-      <li class="woocommerce-MyAccount-navigation-link">
+      <li
+        class="woocommerce-MyAccount-navigation-link"
+        (click)="logout($event)"
+      >
         <div class="container">
-          <img
-            src="../../../assets/menu-icons/exit.png"
-            alt="Иконка меню"
-          />
+          <img src="./assets/menu-icons/exit.png" alt="Иконка меню" />
           <div class="menu-item-info">
-            <a href="#" (click)="logout($event)">Выход</a>
+            <a href="#">Выход</a>
           </div>
         </div>
       </li>

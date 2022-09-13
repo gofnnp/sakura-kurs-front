@@ -1,5 +1,5 @@
 {
-  "name": "card-project",
+  "name": "fashion-logica",
   "version": "0.0.0",
   "scripts": {
     "ng": "ng",
@@ -11,6 +11,7 @@
   "private": true,
   "dependencies": {
     "@angular/animations": "^14.0.0",
+    "@angular/cdk": "^14.2.1",
     "@angular/common": "^14.0.0",
     "@angular/compiler": "^14.0.0",
     "@angular/core": "^14.0.0",
@@ -20,12 +21,18 @@
     "@angular/platform-browser-dynamic": "^14.0.0",
     "@angular/router": "^14.0.0",
     "@angular/service-worker": "^14.0.0",
+    "@fortawesome/angular-fontawesome": "^0.11.1",
+    "@fortawesome/fontawesome-svg-core": "^6.2.0",
+    "@fortawesome/free-brands-svg-icons": "^6.2.0",
+    "@fortawesome/free-solid-svg-icons": "^6.2.0",
     "@types/uuid": "^8.3.4",
     "angular-moment-timezone": "^1.7.1",
+    "angularx-qrcode": "^14.0.0",
     "barcode-2-svg": "^0.3.3",
     "firebase": "^9.9.3",
     "google-libphonenumber": "^3.2.30",
     "jsbarcode": "^3.11.5",
+    "ngx-sharebuttons": "^11.0.0",
     "primeicons": "^5.0.0",
     "primeng": "^14.0.1",
     "rxjs": "~7.5.0",
