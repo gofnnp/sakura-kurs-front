@@ -5,6 +5,7 @@ export const environment = {
   appWPEndpoint: 'http://192.168.0.179:4200/wp-json/woofood/v1/',
   hasBonusProgram: true,
   systemId: 'g6zyv8tj53w28ov7cl',
+  defaultUrl: 'http://192.168.0.179:4200',
   firebase: {
     apiKey: "AIzaSyCujHg9GtN8Uxi-JcCN8zggvXlfNQRKc04",
     authDomain: "push-notification-test2-56dac.firebaseapp.com",
