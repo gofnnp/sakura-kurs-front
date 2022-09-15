@@ -27,17 +27,17 @@ export class MainComponent implements OnInit {
       public renderer: Renderer2,
       private messageService: MessageService
   ) {
-    // renderer.listen('window', 'appinstalled', (evt) => {
-    //   console.log('INSTALLED!!!')
-    // })
-    // renderer.listen('window', 'beforeinstallprompt', (e) => {
-    //   e.preventDefault()
-    //   this.deferredPrompt = e
-    // })
-    // route.queryParams.subscribe( (params) => {
-    //   console.log('####: ', params)
-    //   if (params['token']) this.token = params['token']
-    // });
+    renderer.listen('window', 'appinstalled', (evt) => {
+      console.log('INSTALLED!!!')
+    })
+    renderer.listen('window', 'beforeinstallprompt', (e) => {
+      e.preventDefault()
+      this.deferredPrompt = e
+    })
+    route.queryParams.subscribe( (params) => {
+      console.log('####: ', params)
+      if (params['token']) this.token = params['token']
+    });
   }
 
   ngOnInit(): void {    

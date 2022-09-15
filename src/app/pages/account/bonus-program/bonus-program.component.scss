@@ -103,6 +103,10 @@
 
         #barcode {
           border-radius: 16px;
+          &.hidden {
+            display: none;
+            width: 0;
+          }
         }
       }
     }
@@ -185,13 +189,6 @@
         .count {
           font-size: 22px;
         }
-      }
-
-      &__barcode-container {
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        height: 100%;
       }
     }
 

@@ -17,7 +17,6 @@ export class BonusProgramComponent implements OnInit {
   public accountData!: BonusProgramAccount;
   public purchases: Purchase[] = [];
   public loadingBonuses: boolean = false;
-  public isCardBack: boolean = false;
   readonly orderStatuses = orderStatuses;
   readonly moment = moment;
   readonly pageList = environment.hasBonusProgram ? PageListWithBonus : PageList;
@@ -31,10 +30,6 @@ export class BonusProgramComponent implements OnInit {
     this.getAccountData();
   }
 
-  rotateCard() {
-    this.isCardBack = !this.isCardBack
-  }
-
   async getAccountData(): Promise<void>{
     this.loadingBonuses = true;
     this.accountData = (await lastValueFrom(
@@ -44,12 +39,12 @@ export class BonusProgramComponent implements OnInit {
       },
       RpcService.bonusService
     )))['Cards'][0];
+    this.loadingBonuses = false;
     
     barcode("#barcode")
     .options({font: "OCR-B"}) // Will affect all barcodes
     .EAN13(`${this.accountData.CardNumber}`.padStart(12, "0"), {fontSize: 18, textMargin: 0})
     .render();
-    this.loadingBonuses = false;
     const transactions: Transaction[] = (await lastValueFrom(
       this.jsonrpc.rpc(
         {
