@@ -118,10 +118,6 @@
             &.ng-invalid.ng-touched {
                 border-color: red;
             }
-            &::before {
-                content: 'jgbfgb';
-                color: red;
-            }
         }
 
         select:required:invalid {
@@ -161,10 +157,13 @@
     .select-wrapper {
         position: relative;
         &::before {
-            content: 'Выберете пол';
-            top: 0;
+            content: 'Выберите пол';
+            top: 3px;
             position: absolute;
-            left: 12px;
+            left: 13px;
+            height: 100%;
+            font-weight: 500;
+            color: #6c757d;
         }
         &.hidden::before {
             display: none;
