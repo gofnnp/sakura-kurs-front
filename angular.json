@@ -27,7 +27,8 @@
             "assets": [
               "src/favicon.ico",
               "src/assets",
-              "src/manifest.webmanifest"
+              "src/manifest.webmanifest",
+              "src/assets/firebase-messaging-sw.js"
             ],
             "styles": [
               "node_modules/primeng/resources/themes/bootstrap4-light-blue/theme.css",
