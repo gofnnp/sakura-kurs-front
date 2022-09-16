@@ -4,6 +4,7 @@ import { ActivatedRoute } from "@angular/router";
 import { CardComponent } from "src/app/components/card/card.component";
 import { AccountComponent } from "../account/account.component";
 import {MessageService} from 'primeng/api';
+import { MessagingService } from "src/app/services/messaging.service";
 
 
 @Component({
@@ -17,7 +18,8 @@ export class MainComponent implements OnInit {
   public messagingToken!: string | null;
   public deferredPrompt: any;
   public isPermissionNotifications: boolean = false;
-  public token = ''
+  public token = '';
+  public message: any;
 
   constructor(
       private route: ActivatedRoute,
@@ -25,7 +27,8 @@ export class MainComponent implements OnInit {
       private afMessaging: AngularFireMessaging,
       public el: ElementRef,
       public renderer: Renderer2,
-      private messageService: MessageService
+      private messageService: MessageService,
+      private messagingService: MessagingService
   ) {
     renderer.listen('window', 'appinstalled', (evt) => {
       console.log('INSTALLED!!!')
@@ -61,34 +64,39 @@ export class MainComponent implements OnInit {
   }
 
   requestPermission() {
-    if (!('serviceWorker' in navigator)) { 
-      this.messageService.add({severity:'error', summary:'Не поддерживается в Вашем браузере!'});
-      return; 
-    }
+    // if (!('serviceWorker' in navigator)) { 
+    //   this.messageService.add({severity:'error', summary:'Не поддерживается в Вашем браузере!'});
+    //   return; 
+    // }
     
-    if (!('PushManager' in window)) { 
-      // Браузер не поддерживает push-уведомления.
-      this.messageService.add({severity:'error', summary:'Не поддерживается в Вашем браузере!'});
-      return; 
-    }
-    this.afMessaging.requestPermission.subscribe({
-      next: () => {
-        console.log('Permission granted! Save to the server!')
-      },
-      error: e => console.error(e)
-    })
+    // if (!('PushManager' in window)) { 
+    //   // Браузер не поддерживает push-уведомления.
+    //   this.messageService.add({severity:'error', summary:'Не поддерживается в Вашем браузере!'});
+    //   return; 
+    // }
+    // this.afMessaging.requestPermission.subscribe({
+    //   next: () => {
+    //     console.log('Permission granted! Save to the server!')
+    //   },
+    //   error: e => console.error(e)
+    // })
 
-    this.afMessaging.requestToken.subscribe({
-      next: (token) => {
-        this.messagingToken = token;
-        if (this.messagingToken) {
-          this.messageService.add({severity:'success', summary:'Спасибо за подписку!'});
-          this.isPermissionNotifications = true;
-        }
-        console.log(token)
-      },
-      error: e => console.error(e)
-    })
+    // this.afMessaging.requestToken.subscribe({
+    //   next: (token) => {
+    //     this.messagingToken = token;
+    //     if (this.messagingToken) {
+    //       this.messageService.add({severity:'success', summary:'Спасибо за подписку!'});
+    //       this.isPermissionNotifications = true;
+    //     }
+    //     console.log(token)
+    //   },
+    //   error: e => console.error(e)
+    // })
+
+    const userId = 'user001';
+    this.messagingService.requestPermission(userId)
+    this.messagingService.receiveMessage()
+    this.message = this.messagingService.currentMessage
     
   }
   // test function

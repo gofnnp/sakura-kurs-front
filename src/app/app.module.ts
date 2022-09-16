@@ -31,6 +31,7 @@ import { RefSystemComponent } from './pages/account/ref-system/ref-system.compon
 import { QRCodeModule } from 'angularx-qrcode';
 import { ShareButtonsModule   } from 'ngx-sharebuttons/buttons';
 import { ShareIconsModule } from 'ngx-sharebuttons/icons';
+import { MessagingService } from './services/messaging.service';
 
 @NgModule({
   declarations: [
@@ -79,7 +80,7 @@ import { ShareIconsModule } from 'ngx-sharebuttons/icons';
     }),
     ShareIconsModule
   ],
-  providers: [DialogService, MessageService, ],
+  providers: [DialogService, MessageService, MessagingService ],
   bootstrap: [AppComponent]
 })
 export class AppModule { }
