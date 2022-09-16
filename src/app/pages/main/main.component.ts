@@ -28,7 +28,7 @@ export class MainComponent implements OnInit {
       public el: ElementRef,
       public renderer: Renderer2,
       private messageService: MessageService,
-      private messagingService: MessagingService
+      private messagingService: MessagingService,
   ) {
     renderer.listen('window', 'appinstalled', (evt) => {
       console.log('INSTALLED!!!')
@@ -64,37 +64,7 @@ export class MainComponent implements OnInit {
   }
 
   requestPermission() {
-    // if (!('serviceWorker' in navigator)) { 
-    //   this.messageService.add({severity:'error', summary:'Не поддерживается в Вашем браузере!'});
-    //   return; 
-    // }
-    
-    // if (!('PushManager' in window)) { 
-    //   // Браузер не поддерживает push-уведомления.
-    //   this.messageService.add({severity:'error', summary:'Не поддерживается в Вашем браузере!'});
-    //   return; 
-    // }
-    // this.afMessaging.requestPermission.subscribe({
-    //   next: () => {
-    //     console.log('Permission granted! Save to the server!')
-    //   },
-    //   error: e => console.error(e)
-    // })
-
-    // this.afMessaging.requestToken.subscribe({
-    //   next: (token) => {
-    //     this.messagingToken = token;
-    //     if (this.messagingToken) {
-    //       this.messageService.add({severity:'success', summary:'Спасибо за подписку!'});
-    //       this.isPermissionNotifications = true;
-    //     }
-    //     console.log(token)
-    //   },
-    //   error: e => console.error(e)
-    // })
-
-    const userId = 'user001';
-    this.messagingService.requestPermission(userId)
+    this.messagingService.requestPermission()
     this.messagingService.receiveMessage()
     this.message = this.messagingService.currentMessage
     

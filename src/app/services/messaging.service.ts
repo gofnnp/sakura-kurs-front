@@ -1,17 +1,17 @@
 import { Injectable } from '@angular/core';
-// import { AngularFireDatabase } from '@angular/fire/database';
-// import { AngularFireAuth } from '@angular/fire/auth';
 import { AngularFireMessaging } from '@angular/fire/compat/messaging';
+import { MessageService } from 'primeng/api';
 import { BehaviorSubject } from 'rxjs';
+import { JsonrpcService, RpcService } from './jsonrpc.service';
 
 @Injectable()
 export class MessagingService {
   currentMessage = new BehaviorSubject(null);
 
   constructor(
-    // private angularFireDB: AngularFireDatabase,
-    // private angularFireAuth: AngularFireAuth,
-    private angularFireMessaging: AngularFireMessaging
+    private angularFireMessaging: AngularFireMessaging,
+    private jsonRpcService: JsonrpcService,
+    private messageService: MessageService
   ) {
     this.angularFireMessaging.messages.subscribe((_messaging: any) => {
       _messaging.onMessage = _messaging.onMessage.bind(_messaging);
@@ -19,38 +19,42 @@ export class MessagingService {
     });
   }
 
-  /**
-   * update token in firebase database
-   *
-   * @param userId userId as a key
-   * @param token token as a value
-   */
+  updateToken(token: string | null) {
+    if (!token) return;
+    this.jsonRpcService
+      .rpc(
+        {
+          method: 'updateAdditionalInfo',
+          params: [
+            {
+              'fmc-token': token,
+            },
+          ],
+        },
+        RpcService.authService,
+        true
+      )
+      .subscribe({
+        next: () => {
+          this.messageService.add({
+            severity: 'custom',
+            summary: 'Спасибо за подписку!',
+          });
+        },
+        error: (err) => {
+          console.error('Error: ', err);
+          this.messageService.add({
+            severity: 'error',
+            summary: 'Произошла ошибка, попробуйте позже',
+          });
+        },
+      });
+  }
 
-  //   ОБНОВИТЬ/ДОБАВИТЬ ТОКЕН В БД
-
-  //   updateToken(userId, token) {
-  //     // we can change this function to request our backend service
-  //     this.angularFireAuth.authState.pipe(take(1)).subscribe(
-  //       () => {
-  //         const data = {};
-  //         data[userId] = token
-  //         this.angularFireDB.object('fcmTokens/').update(data)
-  //       })
-  //   }
-
-  /**
-   * request permission for notification from firebase cloud messaging
-   *
-   * @param userId userId
-   */
-  requestPermission(userId: string) {
+  requestPermission() {
     this.angularFireMessaging.requestToken.subscribe({
       next: (token) => {
-        //   this.messagingToken = token;
-        //   if (this.messagingToken) {
-        //     this.messageService.add({severity:'success', summary:'Спасибо за подписку!'});
-        //     this.isPermissionNotifications = true;
-        //   }
+        this.updateToken(token);
         console.log(token);
       },
       error: (e) => console.error(e),
