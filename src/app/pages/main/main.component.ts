@@ -64,6 +64,7 @@ export class MainComponent implements OnInit {
   }
 
   requestPermission() {
+    console.log('####: ')
     this.messagingService.requestPermission()
     this.messagingService.receiveMessage()
     this.message = this.messagingService.currentMessage
