@@ -1,4 +1,18 @@
 <div class="footer-buttons-container">
-    <button *ngIf="deferredPrompt && token?.length" class="footer-buttons-container__button" (click)="downloadPWA()">Установить на главный экран</button>
-    <button *ngIf="!isPermissionNotifications" class="footer-buttons-container__button" (click)="requestPermission()" value="click to copy" >Подписаться на уведомления</button>
+  <!-- *ngIf="deferredPrompt && token?.length" -->
+  <button
+    *ngIf="true"
+    class="footer-buttons-container__button"
+    (click)="downloadPWA()"
+  >
+    <img src="./assets/download.svg" alt="download" />
+  </button>
+  <button
+    *ngIf="!isPermissionNotifications"
+    class="footer-buttons-container__button"
+    (click)="requestPermission()"
+    value="click to copy"
+  >
+    <img src="./assets/notification.svg" alt="notification" />
+  </button>
 </div>

@@ -1,6 +1,7 @@
 import { HttpErrorResponse } from '@angular/common/http';
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
+import { MessageService } from 'primeng/api';
 import { CookiesService } from 'src/app/services/cookies.service';
 import { FormatPhoneService } from 'src/app/services/format-phone.service';
 import { JsonrpcService, RpcService } from 'src/app/services/jsonrpc.service';
@@ -27,18 +28,25 @@ export class AuthComponent {
     private cookiesService: CookiesService,
     private router: Router,
     private route: ActivatedRoute,
+    private messageService: MessageService,
   ) {
   }
 
   getCode(event: SubmitEvent): void {
     event.preventDefault();
     this.loading = true;
-    this.phoneToConfirm = '+7' + this.phone.replace(/\D/g, '');
+    this.phoneToConfirm = '+' + this.phone.replace(/\D/g, '');
     this.jsonrpc.rpc({
       method: 'sendVerifyByPhone',
       params: [this.phoneToConfirm]
     }, RpcService.authService, false).subscribe({
         next: (result) => {
+          if (result.code === -1) {
+            this.messageService.add({
+              severity: 'error',
+              summary: 'Произошла ошибка, попробуйте позже!',
+            });
+          }
           if (result.code === 0) {
             this.isCodeConfirm = true;
           }
@@ -53,7 +61,7 @@ export class AuthComponent {
     event.preventDefault();
     this.jsonrpc.rpc({
       method: 'getTokenByPhone',
-      params: [this.phoneToConfirm, this.code]
+      params: [this.phoneToConfirm, String(this.code)]
     }, RpcService.authService, false).subscribe({
         next: (result) => {
           if (result.code === 0) {

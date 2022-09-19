@@ -14,10 +14,12 @@
         characterPattern="[0-9]"
         styleClass="woocommerce-Input woocommerce-Input--text input-text"
         name="phone"
+        type="tel"
         inputId="phone"
         autocomplete="phone"
         placeholder="+7 (000) 000-00-00"
-        [unmask]="true"
+        mask="+7 (999) 999-9999"
+        [unmask]="false"
         [(ngModel)]="phone"
       ></p-inputMask>
     </p>
@@ -57,7 +59,8 @@
       </label>
       <input
         pInputText
-        type="text"
+        type="number"
+        pattern="\d*"
         class="woocommerce-Input woocommerce-Input--text input-text"
         name="code"
         id="code"
