@@ -1,14 +1,14 @@
 <div class="footer-buttons-container">
   <!-- *ngIf="deferredPrompt && token?.length" -->
   <button
-    *ngIf="true"
-    class="footer-buttons-container__button"
+    *ngIf="deferredPrompt && token?.length"
+    class="footer-buttons-container__button download"
     (click)="downloadPWA()"
   >
     <img src="./assets/download.svg" alt="download" />
   </button>
   <button
-    *ngIf="!isPermissionNotifications"
+    *ngIf="!isPermissionNotifications && token?.length"
     class="footer-buttons-container__button"
     (click)="requestPermission()"
     value="click to copy"

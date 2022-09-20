@@ -40,10 +40,6 @@ export class RefSystemComponent implements OnInit {
       })
       .then(() => console.log('Successful share'))
       .catch((error) => {
-        this.messageService.add({
-          severity: 'error',
-          summary: 'Произошла ошибка!',
-        });
         console.log('Error sharing:', error)
       });
     }

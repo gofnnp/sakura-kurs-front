@@ -30,4 +30,10 @@
       }
     }
   }
+
+  @media (display-mode: standalone) {
+    .download {
+      display: none;
+    }
+  }
 }

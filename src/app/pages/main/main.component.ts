@@ -13,6 +13,7 @@ import { CardComponent } from 'src/app/components/card/card.component';
 import { AccountComponent } from '../account/account.component';
 import { MessageService } from 'primeng/api';
 import { MessagingService } from 'src/app/services/messaging.service';
+import { CookiesService } from 'src/app/services/cookies.service';
 
 @Component({
   selector: 'app-main',
@@ -35,7 +36,8 @@ export class MainComponent implements OnInit {
     public el: ElementRef,
     public renderer: Renderer2,
     private messageService: MessageService,
-    private messagingService: MessagingService
+    private messagingService: MessagingService,
+    private cookiesService: CookiesService,
   ) {
     renderer.listen('window', 'appinstalled', (evt) => {
       console.log('INSTALLED!!!');
@@ -45,7 +47,12 @@ export class MainComponent implements OnInit {
       this.deferredPrompt = e;
     });
     route.queryParams.subscribe((params) => {
-      if (params['token']) this.token = params['token'];
+      if (params['token']) {
+        this.token = params['token']
+      } else {
+        const token = this.cookiesService.getItem('token')
+        this.token = token ? token : '';
+      };
     });
   }
 
