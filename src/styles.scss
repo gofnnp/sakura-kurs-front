@@ -60,3 +60,7 @@ button {
     justify-content: space-between;
     max-width: 400px;
 }
+
+input::-webkit-date-and-time-value {
+    text-align: left;
+}

@@ -53,18 +53,9 @@ export class MessagingService {
 
   requestPermission() {
     try {
-      console.log('1');
-      
-      this.angularFireMessaging.getToken.subscribe({
-        next: (val) => {
-          console.log('VAL: ', val)
-        }
-      })
       this.angularFireMessaging.requestToken.subscribe({
         next: (token) => {
-          console.log('#: ')
           this.updateToken(token);
-          console.log('####TOKEN: ', token);
         },
         error: (e) => console.error(e),
       });
@@ -77,7 +68,6 @@ export class MessagingService {
    * hook method when new notification received in foreground
    */
   receiveMessage() {
-    console.log('#REC')
     this.angularFireMessaging.messages.subscribe((payload: any) => {
       console.log('new message received. ', payload);
       this.currentMessage.next(payload);

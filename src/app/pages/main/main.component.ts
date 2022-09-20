@@ -45,7 +45,6 @@ export class MainComponent implements OnInit {
       this.deferredPrompt = e;
     });
     route.queryParams.subscribe((params) => {
-      console.log('####: ', params);
       if (params['token']) this.token = params['token'];
     });
   }
@@ -67,7 +66,7 @@ export class MainComponent implements OnInit {
     this.deferredPrompt.userChoice.then((res: any) => {
       if (res.outcome === 'accepted') {
         this.messageService.add({
-          severity: 'success',
+          severity: 'custom',
           summary: 'Спасибо за установку!',
         });
         console.log('User Accepted!!!');

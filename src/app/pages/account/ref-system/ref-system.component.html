@@ -11,11 +11,15 @@
     strokeWidth="2"
     styleClass="angular-spinner"
   ></p-progressSpinner>
-  <share-buttons
+  <!-- <share-buttons
     [theme]="'modern-dark'"
     [include]="['telegram', 'whatsapp', 'vk', 'copy', 'facebook', 'twitter']"
     [show]="4"
     [url]="refUrl"
     style="display: flex; justify-content: center;"
-  ></share-buttons>
+  ></share-buttons> -->
+  <div class="share-container" *ngIf="!loading">
+    <div class="copy" type="button" (click)="copyUrl()">Скопировать ссылку</div>
+    <div class="share" type="button" (click)="share()"><img src="./assets/share.svg" alt="share"></div>
+  </div>
 </div>

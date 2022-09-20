@@ -1,5 +1,29 @@
 :host {
     .ref-system {
-        
+        .share-container {
+            display: flex;
+            justify-content: space-between;
+            height: 50px;
+            .share {
+                width: 50px;
+                background-color: #09467f;
+                border-radius: 8px;
+                display: flex;
+                justify-content: center;
+                align-items: center;
+                img {
+                    height: 26px;
+                }
+            }
+            .copy {
+                background-color: #09467f;
+                color: #fff;
+                border-radius: 8px;
+                width: calc(100% - 66px);
+                display: flex;
+                justify-content: center;
+                align-items: center;
+            }
+        }
     }
 }
