@@ -1,7 +1,7 @@
 <div class="footer-buttons-container">
   <!-- *ngIf="deferredPrompt && token?.length" -->
   <button
-    *ngIf="token?.length"
+    *ngIf="((deviceType == 'android' && deferredPrompt) || deviceType == 'ios') && token?.length"
     class="footer-buttons-container__button download"
     (click)="downloadPWA()"
   >
