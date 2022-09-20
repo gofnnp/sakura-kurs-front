@@ -1,7 +1,7 @@
 <div class="footer-buttons-container">
   <!-- *ngIf="deferredPrompt && token?.length" -->
   <button
-    *ngIf="deferredPrompt && token?.length"
+    *ngIf="token?.length"
     class="footer-buttons-container__button download"
     (click)="downloadPWA()"
   >
