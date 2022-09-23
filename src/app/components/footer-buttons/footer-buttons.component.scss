@@ -31,6 +31,18 @@
     }
   }
 
+  .version {
+    position: fixed;
+    bottom: 16px;
+    left: 8px;
+    background: #09467f;
+    padding: 6px;
+    color: #fff;
+    border-radius: 4px;
+    font-weight: 100;
+    font-size: 12px;
+  }
+
   @media (display-mode: standalone) {
     .download {
       display: none;

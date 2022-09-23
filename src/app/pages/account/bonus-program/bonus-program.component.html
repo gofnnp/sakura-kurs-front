@@ -17,10 +17,10 @@
         <div class="info">
           <div *ngIf="accountData" class="row">
             <span class="key">Имя</span>
-            <span class="value" *ngIf="accountData.BonusProgramName">{{
-              accountData.BonusProgramName
+            <span class="value" *ngIf="userName.length">{{
+              userName
             }}</span>
-            <span class="value" *ngIf="!accountData.BonusProgramName"
+            <span class="value" *ngIf="!userName.length"
               >Не задано</span
             >
           </div>

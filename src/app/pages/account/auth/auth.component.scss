@@ -89,7 +89,7 @@
     }
   }
   .decoration-pattern {
-    width: 100%;
+    width: calc(100% - 24px);
     height: 34px;
   }
 }

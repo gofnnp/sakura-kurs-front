@@ -1,5 +1,6 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { MessageService } from 'primeng/api';
+import { environment } from 'src/environments/environment';
 
 @Component({
   selector: 'app-footer-buttons',
@@ -13,6 +14,7 @@ export class FooterButtonsComponent implements OnInit {
   @Output() downloadingPWA = new EventEmitter<null>();
   @Output() requestingPermission = new EventEmitter<null>();
   public deviceType: 'ios' | 'android' | null = null;
+  public version: string = environment.version;
 
   constructor(
     private messageService: MessageService,
@@ -32,7 +34,8 @@ export class FooterButtonsComponent implements OnInit {
     if (this.deviceType === 'ios') {
       this.messageService.add({
         severity: 'custom',
-        summary: "Для установки нажмите на кнопку поделиться в Вашем браузере и выберите пункт 'Добавить на главный экран'",
+        summary: `Для установки нажмите на кнопку поделиться в Вашем браузере и выберите пункт 'На экран «Домой»'`,
+        sticky: true
       });
       return
     }

@@ -1,3 +1,5 @@
+import packageJson from '../../package.json';
+
 export const environment = {
   production: true,
   appAuthEndpoint: 'https://testauth.crm4retail.ru/tnt',
@@ -13,5 +15,6 @@ export const environment = {
     storageBucket: "push-notification-test2-56dac.appspot.com",
     messagingSenderId: "1004369687552",
     appId: "1:1004369687552:web:a6cc20625e05520a37d4e5"
-  }
+  },
+  version: packageJson.version,
 }

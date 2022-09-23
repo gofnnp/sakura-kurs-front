@@ -21,6 +21,7 @@ export class BonusProgramComponent implements OnInit {
   readonly moment = moment;
   readonly pageList = environment.hasBonusProgram ? PageListWithBonus : PageList;
   public currentPage: Page = this.pageList[1];
+  public userName: string = '';
 
   constructor(
     private jsonrpc: JsonrpcService,
@@ -32,6 +33,19 @@ export class BonusProgramComponent implements OnInit {
 
   async getAccountData(): Promise<void>{
     this.loadingBonuses = true;
+
+    this.jsonrpc.rpc({
+      method: 'getAdditionalInfo',
+      params: []
+    }, RpcService.authService, true).subscribe({
+      next: (res) => {
+        this.userName = res.data.first_name
+      },
+      error: (err) => {
+        console.error('Error: ', err)
+      }
+    });
+
     this.accountData = (await lastValueFrom(
       this.jsonrpc.rpc({
         method: 'GetAccounts',
