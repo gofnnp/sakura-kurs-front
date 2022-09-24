@@ -32,6 +32,7 @@ export class AccountComponent implements OnInit {
   public currentPage!: Page;
   public handleHttpErrorFunc = this.handleHttpError.bind(this);
   private ref!: DynamicDialogRef;
+  public version: string = environment.version;
 
   readonly PageCode = PageCode;
   readonly pageList = environment.hasBonusProgram

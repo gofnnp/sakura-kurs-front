@@ -1,5 +1,7 @@
 <div class="main-container">
     <app-navbar></app-navbar>
     <p-toast position="top-center"></p-toast>
-    <app-footer-buttons [token]="token" [deferredPrompt]="deferredPrompt" [isPermissionNotifications]="isPermissionNotifications" (downloadingPWA)="downloadPWA()" (requestingPermission)="requestPermission()"></app-footer-buttons>
+    <app-footer-buttons [token]="token" [deferredPrompt]="deferredPrompt"
+        [isPermissionNotifications]="isPermissionNotifications" (downloadingPWA)="downloadPWA()"
+        (requestingPermission)="requestPermission()"></app-footer-buttons>
 </div>

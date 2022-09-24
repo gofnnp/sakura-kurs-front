@@ -1,6 +1,5 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { MessageService } from 'primeng/api';
-import { environment } from 'src/environments/environment';
 
 @Component({
   selector: 'app-footer-buttons',
@@ -14,7 +13,6 @@ export class FooterButtonsComponent implements OnInit {
   @Output() downloadingPWA = new EventEmitter<null>();
   @Output() requestingPermission = new EventEmitter<null>();
   public deviceType: 'ios' | 'android' | null = null;
-  public version: string = environment.version;
 
   constructor(
     private messageService: MessageService,
