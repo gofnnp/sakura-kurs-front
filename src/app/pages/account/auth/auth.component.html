@@ -86,6 +86,11 @@
         ></p-progressSpinner>
       </button>
     </p>
+    <p class="form-row" style="margin-top: 6px">
+      Не пришел код? 
+      <span class="resend-code" (click)="getCode($event)">Отправить повторно </span>
+      <span *ngIf="timeLeft">через {{timeLeft}}с</span>
+    </p>
     <p style="color: red; margin: 0" *ngIf="errorConfirmCode">
       Пароль введен неверно
     </p>

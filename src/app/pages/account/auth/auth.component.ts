@@ -21,6 +21,7 @@ export class AuthComponent {
   public phoneToConfirm!: string;
   public loading = false;
   public errorConfirmCode: boolean = false;
+  timeLeft: number = 0;
 
   constructor(
     private phoneFormatter: FormatPhoneService,
@@ -32,10 +33,18 @@ export class AuthComponent {
   ) {
   }
 
-  getCode(event: SubmitEvent): void {
+  getCode(event: any): void {
     event.preventDefault();
     this.loading = true;
     this.phoneToConfirm = '+' + this.phone.replace(/\D/g, '');
+    if (this.timeLeft) {
+      this.messageService.add({
+        severity: 'custom',
+        summary: `Отправить повторно можно через ${this.timeLeft}с`,
+      });
+      this.loading = false;
+      return;
+    }
     this.jsonrpc.rpc({
       method: 'sendVerifyByPhone',
       params: [this.phoneToConfirm]
@@ -49,6 +58,14 @@ export class AuthComponent {
           }
           if (result.code === 0) {
             this.isCodeConfirm = true;
+            this.timeLeft = 60;
+            const interval = setInterval(() => {
+              if(this.timeLeft > 0) {
+                this.timeLeft--;
+              } else {
+                clearInterval(interval);
+              }
+            },1000)
           }
           this.loading = false;
         },
