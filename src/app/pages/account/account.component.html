@@ -63,7 +63,13 @@
       </li>
     </ul>
   </nav>
-  <span class="version">
-      v{{version}}
-  </span>  
+  <span
+    class="version"
+    [ngClass]="{
+      version: true,
+      bottom: currentPage.code === PageCode.Auth
+    }"
+  >
+    v{{ version }}
+  </span>
 </div>

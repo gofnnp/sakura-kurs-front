@@ -59,7 +59,7 @@
           }
         }
         li:nth-child(odd) {
-            background-color: #EBEBEB;
+          background-color: #ebebeb;
         }
       }
     }
@@ -72,7 +72,11 @@
       top: 69px;
     }
     .version {
-      opacity: .5;
+      opacity: 0.5;
+      &.bottom {
+        position: absolute;
+        bottom: 8px;
+      }
     }
   }
 }
