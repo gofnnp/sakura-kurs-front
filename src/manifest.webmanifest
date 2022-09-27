@@ -1,11 +1,11 @@
 {
-  "name": "fashion-logica",
-  "short_name": "fashion-logica",
+  "name": "Fashionlogica",
+  "short_name": "Fashionlogica",
   "theme_color": "#1976d2",
   "background_color": "#fafafa",
   "display": "standalone",
-  "scope": "./fashion-logica/",
-  "start_url": "./fashion-logica/",
+  "scope": "./",
+  "start_url": "./",
   "icons": [
     {
       "src": "assets/icons/icon-72x72.png",
