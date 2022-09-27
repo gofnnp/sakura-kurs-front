@@ -16,7 +16,7 @@ node('Rubidium'){
         // }
         
         dir('/opt/usersite-build'){
-           sh label: '', script: 'npm i'
+        //    sh label: '', script: 'npm i'
         //    sh label: '', script: 'npm run build'
             sh label: '', script: 'ng build'
         }
