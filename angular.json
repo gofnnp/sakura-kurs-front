@@ -17,7 +17,7 @@
         "build": {
           "builder": "@angular-devkit/build-angular:browser",
           "options": {
-            "outputPath": "/var/www/html/lk.crm4retail.ru",
+            "outputPath": "/var/www/html/lk.crm4retail.ru/fashion-logica",
             "baseHref": "/",
             "index": "src/index.html",
             "main": "src/main.ts",
