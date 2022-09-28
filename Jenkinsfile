@@ -25,7 +25,7 @@ def cmd(command) {
 }
 
 private boolean lastCommitIsBumpCommit() {
-    lastCommit = bat([script: 'git log -1', returnStdout: true])
+    lastCommit = cmd([script: 'git log -1', returnStdout: true])
     if (lastCommit.contains("Author: jenkins")) {
         return true
     } else {
