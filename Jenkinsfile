@@ -8,24 +8,20 @@ node('Lithium'){
             currentBuild.result = 'ABORTED'
             error('Последний коммит - результат сборки jenkins')
         }
-        cmd "git checkout ${env.BRANCH_NAME}"
-        cmd "git checkout -- ."
-        cmd "git pull"
-        cmd "git submodule update --init --recursive"
-        cmd "git submodule update --remote --merge"
+        sh "git checkout ${env.BRANCH_NAME}"
+        sh "git checkout -- ."
+        sh "git pull"
+        sh "git submodule update --init --recursive"
+        sh "git submodule update --remote --merge"
    }
    stage("build and publish"){
         sh label: '', script: 'npm i'
         sh label: '', script: 'npm run build'
     }
 }
-def cmd(command) {
-    // при запуске Jenkins не в режиме UTF-8 нужно написать chcp 1251 вместо chcp 65001
-    if (isUnix()) { sh "${command}" } else { bat "chcp 65001\n${command}"}
-}
 
 private boolean lastCommitIsBumpCommit() {
-    lastCommit = cmd([script: 'git log -1', returnStdout: true])
+    lastCommit = sh([script: 'git log -1', returnStdout: true])
     if (lastCommit.contains("Author: jenkins")) {
         return true
     } else {
