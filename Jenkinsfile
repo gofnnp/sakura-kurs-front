@@ -11,7 +11,7 @@ node('Lithium'){
         sh "git checkout ${env.BRANCH_NAME}"
         sh "git checkout -- ."
         
-        //sh "git pull"
+        sh "git pull"
         //sh "git submodule update --init --recursive"
         //sh "git submodule update --remote --merge"
    }
