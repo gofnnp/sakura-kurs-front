@@ -8,11 +8,11 @@ node('Lithium'){
             currentBuild.result = 'ABORTED'
             error('Последний коммит - результат сборки jenkins')
         }
-        bat "git checkout ${env.BRANCH_NAME}"
-        bat "git checkout -- ."
-        bat "git pull"
-        bat "git submodule update --init --recursive"
-        bat "git submodule update --remote --merge"
+        cmd "git checkout ${env.BRANCH_NAME}"
+        cmd "git checkout -- ."
+        cmd "git pull"
+        cmd "git submodule update --init --recursive"
+        cmd "git submodule update --remote --merge"
    }
    stage("build and publish"){
         sh label: '', script: 'npm i'
