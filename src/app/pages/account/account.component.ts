@@ -9,6 +9,7 @@ import { ExitComponent } from '../../components/exit/exit.component';
 import { DialogService, DynamicDialogRef } from 'primeng/dynamicdialog';
 import { JsonrpcService, RpcService } from 'src/app/services/jsonrpc.service';
 import { MessageService } from 'primeng/api';
+import { lastValueFrom } from 'rxjs';
 
 @Component({
   selector: 'app-account',
@@ -70,10 +71,25 @@ export class AccountComponent implements OnInit {
     this.currentPage = this.pageList[1];
   }
 
-  refSystem() {
+  async refSystem() {
+    const additionalInfo = (await lastValueFrom(
+    this.jsonRpcService.rpc({
+      method: 'getAdditionalInfo',
+      params: []
+    }, RpcService.authService, true)
+    )).data
+    if (additionalInfo.refSystem?.code.length) {
+      this.messageService.add({
+        severity: 'custom',
+        summary:
+          'Вы уже зарегестрированы в реферальной программе!',
+      });
+      return;
+    }
     this.route.queryParams.subscribe((params) => {
-      if (params['refCardNumber']) {
-        this.refSystemId = params['refCardNumber'];
+      console.log('####: ', params)
+      if (params['refUserId']) {
+        this.refSystemId = params['refUserId'];
         this.jsonRpcService
           .rpc(
             {
@@ -93,7 +109,7 @@ export class AccountComponent implements OnInit {
             next: () => {
               this.router.navigate([], {
                 queryParams: {
-                  refCardNumber: null,
+                  refUserId: null,
                 },
                 queryParamsHandling: 'merge',
               });

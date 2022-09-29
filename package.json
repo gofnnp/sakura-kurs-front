@@ -1,6 +1,6 @@
 {
   "name": "fashion-logica",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "scripts": {
     "ng": "ng",
     "start": "ng serve --host 192.168.0.179",
