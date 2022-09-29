@@ -1,0 +1,28 @@
+:host {
+  .not-found-page {
+    &__container {
+      text-align: center;
+      margin-top: 32px;
+      h1 {
+        font-size: 108px;
+        font-weight: 600;
+        color: #09467f;
+      }
+      p {
+        margin: 16px 0;
+        font-size: 14px;
+      }
+      button {
+        background-color: #09467f;
+        color: #fff;
+        border-radius: 8px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        padding: 12px;
+        margin: 0 auto;
+        border: 0;
+      }
+    }
+  }
+}

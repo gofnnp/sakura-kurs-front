@@ -32,6 +32,7 @@ import { QRCodeModule } from 'angularx-qrcode';
 import { ShareButtonsModule   } from 'ngx-sharebuttons/buttons';
 import { ShareIconsModule } from 'ngx-sharebuttons/icons';
 import { MessagingService } from './services/messaging.service';
+import { NotFoundComponent } from './pages/not-found/not-found.component';
 
 @NgModule({
   declarations: [
@@ -47,16 +48,18 @@ import { MessagingService } from './services/messaging.service';
     OrderInfoComponent,
     FooterButtonsComponent,
     UserDataComponent,
-    RefSystemComponent
+    RefSystemComponent,
+    NotFoundComponent
   ],
   imports: [
     BrowserModule,
     AppRoutingModule,
     RouterModule.forRoot([
       {
-          path: '**',
+          path: '',
           component: MainComponent
-      }
+      },
+      { path: '**', component: NotFoundComponent }
     ]),
     InputMaskModule,
     ProgressSpinnerModule,
