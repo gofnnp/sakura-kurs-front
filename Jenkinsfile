@@ -1,27 +1,31 @@
 env.HL_BUILD_MODE = "jenkins"
 
-node('Rubidium'){
+node('Lithium'){
     
    stage('get new version to repo') {
-       dir('/opt/usersite-build'){
-           checkout([$class: 'GitSCM', branches: [[name: '*/fashion-logica']], doGenerateSubmoduleConfigurations: false, extensions: [], submoduleCfg: [], userRemoteConfigs: [[credentialsId: 'jenkins_all', url: 'https://git.hlcompany.ru/git/usersite.git']]])
+       checkout scm
+       if (lastCommitIsBumpCommit()) {
+            currentBuild.result = 'ABORTED'
+            error('Последний коммит - результат сборки jenkins')
         }
-   }
-
-    stage('build project') {
-        // sh label: '', script: 'systemctl stop lkcrm4retail'
-        // dir('/opt/SynthVisionBox/node'){
-        //     sh label: '', script: 'npm install --only=prod'
-        //     sh label: '', script: 'node db_updater.js'
-        // }
+        sh "git checkout ${env.BRANCH_NAME}"
+        sh "git checkout -- ."
         
-        dir('/opt/usersite-build'){
-           sh label: '', script: 'npm i'
-        //    sh label: '', script: 'npm run build'
-            sh label: '', script: 'ng build'
-        }
-       
-        // sh label: '', script: 'systemctl start lkcrm4retail'
+        sh "git pull"
+        //sh "git submodule update --init --recursive"
+        //sh "git submodule update --remote --merge"
+   }
+   stage("build and publish"){
+        sh label: '', script: 'npm i'
+        sh label: '', script: 'npm run build'
     }
-   
+}
+
+private boolean lastCommitIsBumpCommit() {
+    lastCommit = sh([script: 'git log -1', returnStdout: true])
+    if (lastCommit.contains("Author: jenkins")) {
+        return true
+    } else {
+        return false
+    }
 }
