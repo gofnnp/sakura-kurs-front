@@ -56,10 +56,10 @@ import { NotFoundComponent } from './pages/not-found/not-found.component';
     AppRoutingModule,
     RouterModule.forRoot([
       {
-          path: '',
+          path: '**',
           component: MainComponent
       },
-      { path: '**', component: NotFoundComponent }
+      // { path: '**', component: NotFoundComponent }
     ]),
     InputMaskModule,
     ProgressSpinnerModule,
