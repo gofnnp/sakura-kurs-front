@@ -78,17 +78,17 @@ export class AccountComponent implements OnInit {
       params: []
     }, RpcService.authService, true)
     )).data
-    if (additionalInfo.refSystem?.code.length) {
-      this.messageService.add({
-        severity: 'custom',
-        summary:
-          'Вы уже зарегестрированы в реферальной программе!',
-      });
-      return;
-    }
     this.route.queryParams.subscribe((params) => {
       console.log('####: ', params)
       if (params['refUserId']) {
+        if (additionalInfo.refSystem?.code.length) {
+          this.messageService.add({
+            severity: 'custom',
+            summary:
+              'Вы уже зарегестрированы в реферальной программе!',
+          });
+          return;
+        }
         this.refSystemId = params['refUserId'];
         this.jsonRpcService
           .rpc(
