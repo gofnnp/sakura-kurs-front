@@ -3,14 +3,14 @@
     display: flex;
     flex-direction: column;
 
-    &>h2 {
+    & > h2 {
       font-style: normal;
       font-weight: 700;
       font-size: 20px;
       line-height: 24px;
     }
 
-    &>p {
+    & > p {
       font-style: normal;
       font-weight: 400;
       font-size: 15px;
@@ -154,12 +154,12 @@
       }
 
       &.active_back {
-        >.card-content__front {
+        > .card-content__front {
           transform: rotateY(180deg);
           opacity: 0;
         }
 
-        >.card-content__back {
+        > .card-content__back {
           opacity: 1;
           transform: rotateY(0deg);
         }
@@ -195,6 +195,15 @@
     .explanation {
       font-size: 12px;
       margin-bottom: 8px;
+    }
+
+    .add-to-wallet {
+      margin-top: 12px;
+      height: 36px;
+      border-radius: 8px;
+      background: #09467f;
+      border-color: #09467f;
+      color: #fff;
     }
   }
 }

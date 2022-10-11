@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, Inject, OnInit } from '@angular/core';
 import { lastValueFrom } from 'rxjs';
 import { orderStatuses, PageList, PageListWithBonus } from 'src/app/app.constants';
 import { BonusProgramAccount, Page, Purchase, Transaction } from 'src/app/interface/data';
@@ -6,6 +6,10 @@ import { JsonrpcService, RpcService } from 'src/app/services/jsonrpc.service';
 import * as moment from 'moment-timezone';
 import * as barcode from 'jsbarcode';
 import { environment } from 'src/environments/environment';
+import { AppleWalletService } from 'src/app/services/apple-wallet.service';
+import { CookiesService } from 'src/app/services/cookies.service';
+import { DOCUMENT } from '@angular/common';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 
 @Component({
   selector: 'app-bonus-program',
@@ -22,13 +26,25 @@ export class BonusProgramComponent implements OnInit {
   readonly pageList = environment.hasBonusProgram ? PageListWithBonus : PageList;
   public currentPage: Page = this.pageList[1];
   public userName: string = '';
+  public deviceType: 'ios' | 'android' | null = null;
 
   constructor(
     private jsonrpc: JsonrpcService,
+    private appleWallet: AppleWalletService,
+    private cookiesService: CookiesService,
+    @Inject(DOCUMENT) private document: Document,
+    private http: HttpClient,
   ) { }
 
   ngOnInit(): void {
     this.getAccountData();
+    this.getTypeDevice()
+  }
+
+  getTypeDevice() {
+    const userAgent = window.navigator.userAgent.toLowerCase()
+    const ios = /iphone|ipod|ipad/.test( userAgent );
+    this.deviceType = ios ? 'ios' : 'android'
   }
 
   async getAccountData(): Promise<void>{
@@ -99,6 +115,24 @@ export class BonusProgramComponent implements OnInit {
     this.purchases = this.purchases.sort((a,b) => {
       return moment(a.PurchaseDate).date() - moment(b.PurchaseDate).date();
     });
+  }
+
+
+  addCardToWallet(e: any) {
+    e.preventDefault()
+    const token = this.cookiesService.getItem('token')
+    if (token) {
+      this.appleWallet.generateCard(token).subscribe({
+        next: (res: any) => {
+          this.document.location.href = res.url
+        },
+        error: (err) => {
+          console.log('Error: ', err);
+          
+        }
+      })
+    }
+    
   }
 
 }
