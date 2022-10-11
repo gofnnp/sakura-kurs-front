@@ -11,7 +11,7 @@ import { environment } from 'src/environments/environment';
   styleUrls: ['./ref-system.component.scss']
 })
 export class RefSystemComponent implements OnInit {
-  public refUrl: string = `${environment.defaultUrl}/?refCardNumber=`
+  public refUrl: string = `${environment.defaultUrl}/?refUserId=`
   public loading: boolean = true;
 
   constructor(
@@ -21,13 +21,19 @@ export class RefSystemComponent implements OnInit {
 
   async ngOnInit() {
     const accountData = (await lastValueFrom(
-      this.jsonrpc.rpc({
-        method: 'GetAccounts',
-        params: []
-      },
-      RpcService.bonusService
-    )))['Cards'][0]
-    this.refUrl += accountData.CardNumber   
+      this.jsonrpc
+        .rpc(
+          {
+            method: 'getTokenData',
+            params: [],
+          },
+          RpcService.authService,
+          true
+        )
+    )).data
+    console.log(accountData);
+    
+    this.refUrl += accountData.user_id
     this.loading = false
   }
 
@@ -38,27 +44,27 @@ export class RefSystemComponent implements OnInit {
         text: "Fashionlogica",
         url: this.refUrl
       })
-      .then(() => console.log('Successful share'))
-      .catch((error) => {
-        console.log('Error sharing:', error)
-      });
+        .then(() => console.log('Successful share'))
+        .catch((error) => {
+          console.log('Error sharing:', error)
+        });
     }
   }
 
   copyUrl() {
     navigator.clipboard.writeText(this.refUrl)
-    .then(() => {
-      this.messageService.add({
-        severity: 'custom',
-        summary: 'Ссылка скопирована!',
+      .then(() => {
+        this.messageService.add({
+          severity: 'custom',
+          summary: 'Ссылка скопирована!',
+        });
+      })
+      .catch(err => {
+        this.messageService.add({
+          severity: 'error',
+          summary: 'Произошла ошибка!',
+        });
       });
-    })
-    .catch(err => {
-      this.messageService.add({
-        severity: 'error',
-        summary: 'Произошла ошибка!',
-      });
-    });
   }
 
 }

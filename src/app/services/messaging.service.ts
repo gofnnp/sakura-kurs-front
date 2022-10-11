@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { AngularFireMessaging } from '@angular/fire/compat/messaging';
 import { MessageService } from 'primeng/api';
-import { BehaviorSubject } from 'rxjs';
+import { BehaviorSubject, lastValueFrom } from 'rxjs';
 import { JsonrpcService, RpcService } from './jsonrpc.service';
 
 @Injectable()
@@ -19,15 +19,29 @@ export class MessagingService {
     });
   }
 
-  updateToken(token: string | null) {
+  async updateToken(token: string | null) {
     if (!token) return;
+    const additionalInfo = (await lastValueFrom(
+      this.jsonRpcService.rpc({
+        method: 'getAdditionalInfo',
+        params: []
+      }, RpcService.authService, true)
+      )).data
+      let tokens: string[] = []
+      if (typeof additionalInfo['fmc-token'] === 'string') {
+        tokens.push(additionalInfo['fmc-token'], token)
+      } else if (typeof additionalInfo['fmc-token'] === 'object') {
+        tokens = [...additionalInfo['fmc-token'], token]
+      } else {
+        tokens = [token]
+      }
     this.jsonRpcService
       .rpc(
         {
           method: 'updateAdditionalInfo',
           params: [
             {
-              'fmc-token': token,
+              'fmc-token': tokens,
             },
           ],
         },

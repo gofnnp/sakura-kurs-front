@@ -1,14 +1,11 @@
-<div class="woocommerce">
-  <div
-    *ngIf="currentPage.code !== PageCode.Auth"
-    class="top-left-attribute"
-  ></div>
+<div [ngClass]="{
+  woocommerce: true,
+  'auth-page': currentPage.code === PageCode.Auth
+}">
+  <div *ngIf="currentPage.code !== PageCode.Auth" class="top-left-attribute"></div>
   <div [ngSwitch]="currentPage.code" class="">
     <ng-container *ngSwitchCase="PageCode.Auth">
-      <app-auth
-        [handleHttpError]="handleHttpErrorFunc"
-        (phoneConfirmed)="phoneConfirmed()"
-      ></app-auth>
+      <app-auth [handleHttpError]="handleHttpErrorFunc" (phoneConfirmed)="phoneConfirmed()"></app-auth>
     </ng-container>
     <ng-container *ngSwitchCase="PageCode.Orders">
       <app-orders></app-orders>
@@ -23,26 +20,15 @@
       <app-ref-system></app-ref-system>
     </ng-container>
   </div>
-  <nav
-    *ngIf="currentPage.code !== PageCode.Auth"
-    class="woocommerce-MyAccount-navigation"
-  >
+  <nav *ngIf="currentPage.code !== PageCode.Auth" class="woocommerce-MyAccount-navigation">
     <ul>
       <ng-container *ngFor="let page of pageList; let index = index">
-        <li
-          *ngIf="page.onSideBar"
-          class="woocommerce-MyAccount-navigation-link"
-          [ngClass]="{
+        <li *ngIf="page.onSideBar" class="woocommerce-MyAccount-navigation-link" [ngClass]="{
             'is-active': page === currentPage,
             first: index === 1
-          }"
-          (click)="changePage($event, page)"
-        >
+          }" (click)="changePage($event, page)">
           <div class="container">
-            <img
-              src="{{ './assets/menu-icons/' + page.resName + '.png' }}"
-              alt="Иконка меню"
-            />
+            <img src="{{ './assets/menu-icons/' + page.resName + '.png' }}" alt="Иконка меню" />
             <div class="menu-item-info">
               <a href="#">{{ page.name }}</a>
               <p>{{ page.description }}</p>
@@ -50,10 +36,7 @@
           </div>
         </li>
       </ng-container>
-      <li
-        class="woocommerce-MyAccount-navigation-link"
-        (click)="logout($event)"
-      >
+      <li class="woocommerce-MyAccount-navigation-link" (click)="logout($event)">
         <div class="container">
           <img src="./assets/menu-icons/exit.png" alt="Иконка меню" />
           <div class="menu-item-info">
@@ -63,13 +46,9 @@
       </li>
     </ul>
   </nav>
-  <span
-    class="version"
-    [ngClass]="{
-      version: true,
-      bottom: currentPage.code === PageCode.Auth
-    }"
-  >
+  <span class="version" [ngClass]="{
+      version: true
+    }">
     v{{ version }}
   </span>
 </div>
