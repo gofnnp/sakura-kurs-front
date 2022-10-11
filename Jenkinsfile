@@ -16,8 +16,10 @@ node('Lithium'){
         //sh "git submodule update --remote --merge"
    }
    stage("build and publish"){
-        sh label: '', script: 'npm i'
-        sh label: '', script: 'npm run build'
+        dir('angular'){
+            sh label: '', script: 'npm i'
+            sh label: '', script: 'npm run build'
+        }
     }
 }
 

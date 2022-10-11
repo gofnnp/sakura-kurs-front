@@ -18,4 +18,7 @@ export const environment = {
     measurementId: "G-RQF97ZK7R1"
   },
   version: packageJson.version,
+  appleWalletEndpoint: 'https://ru-academy.online/apns/api',
+  appleWalletSecret: 'Token Z_vtuf_flvby!',
+  clientName: 'fashionlogica'
 }
