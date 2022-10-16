@@ -118,11 +118,22 @@ export class BonusProgramComponent implements OnInit {
   }
 
 
-  addCardToWallet(e: any) {
+  async addCardToWallet(e: any) {
     e.preventDefault()
     const token = this.cookiesService.getItem('token')
-    if (token) {
-      this.appleWallet.generateCard(token).subscribe({
+    const accountData = (await lastValueFrom(
+      this.jsonrpc
+        .rpc(
+          {
+            method: 'getTokenData',
+            params: [],
+          },
+          RpcService.authService,
+          true
+        )
+    )).data
+    if (token && accountData.user_id) {
+      this.appleWallet.generateCard(token, accountData.user_id).subscribe({
         next: (res: any) => {
           this.document.location.href = res.url
         },

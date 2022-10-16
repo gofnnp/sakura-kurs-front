@@ -2,7 +2,7 @@ import packageJson from '../../package.json';
 
 export const environment = {
   production: true,
-  appAuthEndpoint: 'https://testauth.crm4retail.ru/tnt',
+  appAuthEndpoint: 'https://auth.crm4retail.ru/tnt',
   appBonusEndpoint: 'https://customerapi2.mi.crm4retail.ru/json.rpc/',
   appWPEndpoint: 'http://213.239.210.240:4500/wp-json/woofood/v1/',
   hasBonusProgram: true,
@@ -18,7 +18,7 @@ export const environment = {
     measurementId: "G-RQF97ZK7R1"
   },
   version: packageJson.version,
-  appleWalletEndpoint: 'https://ru-academy.online/apns/api',
+  appleWalletEndpoint: 'https://apple-push-notifications.it-retail.tech/apns/api',
   appleWalletSecret: 'Token Z_vtuf_flvby!',
   clientName: 'fashionlogica'
 }

@@ -11,12 +11,12 @@ export class AppleWalletService {
     private http: HttpClient,
   ) {}
 
-  generateCard(token: string) {
+  generateCard(token: string, user_id: string) {
     let headers = new HttpHeaders();
     headers = headers.set('Authorization', environment.appleWalletSecret);
     const options = {
       headers: headers,
     };
-    return this.http.get(`${this.url}/client/${environment.clientName}/passUrl/${token}`, options)
+    return this.http.get(`${this.url}/client/${environment.clientName}/passUrl/${user_id}/token/${token}`, options)
   }
 }
