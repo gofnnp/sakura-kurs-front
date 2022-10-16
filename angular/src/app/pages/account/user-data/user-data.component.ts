@@ -1,7 +1,9 @@
 import { Component, OnInit } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { MessageService } from 'primeng/api';
+import { lastValueFrom } from 'rxjs';
 import { UserDataForm } from 'src/app/interface/data';
+import { AppleWalletService } from 'src/app/services/apple-wallet.service';
 import { JsonrpcService, RpcService } from 'src/app/services/jsonrpc.service';
 
 @Component({
@@ -21,6 +23,8 @@ export class UserDataComponent implements OnInit {
   constructor(
     private jsonRpcService: JsonrpcService,
     private messageService: MessageService,
+    private appleWallet: AppleWalletService,
+    private jsonrpc: JsonrpcService,
   ) { }
 
   ngOnInit(): void {
@@ -59,8 +63,29 @@ export class UserDataComponent implements OnInit {
       method: 'updateAdditionalInfo',
       params: [this.userData]
     }, RpcService.authService, true).subscribe({
-      next: () => {
+      next: async () => {
         this.messageService.add({severity:'custom', summary:'Данные успешно обновлены!'});
+        const accountData = (await lastValueFrom(
+          this.jsonrpc
+            .rpc(
+              {
+                method: 'getTokenData',
+                params: [],
+              },
+              RpcService.authService,
+              true
+            )
+        )).data
+        if (accountData.user_id) {
+          this.appleWallet.reloadCard(accountData.user_id).subscribe({
+            next: (value) => {
+              console.log(value);
+            },
+            error: (err) => {
+              console.error(err);
+            }
+          })
+        }
       },
       error: (err) => {
         console.error('Error: ', err)

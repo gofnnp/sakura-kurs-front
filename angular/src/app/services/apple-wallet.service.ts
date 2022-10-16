@@ -19,4 +19,17 @@ export class AppleWalletService {
     };
     return this.http.get(`${this.url}/client/${environment.clientName}/passUrl/${user_id}/token/${token}`, options)
   }
+
+  reloadCard(user_id:string) {
+    let headers = new HttpHeaders();
+    headers = headers.set('Authorization', environment.appleWalletSecret);
+    const options = {
+      headers: headers,
+    };
+    const body = {
+      text: '',
+      isUpdateCard: true
+    }
+    return this.http.post(`${this.url}/apns/api/sendNotification/${user_id}`, options)
+  }
 }
