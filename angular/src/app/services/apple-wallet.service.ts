@@ -30,6 +30,6 @@ export class AppleWalletService {
       text: '',
       isUpdateCard: true
     }
-    return this.http.post(`${this.url}/apns/api/sendNotification/${user_id}`, options)
+    return this.http.post(`${this.url}/sendNotification/${user_id}`, body, options)
   }
 }
