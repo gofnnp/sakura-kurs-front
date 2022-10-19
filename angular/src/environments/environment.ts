@@ -19,6 +19,6 @@ export const environment = {
   },
   version: packageJson.version,
   appleWalletEndpoint: 'http://192.168.0.179:4200/apns/api',
-  appleWalletSecret: 'Token Z_vtuf_flvby!',
+  appleWalletSecret: 'Token F5mbzEERAznGKVbB6l',
   clientName: 'fashionlogica'
 };

@@ -19,6 +19,6 @@ export const environment = {
   },
   version: packageJson.version,
   appleWalletEndpoint: 'https://apple-push-notifications.it-retail.tech/apns/api',
-  appleWalletSecret: 'Token Z_vtuf_flvby!',
+  appleWalletSecret: 'Token F5mbzEERAznGKVbB6l',
   clientName: 'fashionlogica'
 }
