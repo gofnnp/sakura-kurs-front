@@ -43,7 +43,7 @@ export class WpJsonService {
   }
 
   getAllData(): Observable<any> {
-    return this._request('nomen_1eb3fb56-3c4c-43b7-9a04-ce532ab7548f.json', 'GET')
+    return this._request('static/nomen_1eb3fb56-3c4c-43b7-9a04-ce532ab7548f.json', 'GET')
   }
 
   _request(path: string, method: string, body?: any, auth = false): Observable<any> {

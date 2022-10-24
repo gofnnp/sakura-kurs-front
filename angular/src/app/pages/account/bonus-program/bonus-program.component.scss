@@ -3,14 +3,14 @@
     display: flex;
     flex-direction: column;
 
-    & > h2 {
+    &>h2 {
       font-style: normal;
       font-weight: 700;
       font-size: 20px;
       line-height: 24px;
     }
 
-    & > p {
+    &>p {
       font-style: normal;
       font-weight: 400;
       font-size: 15px;
@@ -35,8 +35,9 @@
         justify-content: space-between;
 
         img {
-          height: 38px;
+          height: 32px;
           margin-top: 15px;
+          margin-left: 8px;
         }
 
         span {
@@ -56,6 +57,7 @@
         display: flex;
         justify-content: center;
         align-items: center;
+
         img {
           height: 90px;
         }
@@ -103,6 +105,7 @@
 
         #barcode {
           border-radius: 16px;
+
           &.hidden {
             display: none;
             width: 0;
@@ -154,12 +157,12 @@
       }
 
       &.active_back {
-        > .card-content__front {
+        >.card-content__front {
           transform: rotateY(180deg);
           opacity: 0;
         }
 
-        > .card-content__back {
+        >.card-content__back {
           opacity: 1;
           transform: rotateY(0deg);
         }

@@ -42,7 +42,7 @@ export class AccountComponent implements OnInit {
 
   readonly MainPageCode = MainPageCode;
   readonly mainPageList = PageListMain;
-  public currentPageMain: Page = this.mainPageList[1];
+  public currentPageMain: Page = this.mainPageList[0];
 
   ngOnInit(): void {
     if (!this.getToken()) {

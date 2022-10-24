@@ -4,14 +4,14 @@
   <div style="display: flex; justify-content: center">
     <div class="card-container">
       <div class="card-container__header">
-        <img src="./assets/logo.svg" alt="Логотип карта" />
+        <img src="./assets/logo.png" alt="Логотип карта" />
         <span *ngIf="accountData">#{{ accountData.CardNumber }}</span>
       </div>
       <div class="card-container__decorative-pattern">
         <!-- <div class="imgs-row"></div>
                 <div class="imgs-row" style="background-position-x: -22px;"></div>
                 <div class="imgs-row"></div> -->
-        <img src="./assets/card-decorative-pattern.svg" alt="" />
+        <!-- <img src="./assets/card-decorative-pattern.svg" alt="" /> -->
       </div>
       <div class="card-container__content">
         <div class="info">
@@ -47,5 +47,5 @@
       </div>
     </div>
   </div>
-  <button *ngIf="deviceType == 'ios'" class="add-to-wallet" (click)="addCardToWallet($event)">Добавить в Apple Wallet</button>
+  <!-- <button *ngIf="deviceType == 'ios'" class="add-to-wallet" (click)="addCardToWallet($event)">Добавить в Apple Wallet</button> -->
 </div>
