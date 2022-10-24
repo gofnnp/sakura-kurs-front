@@ -1,4 +1,4 @@
-import { Component, Inject, OnInit } from '@angular/core';
+import { Component, EventEmitter, Inject, OnInit, Output } from '@angular/core';
 import { lastValueFrom } from 'rxjs';
 import { orderStatuses, PageList, PageListWithBonus } from 'src/app/app.constants';
 import { BonusProgramAccount, Page, Purchase, Transaction } from 'src/app/interface/data';
@@ -17,7 +17,7 @@ import { HttpClient, HttpHeaders } from '@angular/common/http';
   styleUrls: ['./bonus-program.component.scss']
 })
 export class BonusProgramComponent implements OnInit {
-
+  @Output() deauthorization = new EventEmitter<boolean>(false)
   public accountData!: BonusProgramAccount;
   public purchases: Purchase[] = [];
   public loadingBonuses: boolean = false;
@@ -35,6 +35,8 @@ export class BonusProgramComponent implements OnInit {
     @Inject(DOCUMENT) private document: Document,
     private http: HttpClient,
   ) { }
+
+
 
   ngOnInit(): void {
     this.getAccountData();
@@ -55,6 +57,11 @@ export class BonusProgramComponent implements OnInit {
       params: []
     }, RpcService.authService, true).subscribe({
       next: (res) => {
+        if (res.code == 334) {
+          this.cookiesService.deleteCookie('token')
+          this.deauthorization.emit(true)
+          return
+        }
         this.userName = res.data.first_name
       },
       error: (err) => {

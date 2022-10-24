@@ -1,4 +1,4 @@
-import {OrderStatus, Page, PageCode} from "./interface/data";
+import {MainPageCode, OrderStatus, Page, PageCode} from "./interface/data";
 
 export const PageList: Page[] = [
     {
@@ -51,6 +51,27 @@ export const PageListWithBonus: Page[] = [
         onSideBar: true,
     },
 ];
+
+export const PageListMain: Page[] = [
+    {
+        code: MainPageCode.Account,
+        name: 'Аккаунт',
+        resName: 'account',
+        onSideBar: true,
+    },
+    {
+        code: MainPageCode.Products,
+        name: 'Товары',
+        resName: 'products',
+        onSideBar: true,
+    },
+    {
+        code: MainPageCode.Cart,
+        name: 'Корзина',
+        resName: 'cart',
+        onSideBar: true,
+    },
+]
 
 export const orderStatuses: OrderStatus = {
     'Cancelled': 'Отменен',

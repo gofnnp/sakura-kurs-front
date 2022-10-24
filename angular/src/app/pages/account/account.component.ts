@@ -1,9 +1,9 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { CookiesService } from '../../services/cookies.service';
 import { ActivatedRoute, Router } from '@angular/router';
-import { Page, PageCode } from '../../interface/data';
+import { MainPageCode, Page, PageCode } from '../../interface/data';
 import { environment } from '../../../environments/environment';
-import { PageList, PageListWithBonus } from '../../app.constants';
+import { PageList, PageListMain, PageListWithBonus } from '../../app.constants';
 import { HttpErrorResponse, HttpParams } from '@angular/common/http';
 import { ExitComponent } from '../../components/exit/exit.component';
 import { DialogService, DynamicDialogRef } from 'primeng/dynamicdialog';
@@ -28,7 +28,7 @@ export class AccountComponent implements OnInit {
     private dialogService: DialogService,
     private jsonRpcService: JsonrpcService,
     private messageService: MessageService
-  ) {}
+  ) { }
 
   public currentPage!: Page;
   public handleHttpErrorFunc = this.handleHttpError.bind(this);
@@ -39,6 +39,10 @@ export class AccountComponent implements OnInit {
   readonly pageList = environment.hasBonusProgram
     ? PageListWithBonus
     : PageList;
+
+  readonly MainPageCode = MainPageCode;
+  readonly mainPageList = PageListMain;
+  public currentPageMain: Page = this.mainPageList[1];
 
   ngOnInit(): void {
     if (!this.getToken()) {
@@ -73,13 +77,12 @@ export class AccountComponent implements OnInit {
 
   async refSystem() {
     const additionalInfo = (await lastValueFrom(
-    this.jsonRpcService.rpc({
-      method: 'getAdditionalInfo',
-      params: []
-    }, RpcService.authService, true)
+      this.jsonRpcService.rpc({
+        method: 'getAdditionalInfo',
+        params: []
+      }, RpcService.authService, true)
     )).data
     this.route.queryParams.subscribe((params) => {
-      console.log('####: ', params)
       if (params['refUserId']) {
         if (additionalInfo.refSystem?.code.length) {
           this.messageService.add({
@@ -131,8 +134,24 @@ export class AccountComponent implements OnInit {
     });
   }
 
-  changePage(event: MouseEvent, page: Page): void {
-    event.preventDefault();
+  changeMainPage(page: Page, event?: MouseEvent): void {
+    if (event) {
+      event.preventDefault();
+    }
+    this.currentPageMain = page;
+    this.router.navigate(['.'], {
+      relativeTo: this.route,
+      // queryParams: {
+      //   activePage: this.currentPage.code,
+      // },
+      queryParamsHandling: 'merge',
+    });
+  }
+
+  changePage(page: Page, event?: MouseEvent): void {
+    if (event) {
+      event.preventDefault();
+    }
     this.currentPage = page;
     // let params = new HttpParams();
     // params = params.append('activePage', this.currentPage.code);

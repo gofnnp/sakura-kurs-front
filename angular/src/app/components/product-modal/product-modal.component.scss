@@ -1,0 +1,29 @@
+:host {
+    .product-modal {
+        position: relative;
+        padding-bottom: 60px;
+        & > img {
+            width: 100%;
+        }
+
+        &__footer {
+            width: 100%;
+            height: auto;
+            display: flex;
+            position: absolute;
+            bottom: 0;
+            padding-top: 8px;
+            border-top: solid #d1d1d1 1px;
+            flex-direction: row;
+            justify-content: space-between;
+            align-items: center;
+        }
+        &__add-to-cart {
+            padding: 8px;
+            border: none;
+            border-radius: 4px;
+            background-color: #0d457e;
+            color: #fff;
+        }
+    }
+}

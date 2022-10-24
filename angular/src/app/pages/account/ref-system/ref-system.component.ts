@@ -30,9 +30,7 @@ export class RefSystemComponent implements OnInit {
           RpcService.authService,
           true
         )
-    )).data
-    console.log(accountData);
-    
+    )).data    
     this.refUrl += accountData.user_id
     this.loading = false
   }
@@ -41,7 +39,7 @@ export class RefSystemComponent implements OnInit {
     if (navigator.share) {
       navigator.share({
         title: document.title,
-        text: "Fashionlogica",
+        text: "Sakura",
         url: this.refUrl
       })
         .then(() => console.log('Successful share'))

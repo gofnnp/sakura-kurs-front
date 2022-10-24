@@ -33,6 +33,11 @@ import { ShareButtonsModule   } from 'ngx-sharebuttons/buttons';
 import { ShareIconsModule } from 'ngx-sharebuttons/icons';
 import { MessagingService } from './services/messaging.service';
 import { NotFoundComponent } from './pages/not-found/not-found.component';
+import { ProductsComponent } from './pages/products/products.component';
+import { CartComponent } from './pages/cart/cart.component';
+import {ListboxModule} from 'primeng/listbox';
+import { ProductModalComponent } from './components/product-modal/product-modal.component';
+import { CheckboxGroupComponent } from './components/checkbox-group/checkbox-group.component';
 
 @NgModule({
   declarations: [
@@ -49,7 +54,11 @@ import { NotFoundComponent } from './pages/not-found/not-found.component';
     FooterButtonsComponent,
     UserDataComponent,
     RefSystemComponent,
-    NotFoundComponent
+    NotFoundComponent,
+    ProductsComponent,
+    CartComponent,
+    ProductModalComponent,
+    CheckboxGroupComponent
   ],
   imports: [
     BrowserModule,
@@ -81,7 +90,8 @@ import { NotFoundComponent } from './pages/not-found/not-found.component';
     ShareButtonsModule.withConfig({
       debug: true
     }),
-    ShareIconsModule
+    ShareIconsModule,
+    ListboxModule
   ],
   providers: [DialogService, MessageService, MessagingService ],
   bootstrap: [AppComponent]

@@ -42,6 +42,10 @@ export class WpJsonService {
     return this._request(`products/${id}`, 'GET');
   }
 
+  getAllData(): Observable<any> {
+    return this._request('nomen_1eb3fb56-3c4c-43b7-9a04-ce532ab7548f.json', 'GET')
+  }
+
   _request(path: string, method: string, body?: any, auth = false): Observable<any> {
     const token = decodeURI(this.cookiesService.getItem('token') ?? '');
     let headers = new HttpHeaders();
@@ -56,7 +60,7 @@ export class WpJsonService {
       body: this.body,
     };
 
-    const url = environment.production ? window.location.origin + '/wp-json/woofood/v1/' : this.api
+    const url = environment.production ? window.location.origin + '/' : this.api
 
     return this.http
       .request( method, url + path + urlToken, options);

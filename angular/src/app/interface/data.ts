@@ -7,9 +7,15 @@ export enum PageCode {
     RefSystem,
     UserData
 }
-  
+
+export enum MainPageCode {
+    Account,
+    Products,
+    Cart
+}
+
 export interface Page {
-    code: PageCode;
+    code: PageCode | MainPageCode;
     component?: any;
     name: string;
     description?: string;
@@ -30,7 +36,7 @@ export interface BonusProgramAccount {
     CardNumber: number;
     Bonuses: number;
     HoldedBonuses: number;
-    BonusProgramAccounts:  BonusProgramAccount[];
+    BonusProgramAccounts: BonusProgramAccount[];
     DateBonusBurn: string;
     _links: any[];
     _embedded: any;
@@ -61,11 +67,11 @@ export interface Transaction {
     DateActiveBonus: string;
     AccountBonus: string;
     Bonus: string;
-    ID:string;
-    HasPurchase?:boolean;
+    ID: string;
+    HasPurchase?: boolean;
 }
 
-export interface OrderStatus{
+export interface OrderStatus {
     [key: string]: string;
 }
 
@@ -81,48 +87,87 @@ export interface AcceptedOrder {
     currency_symbol: string;
     total: number;
     address: {
-      city: string;
-      street: string;
-      house: number;
-      flat: number;
+        city: string;
+        street: string;
+        house: number;
+        flat: number;
     };
     payment_method: string;
     shipping: {
-      name: string;
-      total: number;
+        name: string;
+        total: number;
     };
     date_created: string;
     items: OrderProduct[]
 }
 
-export interface Product{
-    id: number;
+export interface Product {
+    id: string;
     name: string;
-    price: string;
-    image_url: string;
+    price: number;
+    image: string;
     image_gallery: string[];
     category_id: number;
-    description?: string;
+    description: string;
     stock_status: string;
     currency_symbol: string;
     modifier_data: Modifier[];
-    short_description?: string;
-    guid?: string;
+    short_description: string;
+    guid: string;
+    groupId: string;
+    modifiers_group: string[];
 }
 
-export interface Modifier{
-    id: number;
+export interface AllData {
+    datetime: string;
+    groups: Group[];
+    products: Product[];
+    modifiers_groups: ModifiersGroup[];
+    modifiers: Modifier[];
+    categories: any[]
+}
+
+export interface Group {
+    id: string;
     name: string;
-    category_type: string;
-    minimum_options: number;
-    maximum_options: number;
-    global_categories: string;
-    required: number;
-    options: Option[];
-    allOptions?: Option[];
 }
 
-export interface Option{
+export interface ModifiersGroup {
+    name: string,
+    id: string,
+    restrictions: {
+        minQuantity: number,
+        maxQuantity: number,
+        freeQuantity: number,
+        byDefault: number
+    }
+}
+
+export interface Modifier {
+    id: string,
+    name: string,
+    groupId: string,
+    restrictions: {
+        minQuantity: number,
+        maxQuantity: number,
+        freeQuantity: number,
+        byDefault: number
+    }
+}
+
+// export interface Modifier {
+//     id: number;
+//     name: string;
+//     category_type: string;
+//     minimum_options: number;
+//     maximum_options: number;
+//     global_categories: string;
+//     required: number;
+//     options: Option[];
+//     allOptions?: Option[];
+// }
+
+export interface Option {
     id: number;
     name: string;
     price: string;
@@ -130,17 +175,17 @@ export interface Option{
     active?: boolean;
 }
 
-export interface OrderProduct{
+export interface OrderProduct {
     id: number;
     amount: number;
     name: string;
     price: number;
     modifiers: {
-      [name: string]: OrderModifier[]
+        [name: string]: OrderModifier[]
     }
 }
 
-export interface OrderModifier{
+export interface OrderModifier {
     name: string;
     id: number;
     price: number;

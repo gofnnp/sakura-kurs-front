@@ -4,7 +4,7 @@
   "version": 1,
   "newProjectRoot": "projects",
   "projects": {
-    "fashion-logica": {
+    "sakura": {
       "projectType": "application",
       "schematics": {
         "@schematics/angular:component": {
@@ -19,7 +19,7 @@
         "build": {
           "builder": "@angular-devkit/build-angular:browser",
           "options": {
-            "outputPath": "/var/www/html/lk.crm4retail.ru/fashion-logica",
+            "outputPath": "/var/www/html/lk.crm4retail.ru/sakura",
             "baseHref": "/",
             "index": "src/index.html",
             "main": "src/main.ts",
@@ -81,10 +81,10 @@
           "builder": "@angular-devkit/build-angular:dev-server",
           "configurations": {
             "production": {
-              "browserTarget": "fashion-logica:build:production"
+              "browserTarget": "sakura:build:production"
             },
             "development": {
-              "browserTarget": "fashion-logica:build:development"
+              "browserTarget": "sakura:build:development"
             }
           },
           "defaultConfiguration": "development"
@@ -92,7 +92,7 @@
         "extract-i18n": {
           "builder": "@angular-devkit/build-angular:extract-i18n",
           "options": {
-            "browserTarget": "fashion-logica:build"
+            "browserTarget": "sakura:build"
           }
         },
         "test": {

@@ -1,0 +1,22 @@
+<div class="product-modal">
+    <img *ngIf="!product.image" src="./assets/no-image.png" alt="{{product.name}}">
+    <img *ngIf="product.image" src="{{product.image}}" alt="{{product.name}}">
+
+    <div class="product-modal__modifiers-container">
+        <ng-container *ngIf="product.modifiers_group.length">
+            <div *ngFor="let modifier of modifiersFilter()" class="product-card__modifier">
+                <h4>{{modifier.name}}</h4>
+                <!-- <app-checkbox-group [modifier]="modifier" currencySymbol="₽"
+                    [selectedOptions]="selectedOptions(modifier)" (toggle)="addOption(modifier, $event)">
+                </app-checkbox-group> -->
+            </div>
+        </ng-container>
+    </div>
+
+    <div class="product-modal__footer">
+        <span>{{product.price}}₽</span>
+        <button class="product-modal__add-to-cart">
+            Добавить
+        </button>
+    </div>
+</div>

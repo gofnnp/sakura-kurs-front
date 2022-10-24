@@ -79,7 +79,6 @@ export class UserDataComponent implements OnInit {
         if (accountData.user_id) {
           this.appleWallet.reloadCard(accountData.user_id).subscribe({
             next: (value) => {
-              console.log(value);
             },
             error: (err) => {
               console.error(err);
