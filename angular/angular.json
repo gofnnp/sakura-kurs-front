@@ -30,7 +30,8 @@
               "src/favicon.ico",
               "src/assets",
               "src/manifest.webmanifest",
-              "src/firebase-messaging-sw.js"
+              "src/firebase-messaging-sw.js",
+              "src/static"
             ],
             "styles": [
               "node_modules/primeng/resources/themes/bootstrap4-light-blue/theme.css",
