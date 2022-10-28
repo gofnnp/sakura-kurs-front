@@ -1,5 +1,8 @@
 <div class="products-container">
-    <p-listbox [options]="groups" [(ngModel)]="selectedGroup" optionLabel="name" [style]="{'width':'fit-content', 'margin-bottom': '16px'}"></p-listbox>
+    <div class="products-container__filters-container">
+        <p-treeSelect [(ngModel)]="selectedGroup" [options]="groups" placeholder="Группа"></p-treeSelect>
+
+    </div>
     <div class="products-container__items">
         <div *ngFor="let product of filterByGroup()" class="products-container__item">
             <img *ngIf="!product.image" src="./assets/no-image.png" alt="{{product.name}}">

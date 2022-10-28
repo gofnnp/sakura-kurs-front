@@ -1,5 +1,5 @@
 import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
-import {Modifier, Option} from 'src/app/interface/data';
+import {Modifier, ModifiersGroup, Option} from 'src/app/interface/data';
 import { cloneDeep } from 'lodash/fp';
 
 @Component({
@@ -11,23 +11,22 @@ export class CheckboxGroupComponent implements OnInit {
 
   constructor() { }
 
-  @Input() modifier!: Modifier;
+  @Input() modifier!: ModifiersGroup;
+  @Input() options!: Modifier[];
   @Input() currencySymbol!: string;
 
-  @Output() toggle = new EventEmitter<Option>();
+  @Output() toggle = new EventEmitter<Modifier>();
 
-  @Input() selectedOptions: Option[] = [];
-  public options: Option[] = [];
+  @Input() selectedOptions: Modifier[] = [];
 
   ngOnInit() {
-    // this.options = cloneDeep<Option[]>(this.modifier.options);
   }
 
-  optionIsSelected(option: Option): boolean{
+  optionIsSelected(option: Modifier): boolean{    
     return !!this.selectedOptions.find(selected => selected.id === option.id);
   }
 
-  onToggle(option: Option){
+  onToggle(option: Modifier){
     this.toggle.emit(option);
   }
 

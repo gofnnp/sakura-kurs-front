@@ -15,7 +15,7 @@ export class ProductsComponent implements OnInit {
   public groups: Group[] = [
     {
       id: uuidv4(),
-      name: 'Все'
+      label: 'Все'
     }
   ];
   public modifiersGroups!: ModifiersGroup[];
@@ -43,7 +43,7 @@ export class ProductsComponent implements OnInit {
   }
 
   filterByGroup() {
-    if (this.selectedGroup.name === 'Все') return this.products
+    if (this.selectedGroup.label === 'Все') return this.products
     return this.products.filter((product) => product.groupId === this.selectedGroup.id)
   }
 

@@ -2,7 +2,8 @@
     .product-modal {
         position: relative;
         padding-bottom: 60px;
-        & > img {
+
+        &>img {
             width: 100%;
         }
 
@@ -18,12 +19,66 @@
             justify-content: space-between;
             align-items: center;
         }
+
+        &__footer-price {
+            font-size: 18px;
+            font-weight: 600;
+        }
+
         &__add-to-cart {
             padding: 8px;
             border: none;
             border-radius: 4px;
             background-color: #0d457e;
             color: #fff;
+        }
+
+        &__modifier {
+            border: 1px solid rgba(128, 128, 128, 0.23);
+            margin: 0.5em 0;
+            padding-bottom: 6px;
+            a {
+                width: 100%;
+                display: block;
+                padding: 0.75em;
+                border-radius: 0.15em;
+                transition: background .3s ease;
+            }
+            .options-container {
+                transition: opacity .5s ease;
+                padding-left: 16px;
+                display: none;
+                opacity: 0;
+                &.isShow {
+                    display: block;
+                    opacity: 1;
+                }
+            }
+        }
+
+        &__modifier-icon {
+            float: right;
+            &::before, &::after {
+                display: inline-block;
+                font-size: 14px;
+                transition: transform .5s ease;
+            }
+            &::before {
+                content: "\\";
+                transform: rotate(346deg);
+            }
+            &::after {
+                content: "/";
+                transform: rotate(14deg);
+            }
+            &.isShow {
+                &::before {
+                    transform: rotate(76deg);
+                }
+                &::after {
+                    transform: rotate(104deg);
+                }
+            }
         }
     }
 }

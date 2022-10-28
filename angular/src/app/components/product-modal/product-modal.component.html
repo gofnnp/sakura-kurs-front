@@ -4,18 +4,30 @@
 
     <div class="product-modal__modifiers-container">
         <ng-container *ngIf="product.modifiers_group.length">
-            <div *ngFor="let modifier of modifiersFilter()" class="product-card__modifier">
-                <h4>{{modifier.name}}</h4>
-                <!-- <app-checkbox-group [modifier]="modifier" currencySymbol="₽"
-                    [selectedOptions]="selectedOptions(modifier)" (toggle)="addOption(modifier, $event)">
-                </app-checkbox-group> -->
+            <div *ngFor="let modifierGroup of modifiersFilter()" [attr.isShow]="false" class="product-modal__modifier" #modifierContainer>
+                <a (click)="setOptionsView($event, modifierContainer)">
+                    {{modifierGroup.name}}
+                    <span [ngClass]="{
+                        'product-modal__modifier-icon': true,
+                        'isShow': getIsShow(modifierContainer)
+                      }"></span>
+                </a>
+                <div [ngClass]="{
+                    'options-container': true,
+                    'isShow': getIsShow(modifierContainer)
+                  }">
+                    <app-checkbox-group [modifier]="modifierGroup" [options]="optionsFilter(modifierGroup)"
+                        currencySymbol="₽" [selectedOptions]="selectedOptions(modifierGroup)"
+                        (toggle)="addOption(modifierGroup, $event)">
+                    </app-checkbox-group>
+                </div>
             </div>
         </ng-container>
     </div>
 
     <div class="product-modal__footer">
-        <span>{{product.price}}₽</span>
-        <button class="product-modal__add-to-cart">
+        <span class="product-modal__footer-price">{{product.price}}₽</span>
+        <button class="product-modal__add-to-cart" (click)="addToCart($event)">
             Добавить
         </button>
     </div>
