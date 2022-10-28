@@ -1,0 +1,50 @@
+<div *ngIf="mainFormGroup && !loading; else loadingEl" class="woocommerce-shipping-fields__field-wrapper">
+    <form (ngSubmit)="submit()" [formGroup]="mainFormGroup" action="false" autocomplete="on">
+        <h2 class="order_form__title">Оформление заказа</h2>
+        <p *ngIf="hasError" class="request-error-message">
+            Произошла ошибка. Попробуйте позже.
+        </p>
+        <div class="order_form" formGroupName="userDataForm">
+            <p сlass="form-row form-row-wide">
+                <input formControlName="first_name" id="first_name" pInputText placeholder="Ваше имя" type="text">
+            </p>
+            <p *ngIf="deliverData.deliveryType?.title === 'Доставка'" сlass="form-row form-row-wide">
+                <input formControlName="street" id="street" pInputText placeholder="Улица" type="text">
+            </p>
+            <p *ngIf="deliverData.deliveryType?.title === 'Доставка'" сlass="form-row form-row-first">
+                <input formControlName="house" id="house" pInputText placeholder="Номер дома" type="text">
+            </p>
+            <p *ngIf="deliverData.deliveryType?.title === 'Доставка'" сlass="form-row form-row-last">
+                <input formControlName="flat" id="flat" pInputText placeholder="Квартира" type="number" min="1">
+            </p>
+        </div>
+        <div formGroupName="deliveryDataForm">
+            <p сlass="form-row form-row-wide">
+                <p-dropdown [options]="deliveryTypes" formControlName="deliveryType" placeholder="Доставка"
+                    optionLabel="title" (onChange)="changeDeliveryType($event)"></p-dropdown>
+            </p>
+            <p сlass="form-row form-row-wide">
+                <p-selectButton [options]="paymentMethods" formControlName="paymentMethod" optionLabel="label">
+                </p-selectButton>
+            </p>
+            <p сlass="form-row form-row-last">
+                <input [maxLength]="255" id="promo-code" pInputText placeholder="Промокод" type="text">
+            </p>
+            <p сlass="form-row form-row-wide">
+                <textarea [maxLength]="255" cols="30" formControlName="comment" pInputTextarea placeholder="Комментарий"
+                    rows="1"></textarea>
+            </p>
+        </div>
+        <button [disabled]="!mainFormGroup.valid" class="elementor-button elementor-button--checkout elementor-size-md"
+            (click)="submit()">
+            <span class="elementor-button-text">Оформить заказ</span>
+        </button>
+        <p *ngIf="showMyMessage" style="color: red; font-size: 20px">Такой адрес не найден! Введите правильный адрес</p>
+    </form>
+</div>
+
+<ng-template #loadingEl>
+    <div class="angular-spinner-container" style="width: fit-content; height: 100%; margin: 16px auto;">
+        <p-progressSpinner styleClass="angular-spinner"></p-progressSpinner>
+    </div>
+</ng-template>

@@ -7,12 +7,14 @@
       <ng-container *ngFor="let page of mainPageList; let index = index; let last = last; let first = first;">
         <li *ngIf="page.onSideBar" class="main-menu-container__item"
           [ngClass]="{
+            'cart': page.resName === 'cart',
             'is-active': page === currentPageMain
           }"
           [ngStyle]="{
             border: last && 0,
             'border-radius': first ? '6px 0 0 6px' : (last ? '0 6px 6px 0' : 0)
           }"
+          [attr.data-counter]="page.resName === 'cart' ? cartCount : null"
           (click)="changeMainPage(page, $event)">
           <span>
             {{page.name}}

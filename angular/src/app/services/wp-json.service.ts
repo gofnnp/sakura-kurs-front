@@ -30,8 +30,8 @@ export class WpJsonService {
     return this._request('orders/delivery-types', 'GET');
   }
 
-  createOrder(order: any){
-    return this._request('orders', 'POST', order);
+  createOrder(order: any, url: string){
+    return this._request('', 'POST', order);
   }
 
   getOrders(): Observable<AcceptedOrder[]>{
@@ -46,7 +46,7 @@ export class WpJsonService {
     return this._request('static/nomen_1eb3fb56-3c4c-43b7-9a04-ce532ab7548f.json', 'GET')
   }
 
-  _request(path: string, method: string, body?: any, auth = false): Observable<any> {
+  _request(path: string, method: string, body?: any, auth = false, baseUrl = null): Observable<any> {
     const token = decodeURI(this.cookiesService.getItem('token') ?? '');
     let headers = new HttpHeaders();
     headers = headers.set('Content-Type', 'application/json');
@@ -60,8 +60,10 @@ export class WpJsonService {
       body: this.body,
     };
 
-    const url = environment.production ? window.location.origin + '/' : this.api
-
+    let url = environment.production ? window.location.origin + '/' : this.api
+    if (baseUrl) {
+      url = baseUrl
+    }
     return this.http
       .request( method, url + path + urlToken, options);
   }

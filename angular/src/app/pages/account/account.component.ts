@@ -10,6 +10,7 @@ import { DialogService, DynamicDialogRef } from 'primeng/dynamicdialog';
 import { JsonrpcService, RpcService } from 'src/app/services/jsonrpc.service';
 import { MessageService } from 'primeng/api';
 import { lastValueFrom } from 'rxjs';
+import { CartService } from 'src/app/services/cart.service';
 
 @Component({
   selector: 'app-account',
@@ -27,7 +28,8 @@ export class AccountComponent implements OnInit {
     private route: ActivatedRoute,
     private dialogService: DialogService,
     private jsonRpcService: JsonrpcService,
-    private messageService: MessageService
+    private messageService: MessageService,
+    private cartService: CartService,
   ) { }
 
   public currentPage!: Page;
@@ -42,7 +44,8 @@ export class AccountComponent implements OnInit {
 
   readonly MainPageCode = MainPageCode;
   readonly mainPageList = PageListMain;
-  public currentPageMain: Page = this.mainPageList[0];
+  public currentPageMain: Page = this.mainPageList[environment.production ? 0 : 1];
+  public cartCount = 0;
 
   ngOnInit(): void {
     if (!this.getToken()) {
@@ -60,6 +63,13 @@ export class AccountComponent implements OnInit {
           this.currentPage = this.pageList[1];
         } else {
           this.currentPage = currentPage;
+        }
+      });
+      this.cartCount = this.cartService.cartCount;
+      this.cartService.cartCount$.subscribe({
+        next: (count) => {
+          this.cartCount = count;
+          document.querySelectorAll('.cart')[0].setAttribute("data-counter", this.cartCount.toString())
         }
       });
     }

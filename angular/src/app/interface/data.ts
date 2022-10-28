@@ -1,3 +1,4 @@
+import { CartProduct } from "../models/cart-product";
 
 
 export enum PageCode {
@@ -79,6 +80,7 @@ export interface DeliveryType {
     cost: number;
     title: string;
     id: number;
+    type: string;
 }
 
 export interface AcceptedOrder {
@@ -111,7 +113,7 @@ export interface Product {
     description: string;
     stock_status: string;
     currency_symbol: string;
-    modifier_data: Modifier[];
+    modifier_data: CartModifier[];
     short_description: string;
     guid: string;
     groupId: string;
@@ -129,7 +131,7 @@ export interface AllData {
 
 export interface Group {
     id: string;
-    name: string;
+    label: string;
 }
 
 export interface ModifiersGroup {
@@ -147,12 +149,23 @@ export interface Modifier {
     id: string,
     name: string,
     groupId: string,
+    price?: number,
     restrictions: {
         minQuantity: number,
         maxQuantity: number,
         freeQuantity: number,
         byDefault: number
     }
+}
+
+export interface CartModifier {
+    id: string;
+    name: string;
+    options: Modifier[];
+}
+
+export interface Cart {
+    products: CartProduct[];
 }
 
 // export interface Modifier {
@@ -170,9 +183,13 @@ export interface Modifier {
 export interface Option {
     id: number;
     name: string;
-    price: string;
-    prechecked: string;
-    active?: boolean;
+    groupId: string;
+    restrictions: {
+        minQuantity: number,
+        maxQuantity: number,
+        freeQuantity: number,
+        byDefault: number
+    }
 }
 
 export interface OrderProduct {

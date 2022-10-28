@@ -20,5 +20,7 @@ export const environment = {
   version: packageJson.version,
   appleWalletEndpoint: 'https://apple-push-notifications.it-retail.tech/apns/api',
   appleWalletSecret: 'Token F5mbzEERAznGKVbB6l',
-  clientName: 'Sakura'
+  webhookItRetail: 'https://webhook.it-retail.tech/handlers/tillda/1eb3fb56-3c4c-43b7-9a04-ce532ab7548f',
+  clientName: 'Sakura',
+  cities: ['Менделеевск'],
 }

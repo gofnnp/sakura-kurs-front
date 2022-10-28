@@ -38,6 +38,10 @@ import { CartComponent } from './pages/cart/cart.component';
 import {ListboxModule} from 'primeng/listbox';
 import { ProductModalComponent } from './components/product-modal/product-modal.component';
 import { CheckboxGroupComponent } from './components/checkbox-group/checkbox-group.component';
+import { TreeSelectModule } from 'primeng/treeselect';
+import { UserDataOrderComponent } from './components/user-data-order/user-data-order.component';
+import {DropdownModule} from "primeng/dropdown";
+import {SelectButtonModule} from 'primeng/selectbutton';
 
 @NgModule({
   declarations: [
@@ -58,7 +62,8 @@ import { CheckboxGroupComponent } from './components/checkbox-group/checkbox-gro
     ProductsComponent,
     CartComponent,
     ProductModalComponent,
-    CheckboxGroupComponent
+    CheckboxGroupComponent,
+    UserDataOrderComponent
   ],
   imports: [
     BrowserModule,
@@ -91,7 +96,10 @@ import { CheckboxGroupComponent } from './components/checkbox-group/checkbox-gro
       debug: true
     }),
     ShareIconsModule,
-    ListboxModule
+    ListboxModule,
+    TreeSelectModule,
+    DropdownModule,
+    SelectButtonModule
   ],
   providers: [DialogService, MessageService, MessagingService ],
   bootstrap: [AppComponent]

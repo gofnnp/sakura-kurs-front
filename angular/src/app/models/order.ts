@@ -2,6 +2,7 @@ import {DeliveryData, UserData} from "../interface/data";
 import {OrderProduct} from "./order-product";
 import * as moment from 'moment';
 import { CookiesService } from "../services/cookies.service";
+import { environment } from "src/environments/environment";
 
 export interface OrderInfo {
   products: OrderProduct[];
@@ -36,33 +37,23 @@ export class Order {
   toJson(): any {
     const date = moment(this.deliveryData?.deliveryDate ?? Date.now());
     return {
-      items: this.products.map(product => {
-        return product.toJson();
-      }),
-      user_data: {
-        phone: this.phone,
-        ...this.userData
-      },
-      payment_method: this.deliveryData?.paymentMethod.type,
-      delivery_time: date.format('HH:mm'),
-      delivery_date: date.format("YYYY-MM-DD"),
-      delivery_instance_id: this.deliveryData?.deliveryType?.id,
+      formname: "Cart",
+      paymentsystem: this.deliveryData?.paymentMethod.type,
+      phone: this.phone,
       persons: 1,
-      payments: [
-        {
-          type: this.deliveryData?.paymentMethod.type,
-          summ: this.price,
-        },
-        {
-          type: "crm4retail",
-          summ: 0,
-          payload: {
-            id: "c07a10d8-ba7e-43b0-92aa-ae470060bc7d"
-          }
-        }
-      ],
-      comment: this.deliveryData?.comment,
-      token: this.token
+      name: "31",
+      payment: {
+        delivery_price: 100,
+        products: this.products.map(product => {
+          return product.toJson();
+        }),
+        delivery_fio: this.userData?.first_name,
+        subtotal: this.price,
+        delivery_comment: this.deliveryData?.comment,
+        delivery: this.deliveryData?.deliveryType?.type,
+        delivery_address: `${environment.cities[0]}, ул ${this.userData?.street},  ${this.userData?.house}`,
+        amount: this.price + 100
+     },
     }
   }
 }

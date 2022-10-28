@@ -1,4 +1,4 @@
-import {Modifier, Product} from "../interface/data";
+import {CartModifier, Modifier, Product} from "../interface/data";
 export class OrderProduct implements Product{
 
 
@@ -29,7 +29,7 @@ export class OrderProduct implements Product{
   public id: string;
   public image_gallery: string[];
   public image: string;
-  public modifier_data: Modifier[];
+  public modifier_data: CartModifier[];
   public name: string;
   public price: number;
   public stock_status: string;
@@ -39,29 +39,27 @@ export class OrderProduct implements Product{
 
 
   get finalPrice(): number{
-    // const modifiersPrice = this.modifier_data.reduce<number>((previousValue, currentValue) => {
-    //   return previousValue + currentValue.options.reduce<number>((previousOptionValue, currentOptionValue) => {
-    //     return previousOptionValue + Number(currentOptionValue.price);
-    //   }, 0);
-    // }, 0);
-    // return (Number(this.price) + modifiersPrice) * this.amount;
-    return 1
-    new Date()
+    const modifiersPrice = this.modifier_data.reduce<number>((previousValue, currentValue) => {
+      return previousValue + currentValue.options.reduce<number>((previousOptionValue, currentOptionValue) => {
+        return previousOptionValue + Number(currentOptionValue.price ? currentOptionValue.price : 0);
+      }, 0);
+    }, 0);
+    return (Number(this.price) + modifiersPrice) * this.amount;
   }
 
   toJson(){
     return {
       id: this.id,
-      amount: this.amount,
-      name: this.name,
-      modifiers: this.modifier_data?.map(modifier => {
+      amount: this.amount * this.price,
+      price: this.price,
+      options: this.modifier_data?.map((modifier) => {
         return {
-          id: modifier.id,
-          // options: modifier.options,
+          option: modifier.name,
+          variant: modifier.options[0]?.name || null
         }
       }),
+      quantity: this.amount,
+      name: this.name,
     }
   }
-
-
 }

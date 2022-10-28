@@ -1,4 +1,4 @@
-import {MainPageCode, OrderStatus, Page, PageCode} from "./interface/data";
+import {MainPageCode, OrderStatus, Page, PageCode, PaymentMethod} from "./interface/data";
 
 export const PageList: Page[] = [
     {
@@ -86,3 +86,14 @@ export const orderStatuses: OrderStatus = {
     'Delivered': 'Выполнен',
     'Closed': 'Выполнен',
 };
+
+export const paymentMethods: PaymentMethod[] =  [
+    {
+      type: 'Card',
+      label: 'Безналичный расчет'
+    },
+    {
+      type: 'Cash',
+      label: 'Наличными'
+    }
+  ]

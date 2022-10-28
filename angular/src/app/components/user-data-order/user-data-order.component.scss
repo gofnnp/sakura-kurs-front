@@ -1,0 +1,67 @@
+:host {
+    .woocommerce-shipping-fields__field-wrapper {
+        margin-top: 8px;
+    }
+
+
+    .order_form__title {
+        font-weight: 700;
+        font-size: 18px;
+        margin-bottom: 12px;
+    }
+
+    input {
+        width: 100%;
+        color: #000000;
+        border: 1px solid #000000;
+        font-family: -apple-system, BlinkMacSystemFont, Segoe UI, Roboto, Helvetica, Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", Segoe UI Symbol;
+        font-size: 1rem;
+        color: #495057;
+        background: #ffffff;
+        padding: 0.5rem 0.75rem;
+        border: 1px solid #ced4da;
+        transition: background-color .15s, border-color .15s, box-shadow .15s;
+        -webkit-appearance: none;
+        appearance: none;
+        border-radius: 4px;
+    }
+
+    p {
+        margin-top: 0;
+        margin-bottom: 1rem;
+    }
+
+    textarea {
+        width: 100%;
+        height: 52px;
+        color: #000000;
+        border: 1px solid #000000;
+        font-family: -apple-system, BlinkMacSystemFont, Segoe UI, Roboto, Helvetica, Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", Segoe UI Symbol;
+        font-size: 1rem;
+        color: #495057;
+        background: #ffffff;
+        padding: 0.5rem 0.75rem;
+        border: 1px solid #ced4da;
+        transition: background-color .15s, border-color .15s, box-shadow .15s;
+        -webkit-appearance: none;
+        appearance: none;
+        border-radius: 4px;
+    }
+
+    form {
+        &>button {
+            background-color: #09467f;
+            color: #fff;
+            border-radius: 6px;
+            width: calc(100% - 66px);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            border: none;
+            height: 40px;
+            width: 100%;
+            cursor: pointer;
+        }
+    }
+
+}

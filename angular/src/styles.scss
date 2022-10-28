@@ -22,6 +22,29 @@ table{border-collapse:collapse;border-spacing:0}
     border-color: red;
 }
 
+.p-dropdown {
+    width: 100%;
+    height: 39px;
+}
+
+.p-selectbutton {
+    display: flex;
+    &>.p-button{
+        flex: 1;
+        font-size: 12px;
+    }
+}
+
+.p-selectbutton .p-button.p-highlight {
+    background: #f9b004;
+    border-color: #f9b004;
+}
+
+.p-selectbutton .p-button.p-highlight:hover {
+    background: #f9b004;
+    border-color: #f9b004;
+}
+
 mark {
     padding: 4px;
     background: #009688;
@@ -63,4 +86,17 @@ button {
 
 input::-webkit-date-and-time-value {
     text-align: left;
+}
+
+.p-treeselect {
+    min-width: 180px;
+}
+
+.p-tree .p-tree-container .p-treenode {
+    font-size: 12px;
+    padding: 0;
+}
+
+.p-tree .p-tree-container .p-treenode .p-treenode-content {
+    padding: 0;
 }

@@ -2,6 +2,7 @@
   .woocommerce {
     min-height: calc(100vh - 39px);
     padding: 20px 18px;
+    position: relative;
 
     &.auth-page {
       display: flex;
@@ -13,6 +14,7 @@
       max-width: 600px;
       height: 50px;
       margin: -20px auto 0 auto;
+
       ul {
         display: flex;
         justify-content: space-between;
@@ -20,15 +22,35 @@
         align-items: center;
         font-size: 14px;
         padding: 0 16px;
+
         li {
           width: 100%;
           text-align: center;
           border-right: solid #e1e1e1 1px;
           padding: 8px 0;
           cursor: pointer;
+
           &.is-active {
             background: #0d457e;
             color: #fff;
+          }
+
+          &.cart {
+            position: relative;
+
+            &::before {
+              content: attr(data-counter);
+              color: #fff;
+              position: absolute;
+              right: 3px;
+              top: 1px;
+              background: #D7120B;
+              border-radius: 50px;
+              min-width: 1.2rem;
+              line-height: 1.2rem;
+              font-size: .8rem;
+              text-align: center;
+            }
           }
         }
       }
@@ -118,6 +140,8 @@
 
     .version {
       opacity: 0.5;
+      position: absolute;
+      bottom: 12px;
     }
   }
 }
