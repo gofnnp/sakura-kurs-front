@@ -31,7 +31,7 @@ export class WpJsonService {
   }
 
   createOrder(order: any, url: string){
-    return this._request('', 'POST', order);
+    return this._request('', 'POST', order, false, url);
   }
 
   getOrders(): Observable<AcceptedOrder[]>{
@@ -46,7 +46,7 @@ export class WpJsonService {
     return this._request('static/nomen_1eb3fb56-3c4c-43b7-9a04-ce532ab7548f.json', 'GET')
   }
 
-  _request(path: string, method: string, body?: any, auth = false, baseUrl = null): Observable<any> {
+  _request(path: string, method: string, body?: any, auth = false, baseUrl?: string): Observable<any> {
     const token = decodeURI(this.cookiesService.getItem('token') ?? '');
     let headers = new HttpHeaders();
     headers = headers.set('Content-Type', 'application/json');
