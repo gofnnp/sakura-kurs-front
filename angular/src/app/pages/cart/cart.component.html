@@ -1,51 +1,57 @@
 <div class="cart" *ngIf="!loading && order && !orderConfirmed" [ngStyle]="{margin: !order.products.length && 0}">
   <div class="widget_shopping_cart_content" style="opacity: 1;">
-    <div class="elementor-menu-cart__products woocommerce-mini-cart cart woocommerce-cart-form__contents"  [ngStyle]="{margin: !order.products.length && 0}">
-      <div *ngFor="let product of order.products"
-        class="elementor-menu-cart__product woocommerce-cart-form__cart-item cart_item"
-        style="grid-template-columns: 70px auto;">
+    <div class="elementor-menu-cart__products woocommerce-mini-cart cart woocommerce-cart-form__contents"
+      [ngStyle]="{margin: !order.products.length && 0}">
+      <div *ngFor="let product of order.products; let last = last">
+        <div
+          class="elementor-menu-cart__product woocommerce-cart-form__cart-item cart_item"
+          style="grid-template-columns: 70px auto;">
 
-        <div class="elementor-menu-cart__product-image product-thumbnail">
-          <img *ngIf="product.image" width="70" height="70" src="{{product.image}}"
-            class="attachment-woocommerce_thumbnail size-woocommerce_thumbnail" alt="{{product.name}}" loading="lazy">
-          <img *ngIf="!product.image" width="70" height="70" src="./assets/no-image.png"
-            class="attachment-woocommerce_thumbnail size-woocommerce_thumbnail" alt="{{product.name}}" loading="lazy">
-        </div>
-        <div class="elementor-menu-cart__product-name product-name" data-title="Product">
-          <span>{{product.name}}</span>
-          <dl *ngFor="let modifier of product.modifier_data" class="variation" [ngStyle]="{margin: !modifier.options.length && 0}" >
-            <ng-container *ngFor="let option of modifier.options">
+          <div class="elementor-menu-cart__product-image product-thumbnail">
+            <img *ngIf="product.image" width="70" height="70" src="{{product.image}}"
+              class="attachment-woocommerce_thumbnail size-woocommerce_thumbnail" alt="{{product.name}}" loading="lazy">
+            <img *ngIf="!product.image" width="70" height="70" src="./assets/no-image.png"
+              class="attachment-woocommerce_thumbnail size-woocommerce_thumbnail" alt="{{product.name}}" loading="lazy">
+          </div>
+          <div class="elementor-menu-cart__product-name product-name" data-title="Product">
+            <span>{{product.name}}</span>
+            <dl *ngFor="let modifier of product.modifier_data" class="variation"
+              [ngStyle]="{margin: !modifier.options.length && 0}">
+              <ng-container *ngFor="let option of modifier.options">
                 <dt style="max-width: 160px;" class="variation-">{{option.name}}:</dt>
-                <dd style="display: flex; align-items: flex-end; margin-bottom: 0;" class="variation-"><p>{{product.currency_symbol}}{{option.price ?? 0}}</p>
+                <dd style="display: flex; align-items: flex-end; margin-bottom: 0;" class="variation-">
+                  <p>{{product.currency_symbol}}{{option.price ?? 0}}</p>
                 </dd>
               </ng-container>
-          </dl>
-        </div>
+            </dl>
+          </div>
 
-        <div class="elementor-menu-cart__product-price product-price" data-title="Price">
-          <span class="quantity">
-            <span class="product-quantity">{{product.amount}} ×</span>
-            <span class="woocommerce-Price-amount amount">
-              <bdi>
-                <span class="woocommerce-Price-currencySymbol">{{product.currency_symbol}}</span>
-                {{product.finalPrice}}
-              </bdi>
+          <div class="elementor-menu-cart__product-price product-price" data-title="Price">
+            <span class="quantity">
+              <span class="product-quantity">{{product.amount}} ×</span>
+              <span class="woocommerce-Price-amount amount">
+                <bdi>
+                  <span class="woocommerce-Price-currencySymbol">{{product.currency_symbol}}</span>
+                  {{product.finalPrice}}
+                </bdi>
+              </span>
             </span>
-          </span>
-          <div class="product-change-amount">
-            <div class="product-change-amount__symbol" (click)="setAmount(product, 'minus')">
-              -
-            </div>
-            <div class="product-change-amount__symbol" (click)="setAmount(product, 'plus')">
-              +
+            <div class="product-change-amount">
+              <div class="product-change-amount__symbol" (click)="setAmount(product, 'minus')">
+                -
+              </div>
+              <div class="product-change-amount__symbol" (click)="setAmount(product, 'plus')">
+                +
+              </div>
             </div>
           </div>
-        </div>
 
-        <div class="elementor-menu-cart__product-remove product-remove">
-          <a href="#" class="remove_from_cart_button" aria-label="Remove this item"
-            (click)="removeFromCart($event, product.guid)"></a>
+          <div class="elementor-menu-cart__product-remove product-remove">
+            <a href="#" class="remove_from_cart_button" aria-label="Remove this item"
+              (click)="removeFromCart($event, product.guid)"></a>
+          </div>
         </div>
+        <hr *ngIf="!last">
       </div>
     </div>
     <div *ngIf="order.products.length != 0" class="elementor-menu-cart__bottom-info">
