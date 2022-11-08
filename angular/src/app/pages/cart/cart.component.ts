@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { MessageService } from 'primeng/api';
 import { Order } from 'src/app/models/order';
 import { OrderProduct } from 'src/app/models/order-product';
 import { CartService, ProductAmountAction } from 'src/app/services/cart.service';
@@ -17,7 +18,8 @@ export class CartComponent implements OnInit {
 
   constructor(
     private orderService: OrderService,
-    private cartService: CartService
+    private cartService: CartService,
+    private messageService: MessageService,
   ) { }
 
   ngOnInit(): void {
@@ -56,6 +58,20 @@ export class CartComponent implements OnInit {
 
   orderSubmitted() {
     
+  }
+
+  confirmClearCart() {
+    this.messageService.add({ key: 'c', sticky: true, severity: 'warn', summary: 'Вы уверены, что хотите очистить корзину?' });
+  }
+
+  onReject() {
+    this.messageService.clear('c');
+  }
+
+  onConfirm() {
+    this.cartService.clearCart()
+    this.loadCart()
+    this.messageService.clear('c');
   }
 
 }

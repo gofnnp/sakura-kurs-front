@@ -3,8 +3,7 @@
     <div class="elementor-menu-cart__products woocommerce-mini-cart cart woocommerce-cart-form__contents"
       [ngStyle]="{margin: !order.products.length && 0}">
       <div *ngFor="let product of order.products; let last = last">
-        <div
-          class="elementor-menu-cart__product woocommerce-cart-form__cart-item cart_item"
+        <div class="elementor-menu-cart__product woocommerce-cart-form__cart-item cart_item"
           style="grid-template-columns: 70px auto;">
 
           <div class="elementor-menu-cart__product-image product-thumbnail">
@@ -53,6 +52,9 @@
         </div>
         <hr *ngIf="!last">
       </div>
+      <button *ngIf="order.products.length != 0" class="clear-cart" (click)="confirmClearCart()">
+        Очистить корзину
+      </button>
     </div>
     <div *ngIf="order.products.length != 0" class="elementor-menu-cart__bottom-info">
       <div class="elementor-menu-cart__subtotal">
@@ -68,6 +70,25 @@
       </div>
     </div>
   </div>
+  <p-toast position="bottom-center" key="c" (onClose)="onReject()" [baseZIndex]="5000">
+    <ng-template let-message pTemplate="message">
+      <div class="flex flex-column" style="flex: 1">
+        <div class="text-center">
+          <i class="pi pi-exclamation-triangle" style="font-size: 3rem"></i>
+          <h4>{{message.summary}}</h4>
+          <p style="font-weight: 600;">{{message.detail}}</p>
+        </div>
+        <div class="grid p-fluid">
+          <div class="col-6">
+            <button type="button" pButton (click)="onConfirm()" label="Да" class="p-button-success">Да</button>
+          </div>
+          <div class="col-6">
+            <button type="button" pButton (click)="onReject()" label="Нет" class="p-button-secondary">Нет</button>
+          </div>
+        </div>
+      </div>
+    </ng-template>
+  </p-toast>
 </div>
 
 <app-user-data-order *ngIf="orderConfirmed" (orderSubmitted)="orderSubmitted()"></app-user-data-order>

@@ -26,6 +26,8 @@ export class CartService {
 
   public cartCount$ = new Subject<number>();
 
+  public selectedTerminal$ = new Subject<Object>();
+
 
   getCart(){
     return this._getCartProducts();
@@ -87,6 +89,11 @@ export class CartService {
     }
     this.cookieService.setCookie('cart', JSON.stringify(cart));
     this.cartCount$.next(cart.products.length);
+  }
+
+  changeTerminal(terminal: any) {
+    this.cookieService.setCookie('selectedTerminal', JSON.stringify(terminal));
+    this.selectedTerminal$.next(terminal)
   }
 
   clearCart(){

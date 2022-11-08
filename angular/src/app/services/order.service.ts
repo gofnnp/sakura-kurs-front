@@ -52,13 +52,17 @@ export class OrderService {
         const info = await lastValueFrom(forkJoin([additionalInfo, tokenData, products]));
         const token = this.cookiesService.getItem('token')
         this.order = new Order({products: products, userData: info[0]?.data, phone: info[1].data?.mobile_number, token: token});
+      } else if (this.order) {
+        this.order.products.length = 0
       }
     }
     return this.order;
+    
   }
 
-  async getProducts(cart: Cart): Promise<OrderProduct[]> {    
-    const allData = await lastValueFrom(this.wpJsonService.getAllData())
+  async getProducts(cart: Cart): Promise<OrderProduct[]> {
+    const terminal = JSON.parse(this.cookiesService.getItem('selectedTerminal') || 'null') || this.cartService.selectedTerminal$
+    const allData = await lastValueFrom(this.wpJsonService.getAllData(`${terminal.label}${terminal.id}`))
     const products: OrderProduct[] = []
     for (let i = 0; i < cart.products.length; i++) {
       const productSub = allData.products.find((product: any) => product.id === cart.products[i].id)
