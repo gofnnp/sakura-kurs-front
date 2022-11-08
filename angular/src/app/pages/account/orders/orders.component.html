@@ -9,11 +9,11 @@
         >
           <span class="nobr">Дата</span>
         </th>
-        <th
+        <!-- <th
           class="woocommerce-orders-table__header woocommerce-orders-table__header-order-status"
         >
           <span class="nobr">Место покупки</span>
-        </th>
+        </th> -->
         <th
           class="woocommerce-orders-table__header woocommerce-orders-table__header-order-total"
         >
@@ -35,33 +35,33 @@
           class="woocommerce-orders-table__cell woocommerce-orders-table__cell-order-date"
           data-title="Дата"
         >
-          <time [dateTime]="purchase.PurchaseDate">{{
-            moment(purchase.PurchaseDate).format("DD.MM.YYYY")
+          <time [dateTime]="purchase.transactionCreateDate">{{
+            moment(purchase.transactionCreateDate).format("DD.MM.YYYY")
           }}</time>
         </td>
-        <td
+        <!-- <td
           class="woocommerce-orders-table__cell woocommerce-orders-table__cell-order-status"
           data-title="Место покупки"
         >
           {{ purchase.Address }}
-        </td>
+        </td> -->
         <td
           class="woocommerce-orders-table__cell woocommerce-orders-table__cell-order-total"
           data-title="Сумма чека"
         >
           <span class="woocommerce-Price-amount amount">
-            {{ purchase.CheckSummary }}
+            {{ purchase.orderSum }}
           </span>
         </td>
         <td
           class="woocommerce-orders-table__cell woocommerce-orders-table__cell-order-actions"
           data-title="Бонусы"
           [ngClass]="{
-            'red-color': purchase.BonusSummary ? purchase.BonusSummary < 0 : false,
-            'green-color': purchase.BonusSummary ? purchase.BonusSummary > 0 : false
+            'red-color': purchase.transactionSum ? purchase.transactionSum < 0 : false,
+            'green-color': purchase.transactionSum ? purchase.transactionSum > 0 : false
           }"
         >
-          {{ purchase.BonusSummary }}
+          {{ purchase.transactionSum }}
         </td>
       </tr>
     </tbody>

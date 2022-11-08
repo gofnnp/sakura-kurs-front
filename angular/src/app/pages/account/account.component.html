@@ -32,7 +32,7 @@
             <app-auth [handleHttpError]="handleHttpErrorFunc" (phoneConfirmed)="phoneConfirmed()"></app-auth>
           </ng-container>
           <ng-container *ngSwitchCase="PageCode.Orders">
-            <app-orders></app-orders>
+            <app-orders (deauthorization)="changePage(pageList[0])"></app-orders>
           </ng-container>
           <ng-container *ngSwitchCase="PageCode.BonusProgram">
             <app-bonus-program (deauthorization)="changePage(pageList[0])"></app-bonus-program>

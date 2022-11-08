@@ -83,11 +83,11 @@ export class AuthComponent {
         next: (result) => {
           if (result.code === 0) {
             this.cookiesService.setCookie('token', result?.data?.token);
-            this.router.navigate(['/auth'], {
-              queryParams: {
-                token: result?.data?.token
-              },
-            });
+            // this.router.navigate(['/auth'], {
+            //   queryParams: {
+            //     token: result?.data?.token
+            //   },
+            // });
             this.phoneConfirmed.emit(null);
           } else {
             this.errorConfirmCode = true;

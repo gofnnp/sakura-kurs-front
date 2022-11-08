@@ -36,20 +36,20 @@ export const PageListWithBonus: Page[] = [
         resName: 'orders',
         onSideBar: true,
     },
-    {
-        code: PageCode.UserData,
-        name: 'Заполнить анкету',
-        description: '',
-        resName: 'user-data',
-        onSideBar: true
-    },
-    {
-        code: PageCode.RefSystem,
-        name: 'Пригласить друга',
-        description: '',
-        resName: 'ref-system',
-        onSideBar: true,
-    },
+    // {
+    //     code: PageCode.UserData,
+    //     name: 'Заполнить анкету',
+    //     description: '',
+    //     resName: 'user-data',
+    //     onSideBar: true
+    // },
+    // {
+    //     code: PageCode.RefSystem,
+    //     name: 'Пригласить друга',
+    //     description: '',
+    //     resName: 'ref-system',
+    //     onSideBar: true,
+    // },
 ];
 
 export const PageListMain: Page[] = [

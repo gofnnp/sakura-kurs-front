@@ -32,29 +32,32 @@ export interface UserDataForm {
 }
 
 export interface BonusProgramAccount {
-    BonusProgramName: string;
-    BonusProgramTypeID: string;
+    // BonusProgramName: string;
+    // BonusProgramTypeID: string;
     CardNumber: number;
     Bonuses: number;
-    HoldedBonuses: number;
-    BonusProgramAccounts: BonusProgramAccount[];
-    DateBonusBurn: string;
-    _links: any[];
-    _embedded: any;
+    // HoldedBonuses: number;
+    // BonusProgramAccounts: BonusProgramAccount[];
+    // DateBonusBurn: string;
+    // _links: any[];
+    // _embedded: any;
 }
 
 export interface Purchase {
-    PurchaseId?: string;
-    CustomerId?: string;
-    PurchaseDate: string;
-    PurchaseState?: number;
-    CardNumber?: number;
-    Address?: string
-    CheckSummary?: number
-    BonusSummary?: number
-    ID: string;
-    Transactions: Transaction[];
-    IsSingleTransaction?: boolean;
+    // PurchaseId?: string;
+    // CustomerId?: string;
+    // PurchaseDate: string;
+    // PurchaseState?: number;
+    // CardNumber?: number;
+    // Address?: string
+    // CheckSummary?: number
+    // BonusSummary?: number
+    // ID: string;
+    // Transactions: Transaction[];
+    // IsSingleTransaction?: boolean;
+    transactionCreateDate: string;
+    orderSum: number;
+    transactionSum: number;
 }
 
 export interface Transaction {

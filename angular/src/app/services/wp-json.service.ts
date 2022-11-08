@@ -17,7 +17,7 @@ export enum Method {
 })
 export class WpJsonService {
 
-  protected readonly api = environment.appWPEndpoint;
+  protected readonly api = environment.defaultUrl;
   private body!: JsonRpcBody;
 
   constructor(
@@ -42,8 +42,20 @@ export class WpJsonService {
     return this._request(`products/${id}`, 'GET');
   }
 
-  getAllData(): Observable<any> {
-    return this._request('static/nomen_1eb3fb56-3c4c-43b7-9a04-ce532ab7548f.json', 'GET')
+  getAllData(fileName: string): Observable<any> {
+    return this._request(`/static/${fileName}.json`, 'GET')
+  }
+
+  getTerminalList(): Observable<any> {
+    return this._request('/static/terminal_list.json', 'GET')
+  }
+
+  getCustomerInfo(systemId: string, token: string, url: string): Observable<any> {
+    return this._request(`customer_info/${systemId}/${token}/`, 'GET', null, false, url)
+  }
+
+  getTransactions(systemId: string, token: string, url: string, delta: number): Observable<any> {
+    return this._request(`trans/${systemId}/${token}`, 'GET', null, false, url)
   }
 
   _request(path: string, method: string, body?: any, auth = false, baseUrl?: string): Observable<any> {
