@@ -42,19 +42,22 @@ export class OrdersComponent implements OnInit {
       this.deauthorization.emit(true)
       return
     }
-    const purchases = (await lastValueFrom(
+    const customerInfo = (await lastValueFrom(
+      this.wpJsonService.getCustomerInfo(environment.systemId, token, environment.icardProxy)
+    ))
+    const purchases: Purchase[] = (await lastValueFrom(
       this.wpJsonService.getTransactions(environment.systemId, token, environment.icardProxy, 30)
-    ));
+    ))[customerInfo.customer_info.id];
 
-    // this.purchases = purchases.map<Purchase>((purchase) => {
-    //   const id = purchase.ID.slice(0,36).toLowerCase();
-    //   // purchase.Transactions = transactions.filter((transaction) => {
-    //   //   const same = transaction.Purchase === id;
-    //   //   transaction.HasPurchase = same;
-    //   //   return same;
-    //   // });
-    //   return purchase;
-    // });
+    this.purchases = purchases.map<Purchase>((purchase) => {
+      // const id = purchase.ID.slice(0,36).toLowerCase();
+      // purchase.Transactions = transactions.filter((transaction) => {
+      //   const same = transaction.Purchase === id;
+      //   transaction.HasPurchase = same;
+      //   return same;
+      // });
+      return purchase;
+    });
     this.purchasesShortArray = this.purchases.slice(0, this.lastViewOrder)
     this.ordersLoadingStatus = false;
   }
