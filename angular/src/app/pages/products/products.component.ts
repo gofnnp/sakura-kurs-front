@@ -4,45 +4,100 @@ import { v4 as uuidv4 } from 'uuid';
 import { DialogService } from 'primeng/dynamicdialog';
 import { ProductModalComponent } from 'src/app/components/product-modal/product-modal.component';
 import { WpJsonService } from 'src/app/services/wp-json.service';
+import { MessageService } from 'primeng/api';
+import { lastValueFrom } from 'rxjs';
+import { CartService } from 'src/app/services/cart.service';
+import { CookiesService } from 'src/app/services/cookies.service';
 
 @Component({
   selector: 'app-products',
   templateUrl: './products.component.html',
-  styleUrls: ['./products.component.scss']
+  styleUrls: ['./products.component.scss'],
+  providers: [MessageService]
 })
 export class ProductsComponent implements OnInit {
   public products!: Product[];
-  public groups: Group[] = [
-    {
-      id: uuidv4(),
-      label: 'Все'
-    }
-  ];
+  public groups: Group[] = [];
   public modifiersGroups!: ModifiersGroup[];
   public modifiers!: Modifier[];
-  public selectedGroup: Group = this.groups[0];
+  public selectedGroup!: Group;
+  public terminalList!: any;
+  public selectedTerminal!: any;
 
   constructor(
     public dialogService: DialogService,
-    private wpJsonService: WpJsonService
+    private wpJsonService: WpJsonService,
+    private messageService: MessageService,
+    public cartService: CartService,
+    private cookiesService: CookiesService,
   ) { }
 
-  ngOnInit(): void {
+  async ngOnInit() {
+    await this.getTerminalList()
     this.getData()
+    this.messageService.add({
+      severity:'info',
+      summary: 'В одном заказе могут быть товары только из выбранного пункта выдачи',
+      life: 5000
+    });
+    setTimeout(() => {
+      this.confirmTerminalList()
+    }, 0)
+  }
+
+  async getTerminalList() {
+    const terminalList = (await lastValueFrom(
+      this.wpJsonService.getTerminalList()
+    ))
+    this.terminalList = this.toTreeJson(this.keyValue(terminalList), terminalList)
+    this.selectedTerminal = JSON.parse(this.cookiesService.getItem('selectedTerminal') || 'null') || this.terminalList[0]
+    this.cartService.changeTerminal(this.selectedTerminal)
+  }
+
+  confirmTerminalList() {
+    if (this.cartService.cartCount) return
+    this.messageService.clear();
+    this.messageService.add({ key: 'c', sticky: true, severity: 'warn', summary: 'Вам подходит пункт выдачи?', detail: this.selectedTerminal.label });
+  }
+
+  onConfirm() {
+    this.messageService.add({
+      severity:'info',
+      summary: 'В одном заказе могут быть товары только из выбранного пункта выдачи',
+      life: 5000
+    });
+    this.messageService.clear('c');
+  }
+
+  onReject() {
+    this.messageService.clear('c');
+    this.messageService.add({
+      severity:'info',
+      summary: 'Выберите пункт выдачи. В одном заказе могут быть товары только из выбранного пункта.',
+      life: 6000
+    });
   }
 
   getData() {
-    this.wpJsonService.getAllData().subscribe({
+    this.wpJsonService.getAllData(`${this.selectedTerminal.label}${this.selectedTerminal.id}`).subscribe({
       next: (value) => {
         this.products = value.products
-        this.groups = [...this.groups, ...value.groups]
+        this.groups = value.groups
+        this.groups.unshift(
+          {
+            id: uuidv4(),
+            label: 'Все'
+          }
+        )
+        this.selectedGroup = this.groups[0]
         this.modifiersGroups = value.modifiers_groups
         this.modifiers = value.modifiers
-      } 
+      }
     })
   }
 
-  filterByGroup() {
+  filterByGroup() {    
+    if (!this.selectedGroup) return []
     if (this.selectedGroup.label === 'Все') return this.products
     return this.products.filter((product) => product.groupId === this.selectedGroup.id)
   }
@@ -75,6 +130,43 @@ export class ProductsComponent implements OnInit {
       closeOnEscape: true,
     });
 
+  }
+
+  changeTerminal() {
+    setTimeout(() => {
+      this.getData()
+      this.cartService.changeTerminal(this.selectedTerminal)
+    }, 0);
+  }
+
+  onGroupUnselect(event: any) {    
+    setTimeout(() => {
+      this.selectedGroup = event.node      
+    }, 0);
+  }
+
+  onTerminalUnselect(event: any) {    
+    setTimeout(() => {
+      this.selectedTerminal = event.node
+      this.cartService.changeTerminal(this.selectedTerminal)
+    }, 0);
+  }
+
+  keyValue(obj: Object) {
+    return Object.keys(obj)
+  }
+
+  toTreeJson(array: Array<string>, terminalList: any) {
+    let treeJson: Object[] = []
+    for (const key of array) {
+      treeJson.push(
+        {
+          label: key,
+          id: terminalList[key]
+        }
+      )
+    }
+    return treeJson
   }
 
 }

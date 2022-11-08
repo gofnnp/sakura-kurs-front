@@ -100,3 +100,52 @@ input::-webkit-date-and-time-value {
 .p-tree .p-tree-container .p-treenode .p-treenode-content {
     padding: 0;
 }
+
+.text-center {
+    text-align: center;
+}
+
+.grid.p-fluid {
+    display: flex;
+    justify-content: space-between;
+}
+
+.grid.p-fluid {
+    .col-6 {
+        flex: 0 0 auto;
+        padding: 0.5rem;
+        width: 50%;
+    }
+
+    button {
+        margin: 0;
+        cursor: pointer;
+        -webkit-user-select: none;
+        user-select: none;
+        align-items: center;
+        vertical-align: bottom;
+        text-align: center;
+        overflow: hidden;
+        position: relative;
+        border-radius: 5px;
+        border: none;
+        padding: 8px 0;
+        color: #fff;
+        font-weight: 600;
+
+        &.p-button-success {
+            background: #22C55E;
+        }
+
+        &.p-button-secondary {
+            background: #64748B;
+        }
+    }
+}
+
+@media screen and (max-width: 960px) {
+    .grid.p-fluid button {
+        width: 100%;
+        margin-bottom: .5rem;
+    }
+}
