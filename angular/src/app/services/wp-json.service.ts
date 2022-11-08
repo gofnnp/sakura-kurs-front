@@ -55,7 +55,7 @@ export class WpJsonService {
   }
 
   getTransactions(systemId: string, token: string, url: string, delta: number): Observable<any> {
-    return this._request(`trans/${systemId}/${token}`, 'GET', null, false, url)
+    return this._request(`trans/${systemId}/${token}/`, 'GET', null, false, url)
   }
 
   _request(path: string, method: string, body?: any, auth = false, baseUrl?: string): Observable<any> {
