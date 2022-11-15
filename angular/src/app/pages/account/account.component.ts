@@ -44,45 +44,45 @@ export class AccountComponent implements OnInit {
 
   readonly MainPageCode = MainPageCode;
   readonly mainPageList = PageListMain;
-  public currentPageMain: Page = this.mainPageList[environment.production ? 0 : 1];
+  public currentPageMain: Page = this.mainPageList[environment.production ? 1 : 1];
   public cartCount = 0;
+  public showAuthoriztion = false;
 
   ngOnInit(): void {
-    if (!this.getToken()) {
-      this.currentPage = this.pageList[0];
-    } else {
-      this.route.queryParams.subscribe((params) => {
-        if (!params['activePage']) {
-          this.currentPage = this.pageList[1];
-          return;
-        }
-        const currentPage = this.pageList.find((page) => {
-          return page.code === Number(params['activePage']);
-        });
-        if (!currentPage) {
-          this.currentPage = this.pageList[1];
-        } else {
-          this.currentPage = currentPage;
-        }
-      });
-      this.cartCount = this.cartService.cartCount;
-      this.cartService.cartCount$.subscribe({
-        next: (count) => {
-          this.cartCount = count;
-          document.querySelectorAll('.cart')[0].setAttribute("data-counter", this.cartCount.toString())
-        }
-      });
-    }
+
+    this.checkAuthorization(true)
+    this.currentPage = this.pageList[0];
     document.body.classList.add(
       'woocommerce-account',
       'woocommerce-page',
       'woocommerce-orders'
     );
+    this.route.queryParams.subscribe((params) => {
+      if (!params['activeAccountPage']) {
+        this.currentPage = this.pageList[0];
+        return;
+      }
+      const currentPage = this.pageList.find((page) => {
+        return page.code === Number(params['activeAccountPage']);
+      });
+      if (!currentPage) {
+        this.currentPage = this.pageList[0];
+      } else {
+        this.currentPage = currentPage;
+      }
+    });
+    this.cartCount = this.cartService.cartCount;
+    this.cartService.cartCount$.subscribe({
+      next: (count) => {
+        this.cartCount = count;
+        document.querySelectorAll('.cart')[0].setAttribute("data-counter", this.cartCount.toString())
+      }
+    });
   }
 
   phoneConfirmed(): void {
     this.refSystem();
-    this.currentPage = this.pageList[1];
+    this.checkAuthorization(false, true)
   }
 
   async refSystem() {
@@ -156,6 +156,10 @@ export class AccountComponent implements OnInit {
       // },
       queryParamsHandling: 'merge',
     });
+    this.checkAuthorization(true)
+    if (this.currentPageMain === this.mainPageList[2]) {
+      this.checkAuthorization(false)
+    }
   }
 
   changePage(page: Page, event?: MouseEvent): void {
@@ -163,18 +167,19 @@ export class AccountComponent implements OnInit {
       event.preventDefault();
     }
     this.currentPage = page;
-    // let params = new HttpParams();
-    // params = params.append('activePage', this.currentPage.code);
     this.router.navigate(['.'], {
       relativeTo: this.route,
       queryParams: {
-        activePage: this.currentPage.code,
+        activeAccountPage: this.currentPage.code,
       },
       queryParamsHandling: 'merge',
-      // preserve the existing query params in the route
-      // skipLocationChange: true
-      // do not trigger navigation
     });
+  }
+
+  checkAuthorization(showAuthoriztion: boolean, forced = false) {
+    if (!this.getToken() || forced) {
+      this.showAuthoriztion = showAuthoriztion
+    }
   }
 
   handleHttpError(error: HttpErrorResponse): void {
@@ -214,6 +219,7 @@ export class AccountComponent implements OnInit {
         'max-width': '90vw',
         overflow: 'auto',
         'border-radius': '4px',
+        padding: '16px'
       },
       baseZIndex: 10000,
       autoZIndex: true,
@@ -224,7 +230,7 @@ export class AccountComponent implements OnInit {
     this.ref.onClose.subscribe((result) => {
       if (result) {
         this.deleteToken();
-        this.currentPage = this.pageList[0];
+        this.showAuthoriztion = true;
       }
     });
   }

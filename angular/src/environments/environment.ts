@@ -7,7 +7,7 @@ export const environment = {
   appWPEndpoint: './',
   hasBonusProgram: true,
   systemId: 'StyrkNFW9vKga1KlJP',
-  defaultUrl: 'http://192.168.0.179:4200',
+  defaultUrl: 'http://192.168.0.12:4200',
   firebase: {
     apiKey: 'AIzaSyCnKvln5itnrBj62POCPHxshAN_Vmd0zds',
     authDomain: 'fashionlogicanotification.firebaseapp.com',

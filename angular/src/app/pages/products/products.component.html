@@ -1,5 +1,5 @@
 <p-toast position="top-center"></p-toast>
-<div class="products-container">
+<div *ngIf="!loading; else loadingEl" class="products-container">
     <div class="products-container__filters-container">
         <label>Категория</label>
         <p-treeSelect *ngIf="groups" [(ngModel)]="selectedGroup" [options]="groups"
@@ -42,3 +42,8 @@
         </ng-template>
     </p-toast>
 </div>
+<ng-template #loadingEl>
+    <div class="angular-spinner-container" style="width: fit-content; height: 100%; margin: 16px auto;">
+        <p-progressSpinner styleClass="angular-spinner"></p-progressSpinner>
+    </div>
+</ng-template>

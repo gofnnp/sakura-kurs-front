@@ -23,6 +23,7 @@ export class ProductsComponent implements OnInit {
   public selectedGroup!: Group;
   public terminalList!: any;
   public selectedTerminal!: any;
+  public loading: boolean = false;
 
   constructor(
     public dialogService: DialogService,
@@ -33,6 +34,7 @@ export class ProductsComponent implements OnInit {
   ) { }
 
   async ngOnInit() {
+    this.loading = true;
     await this.getTerminalList()
     this.getData()
     this.messageService.add({
@@ -43,6 +45,7 @@ export class ProductsComponent implements OnInit {
     setTimeout(() => {
       this.confirmTerminalList()
     }, 0)
+    this.loading = false;
   }
 
   async getTerminalList() {
@@ -134,8 +137,11 @@ export class ProductsComponent implements OnInit {
 
   changeTerminal() {
     setTimeout(() => {
+      this.products.length = 0;
+      this.loading = true;
       this.getData()
-      this.cartService.changeTerminal(this.selectedTerminal)
+      this.cartService.changeTerminal(this.selectedTerminal);
+      this.loading = false;
     }, 0);
   }
 

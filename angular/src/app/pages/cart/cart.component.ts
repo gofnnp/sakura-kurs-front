@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, EventEmitter, OnInit, Output } from '@angular/core';
 import { MessageService } from 'primeng/api';
 import { Order } from 'src/app/models/order';
 import { OrderProduct } from 'src/app/models/order-product';
@@ -11,6 +11,7 @@ import { OrderService } from 'src/app/services/order.service';
   styleUrls: ['./cart.component.scss']
 })
 export class CartComponent implements OnInit {
+  @Output() showAuthoriztion = new EventEmitter<boolean>();
   public loading = false;
   public orderConfirmed = false;
   public order!: Order;
@@ -40,6 +41,7 @@ export class CartComponent implements OnInit {
 
   confirmOrder(event: Event): void{
     event.preventDefault();
+    this.showAuthoriztion.emit(true);
     this.orderConfirmed = true;
     // this.confirm.emit();
   }

@@ -9,7 +9,9 @@ import { CartService } from 'src/app/services/cart.service';
 import { environment } from "../../../environments/environment";
 import { MessageService } from "primeng/api";
 import { WpJsonService } from "../../services/wp-json.service";
-import { HttpClientModule } from '@angular/common/http';
+import { HttpClient, HttpClientModule } from '@angular/common/http';
+import { CookiesService } from 'src/app/services/cookies.service';
+import moment from 'moment';
 
 
 
@@ -27,7 +29,6 @@ export class UserDataOrderComponent implements OnInit {
   public hasError = false;
   public mainFormGroup!: FormGroup;
   public deliveryTypes: DeliveryType[] = [];
-  public minDate!: Date;
   public new_street!: string | null;
   public street!: string;
   public new_house!: string | null;
@@ -44,12 +45,14 @@ export class UserDataOrderComponent implements OnInit {
     phone: null,
   };
   public deliverData: DeliveryData = {
-    deliveryDate: null,
+    deliveryDate: moment().add(1, 'hours').toDate(),
     deliveryType: null,
     paymentMethod: paymentMethods[0],
     comment: '',
-    persons: 1,
+    persons: 1
   };
+  public terminalList!: any;
+  public selectedTerminal!: any;
 
   constructor(
     private fb: FormBuilder,
@@ -59,12 +62,28 @@ export class UserDataOrderComponent implements OnInit {
     private cartService: CartService,
     private messageService: MessageService,
     private wpJsonService: WpJsonService,
+    private http: HttpClient,
+    private cookiesService: CookiesService,
   ) {
   }
 
-  ngOnInit(): void {
-    this.minDate = new Date();
+  ngOnInit(): void {    
     this._createMainForm();
+    this.getTerminalList();
+    this.selectedTerminal = JSON.parse(this.cookiesService.getItem('selectedTerminal') || '')
+    
+  }
+
+  getTerminalList() {
+    this.http.get('./assets/terminal_list1.json').subscribe({
+      next: (value) => {
+        this.terminalList = value
+      },
+      error: (err) => {
+        console.error(err);
+        
+      }
+    })
   }
 
   changeDeliveryType(event: any) {
@@ -187,13 +206,13 @@ export class UserDataOrderComponent implements OnInit {
         "type": "self_delivery"
       }
     ];
-    this.deliverData.deliveryType = this.deliveryTypes[0];
+    this.deliverData.deliveryType = this.deliveryTypes[1];
     return this.fb.group({
-      // deliveryDate: [this.deliverData.deliveryDate, []],
+      deliveryDate: [this.deliverData.deliveryDate, []],
       deliveryType: [this.deliverData.deliveryType, [Validators.required]],
       paymentMethod: [this.deliverData.paymentMethod, [Validators.required]],
       // persons: [this.deliverData.persons, [Validators.required, Validators.minLength(2), Validators.maxLength(255),]],
-      comment: [this.deliverData.comment, [Validators.maxLength(255),]],
+      comment: [this.deliverData.comment, [Validators.maxLength(255),]]
     });
   }
 }

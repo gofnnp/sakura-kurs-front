@@ -2,9 +2,9 @@ import { CartProduct } from "../models/cart-product";
 
 
 export enum PageCode {
-    Auth,
-    Orders,
+    // Auth,
     BonusProgram,
+    Orders,
     RefSystem,
     UserData
 }

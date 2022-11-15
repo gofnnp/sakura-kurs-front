@@ -42,6 +42,7 @@ import { TreeSelectModule } from 'primeng/treeselect';
 import { UserDataOrderComponent } from './components/user-data-order/user-data-order.component';
 import {DropdownModule} from "primeng/dropdown";
 import {SelectButtonModule} from 'primeng/selectbutton';
+import { CalendarModule } from 'primeng/calendar';
 
 @NgModule({
   declarations: [
@@ -99,7 +100,8 @@ import {SelectButtonModule} from 'primeng/selectbutton';
     ListboxModule,
     TreeSelectModule,
     DropdownModule,
-    SelectButtonModule
+    SelectButtonModule,
+    CalendarModule
   ],
   providers: [DialogService, MessageService, MessagingService ],
   bootstrap: [AppComponent]

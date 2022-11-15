@@ -27,7 +27,7 @@ export class ProductModalComponent implements OnInit {
   ngOnInit(): void {
     this.product = this.config.data.product
     this.modifiersGroups = this.config.data.modifiersGroups
-    this.modifiers = this.config.data.modifiers    
+    this.modifiers = this.config.data.modifiers
     this.cartProduct = new CartProduct(this.product.id, this.product.name, this.modifiersFilter(), this.modifiers);
   }
 
@@ -39,20 +39,30 @@ export class ProductModalComponent implements OnInit {
     return this.modifiers.filter((modifier) => modifier.groupId === modifierGroup.id)
   }
 
-  selectedOptions(modifier: ModifiersGroup): Modifier[]{
-    return this.cartProduct.modifiers.find(cartModifier => cartModifier.id === modifier.id)?.options ?? [];
+  selectedOptions(modifier: ModifiersGroup): Modifier[] {
+    const cartModifier = this.cartProduct.modifiers.find(cartModifier => cartModifier.id === modifier.id)
+    if (modifier.restrictions.maxQuantity === 1 && modifier.restrictions.minQuantity === 1) {
+      cartModifier?.options.push(this.optionsFilter(modifier)[0])
+    }
+    return cartModifier?.options ?? [];
   }
 
-  addOption(modifier: ModifiersGroup, option: Modifier){
+  addOption(modifier: ModifiersGroup, option: Modifier) {
     const modif = this.cartProduct.modifiers.find((modif) => modif.id === modifier.id);
-    const optionSelectedCartIndex = modif?.options.findIndex((modif) => modif.id === option.id)    
-    if ((optionSelectedCartIndex || optionSelectedCartIndex === 0) && optionSelectedCartIndex !== -1) {
-      modif?.options.splice(optionSelectedCartIndex, 1)
-      return
+    const optionSelectedCartIndex = modif?.options.findIndex((modif) => modif.id === option.id)
+    if (modifier.restrictions.maxQuantity === 1 && modifier.restrictions.minQuantity === 1) {
+      if (modif?.options) {
+        modif.options.length = 0
+      }
+    } else {
+      if ((optionSelectedCartIndex || optionSelectedCartIndex === 0) && optionSelectedCartIndex !== -1) {
+        modif?.options.splice(optionSelectedCartIndex, 1)
+        return
+      }
     }
     modif?.options.push(option)
   }
-
+  
   getIsShow(element: HTMLDivElement) {
     const isShow = Object.values(element.attributes).find((value) => value.name === 'isshow')?.value
     return isShow === 'true'
@@ -67,7 +77,7 @@ export class ProductModalComponent implements OnInit {
       element.setAttribute('isShow', 'false')
       return
     }
-    element.setAttribute('isShow', 'true')    
+    element.setAttribute('isShow', 'true')
   }
 
   addToCart(event: Event) {

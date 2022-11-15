@@ -1,12 +1,12 @@
 import {MainPageCode, OrderStatus, Page, PageCode, PaymentMethod} from "./interface/data";
 
 export const PageList: Page[] = [
-    {
-      code: PageCode.Auth,
-      name: 'Вход',
-      resName: 'auth',
-      onSideBar: false,
-    },
+    // {
+    //   code: PageCode.Auth,
+    //   name: 'Вход',
+    //   resName: 'auth',
+    //   onSideBar: false,
+    // },
     {
       code: PageCode.Orders,
       name: 'Заказы',
@@ -16,12 +16,12 @@ export const PageList: Page[] = [
 ];
 
 export const PageListWithBonus: Page[] = [
-    {
-        code: PageCode.Auth,
-        name: 'Вход',
-        resName: 'auth',
-        onSideBar: false,
-    },
+    // {
+    //     code: PageCode.Auth,
+    //     name: 'Вход',
+    //     resName: 'auth',
+    //     onSideBar: false,
+    // },
     {
         code: PageCode.BonusProgram,
         name: 'Ваша карта лояльности',

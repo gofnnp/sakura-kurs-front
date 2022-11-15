@@ -93,7 +93,7 @@
 
 <app-user-data-order *ngIf="orderConfirmed" (orderSubmitted)="orderSubmitted()"></app-user-data-order>
 
-<div #loadingEl *ngIf="loading">
+<div #loadingEl *ngIf="loading && !orderConfirmed">
   <div class="angular-spinner-container" style="width: fit-content; height: 100%; margin: 16px auto;">
     <p-progressSpinner styleClass="angular-spinner"></p-progressSpinner>
   </div>

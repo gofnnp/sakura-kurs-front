@@ -1,18 +1,20 @@
-<div *ngFor="let option of options" class="extra_options_checkbox">
+<div *ngFor="let option of options; let index = index;" class="extra_options_checkbox">
     <div class="extra_options_label"><label>{{option.name}}</label></div>
     <div class="extra_options_value">
         <div class="woofood-cbx-wrapper">
             <input class="inp-woofood-cbx"
-                [disabled]="!optionIsSelected(option) && selectedOptions.length >= modifier.restrictions.maxQuantity"
-                [checked]="optionIsSelected(option)" type="checkbox" style="display: none" name="add_extra_option"
-                value="{{option.id}}" id="{{option.id}}" (change)="onToggle(option)">
+                [disabled]="!optionIsSelected(option) && selectedOptions.length >= modifier.restrictions.maxQuantity && (modifier.restrictions.maxQuantity > 1 || !modifier.restrictions.minQuantity)"
+                [checked]="optionIsSelected(option)"
+                [type]="modifier.restrictions.maxQuantity > 1 || !modifier.restrictions.minQuantity ? 'checkbox' : 'radio'"
+                style="display: none" name="add_extra_option" value="{{option.id}}" id="{{option.id}}"
+                (change)="onToggle(option)">
             <label class="woofood-cbx" for="{{option.id}}">
                 <span>
                     <svg width="12px" height="10px" viewBox="0 0 12 10">
                         <polyline points="1.5 6 4.5 9 10.5 1"></polyline>
                     </svg>
                 </span>
-                <span>{{currencySymbol}}{{0}}</span>
+                <span>{{currencySymbol}}{{option.price}}</span>
             </label>
         </div>
     </div>

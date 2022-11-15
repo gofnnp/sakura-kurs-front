@@ -1,21 +1,17 @@
 <div [ngClass]="{
   woocommerce: true,
-  'auth-page': currentPage.code === PageCode.Auth
+  'auth-page': showAuthoriztion
 }">
-  <nav *ngIf="currentPage.code !== PageCode.Auth" class="main-menu-container">
+  <nav class="main-menu-container">
     <ul>
       <ng-container *ngFor="let page of mainPageList; let index = index; let last = last; let first = first;">
-        <li *ngIf="page.onSideBar" class="main-menu-container__item"
-          [ngClass]="{
+        <li *ngIf="page.onSideBar" class="main-menu-container__item" [ngClass]="{
             'cart': page.resName === 'cart',
             'is-active': page === currentPageMain
-          }"
-          [ngStyle]="{
+          }" [ngStyle]="{
             border: last && 0,
             'border-radius': first ? '6px 0 0 6px' : (last ? '0 6px 6px 0' : 0)
-          }"
-          [attr.data-counter]="page.resName === 'cart' ? cartCount : null"
-          (click)="changeMainPage(page, $event)">
+          }" [attr.data-counter]="page.resName === 'cart' ? cartCount : null" (click)="changeMainPage(page, $event)">
           <span>
             {{page.name}}
           </span>
@@ -25,12 +21,9 @@
   </nav>
   <div [ngSwitch]="currentPageMain.code">
     <ng-container *ngSwitchCase="MainPageCode.Account">
-      <div class="account-page">
-        <div *ngIf="currentPage.code !== PageCode.Auth" class="top-left-attribute"></div>
+      <div *ngIf="!showAuthoriztion" class="account-page">
+        <div *ngIf="showAuthoriztion" class="top-left-attribute"></div>
         <div [ngSwitch]="currentPage.code" class="">
-          <ng-container *ngSwitchCase="PageCode.Auth">
-            <app-auth [handleHttpError]="handleHttpErrorFunc" (phoneConfirmed)="phoneConfirmed()"></app-auth>
-          </ng-container>
           <ng-container *ngSwitchCase="PageCode.Orders">
             <app-orders (deauthorization)="changePage(pageList[0])"></app-orders>
           </ng-container>
@@ -44,7 +37,7 @@
             <app-ref-system></app-ref-system>
           </ng-container>
         </div>
-        <nav *ngIf="currentPage.code !== PageCode.Auth" class="woocommerce-MyAccount-navigation">
+        <nav *ngIf="!showAuthoriztion" class="woocommerce-MyAccount-navigation">
           <ul>
             <ng-container *ngFor="let page of pageList; let index = index">
               <li *ngIf="page.onSideBar" class="woocommerce-MyAccount-navigation-link" [ngClass]="{
@@ -76,7 +69,12 @@
       <app-products></app-products>
     </ng-container>
     <ng-container *ngSwitchCase="MainPageCode.Cart">
-      <app-cart></app-cart>
+      <app-cart *ngIf="!showAuthoriztion" (showAuthoriztion)="checkAuthorization($event)"></app-cart>
+    </ng-container>
+
+    <ng-container>
+      <app-auth *ngIf="showAuthoriztion && currentPageMain !== mainPageList[1]" [handleHttpError]="handleHttpErrorFunc"
+        (phoneConfirmed)="phoneConfirmed()"></app-auth>
     </ng-container>
   </div>
 
