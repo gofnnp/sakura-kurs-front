@@ -1,0 +1,21 @@
+:host {
+    .change-quantity {
+        border: 1px solid #dfdee2;
+        border-radius: 4px;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        height: 28px;
+    margin: 4px 16px 4px 0;
+
+        button {
+            background: #ffffff;
+            border: 0;
+            font-size: 28px;
+            font-weight: 300;
+            &:disabled {
+                opacity: 0.3;
+            }
+        }
+    }
+}

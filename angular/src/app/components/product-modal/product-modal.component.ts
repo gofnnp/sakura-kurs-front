@@ -1,9 +1,11 @@
 import { Component, OnInit } from '@angular/core';
+import { MessageService } from 'primeng/api';
 import { DynamicDialogConfig, DynamicDialogRef } from 'primeng/dynamicdialog';
-import { AllData, Modifier, ModifiersGroup, Option, Product } from 'src/app/interface/data';
+import { AllData, CartModifier, Modifier, ModifiersGroup, Option, Product } from 'src/app/interface/data';
 import { CartProduct } from 'src/app/models/cart-product';
 import { CartService } from 'src/app/services/cart.service';
 import { WpJsonService } from 'src/app/services/wp-json.service';
+import { ChangeValue } from '../change-quantity/change-quantity.component';
 
 @Component({
   selector: 'app-product-modal',
@@ -16,12 +18,14 @@ export class ProductModalComponent implements OnInit {
   public modifiersGroups!: ModifiersGroup[];
   public modifiers!: Modifier[];
   public cartProduct!: CartProduct;
+  public isValidate: boolean = false
 
   constructor(
     public dialogRef: DynamicDialogRef,
     public config: DynamicDialogConfig,
     private wpJsonService: WpJsonService,
     private cartService: CartService,
+    private messageService: MessageService,
   ) { }
 
   ngOnInit(): void {
@@ -38,6 +42,25 @@ export class ProductModalComponent implements OnInit {
   optionsFilter(modifierGroup: ModifiersGroup): Modifier[] {
     return this.modifiers.filter((modifier) => modifier.groupId === modifierGroup.id)
   }
+
+  changeQuantity(event: any) {
+    const value: ChangeValue = event.value
+    const modifierGroup: CartModifier = event.modifierGroup
+    const option: Modifier = event.option
+
+    const modifGroup = this.cartProduct.modifiers.find((modifGroup) => modifGroup.idLocal === modifierGroup.idLocal)
+    const modifier = modifGroup?.options.find((modifier) => modifier.idLocal == option.idLocal)
+
+    if (!modifier) return
+    if (!modifier.quantity && modifier.quantity !== 0) modifier.quantity = modifier.restrictions.byDefault
+    if (value.type === 'minus') {
+      modifier.quantity -= value.variableQuantity
+    } else {
+      modifier.quantity += value.variableQuantity
+    }
+  }
+
+
 
   selectedOptions(modifier: ModifiersGroup): Modifier[] {
     const cartModifier = this.cartProduct.modifiers.find(cartModifier => cartModifier.id === modifier.id)
@@ -62,7 +85,7 @@ export class ProductModalComponent implements OnInit {
     }
     modif?.options.push(option)
   }
-  
+
   getIsShow(element: HTMLDivElement) {
     const isShow = Object.values(element.attributes).find((value) => value.name === 'isshow')?.value
     return isShow === 'true'
@@ -83,6 +106,17 @@ export class ProductModalComponent implements OnInit {
   addToCart(event: Event) {
     if (event) {
       event.preventDefault()
+    }
+    for (let modifiersGroup of this.cartProduct.modifiers) {
+      const isValidModifier = modifiersGroup.allQuantity < modifiersGroup.restrictions.minQuantity
+      if (isValidModifier) {
+        this.messageService.add({
+          severity: 'error',
+          summary: 'Заполните все модификаторы!'
+        });
+        this.isValidate = true
+        return
+      }
     }
     this.cartService.addToCart(this.cartProduct);
     this.dialogRef.close();

@@ -1,0 +1,19 @@
+<div class="change-quantity">
+    <button (click)="changeValue({type: 'minus', variableQuantity: variableQuantity})"
+        [disabled]="disabledButton.includes('minus')"
+        [ngClass]="{
+            'is-active': !disabledButton.includes('minus')
+        }">
+        -
+    </button>
+    <span>
+        {{value}}
+    </span>
+    <button (click)="changeValue({type: 'plus', variableQuantity: variableQuantity})"
+        [disabled]="disabledButton.includes('plus')"
+        [ngClass]="{
+            'is-active': !disabledButton.includes('plus')
+        }">
+        +
+    </button>
+</div>

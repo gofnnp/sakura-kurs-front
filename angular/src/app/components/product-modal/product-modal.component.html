@@ -4,7 +4,8 @@
 
     <div class="product-modal__modifiers-container">
         <ng-container *ngIf="product.modifiers_group.length">
-            <div *ngFor="let modifierGroup of modifiersFilter()" [attr.isShow]="false" class="product-modal__modifier" #modifierContainer>
+            <div *ngFor="let modifierGroup of cartProduct.modifiers" [attr.isShow]="false"
+                [ngClass]="{'product-modal__modifier': true, 'no-valid': isValidate && modifierGroup.allQuantity < modifierGroup.restrictions.minQuantity}" #modifierContainer>
                 <a (click)="setOptionsView($event, modifierContainer)">
                     {{modifierGroup.name}}
                     <span [ngClass]="{
@@ -16,9 +17,8 @@
                     'options-container': true,
                     'isShow': getIsShow(modifierContainer)
                   }">
-                    <app-checkbox-group [modifier]="modifierGroup" [options]="optionsFilter(modifierGroup)"
-                        currencySymbol="₽" [selectedOptions]="selectedOptions(modifierGroup)"
-                        (toggle)="addOption(modifierGroup, $event)">
+                    <app-checkbox-group [modifier]="modifierGroup" [options]="modifierGroup.options"
+                        currencySymbol="₽" (onChangeQuantity)="changeQuantity($event)">
                     </app-checkbox-group>
                 </div>
             </div>

@@ -1,4 +1,4 @@
-<div *ngFor="let option of options; let index = index;" class="extra_options_checkbox">
+<!-- <div *ngFor="let option of options; let index = index;" class="extra_options_checkbox">
     <div class="extra_options_label"><label>{{option.name}}</label></div>
     <div class="extra_options_value">
         <div class="woofood-cbx-wrapper">
@@ -17,5 +17,18 @@
                 <span>{{currencySymbol}}{{option.price}}</span>
             </label>
         </div>
+    </div>
+</div> -->
+
+<span *ngIf="modifier.restrictions.minQuantity > allQuantity" class="validator-text">
+    Минимальное количество продуктов: {{modifier.restrictions.minQuantity}}
+</span>
+<div *ngFor="let option of options; let index = index;" class="extra_options_checkbox">
+    <div class="extra_options_label"><label>{{option.name}}</label></div>
+    <div class="extra_options_value">
+        <app-change-quantity (onChangeValue)="changeQuantity($event, option)"
+            [value]="(option.quantity || option.quantity === 0) ? option.quantity : option.restrictions.byDefault"
+            [disabledButton]="getDisabledButton(option)">
+        </app-change-quantity>
     </div>
 </div>
