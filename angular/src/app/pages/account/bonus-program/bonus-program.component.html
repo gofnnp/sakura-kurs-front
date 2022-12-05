@@ -15,7 +15,7 @@
       </div>
       <div class="card-container__content">
         <div class="info">
-          <div *ngIf="accountData" class="row">
+          <div *ngIf="accountData" class="info__row">
             <span class="key">Имя</span>
             <span class="value" *ngIf="userName.length">{{
               userName
@@ -24,7 +24,7 @@
               >Не задано</span
             >
           </div>
-          <div *ngIf="accountData" class="row">
+          <div *ngIf="accountData" class="info__row">
             <span class="key">Баланс карты</span>
             <span class="value">{{ accountData.Bonuses }}</span>
           </div>
