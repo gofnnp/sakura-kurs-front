@@ -14,6 +14,8 @@ import { AccountComponent } from '../account/account.component';
 import { MessageService } from 'primeng/api';
 import { MessagingService } from 'src/app/services/messaging.service';
 import { CookiesService } from 'src/app/services/cookies.service';
+import { Store } from '@ngrx/store';
+import * as ConfigActions from '../../state/config/config.actions'
 
 @Component({
   selector: 'app-main',
@@ -38,6 +40,7 @@ export class MainComponent implements OnInit {
     private messageService: MessageService,
     private messagingService: MessagingService,
     private cookiesService: CookiesService,
+    private store: Store
   ) {
     renderer.listen('window', 'appinstalled', (evt) => {
       console.log('INSTALLED!!!');
@@ -54,10 +57,12 @@ export class MainComponent implements OnInit {
         this.token = token ? token : '';
       };
     });
+    
   }
 
   ngOnInit(): void {
     this.appendAccount();
+    this.store.dispatch(ConfigActions.getConfig());
     // this.checkRequestPermission()
   }
 

@@ -1,0 +1,40 @@
+{
+    "checkout": {
+        "delivery": {
+            "values": [
+                {
+                    "cost": 0,
+                    "title": "Самовывоз",
+                    "id": 16,
+                    "type": "self_delivery"
+                }
+            ],
+            "default": 0,
+            "disabled": true
+        },
+        "payments": {
+            "values": [
+                {
+                    "type": "bonus",
+                    "label": "Оплата бонусами"
+                },
+                {
+                    "type": "card",
+                    "label": "Оплата картой"
+                }
+            ],
+            "default": 0,
+            "disabled": true
+        },
+        "timeDelivery": {
+            "changeTime": {
+                "isShow": true,
+                "defaultValue": 60,
+                "disabled": true
+            },
+            "checkboxNow": {
+                "isShow": false
+            }
+        }
+    }
+}
