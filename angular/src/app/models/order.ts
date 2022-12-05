@@ -38,7 +38,7 @@ export class Order {
     const date = moment(this.deliveryData?.deliveryDate ?? Date.now());
     return {
       formname: "Cart",
-      paymentsystem: this.deliveryData?.paymentMethod.type,
+      paymentsystem: this.deliveryData?.paymentMethod?.type,
       phone: this.phone,
       persons: 1,
       name: "31",
@@ -51,7 +51,7 @@ export class Order {
         subtotal: this.price,
         delivery_comment: this.deliveryData?.comment,
         delivery: this.deliveryData?.deliveryType?.type,
-        delivery_address: `${environment.cities[0]}, ул ${this.userData?.street},  ${this.userData?.house}`,
+        delivery_address: this.deliveryData?.deliveryType?.type === "self_delivery" ? null : `${environment.cities[0]}, ул ${this.userData?.street},  ${this.userData?.house}`,
         amount: this.price + 100
      },
     }

@@ -1,6 +1,6 @@
 import { Component, EventEmitter, OnInit, Output } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { DeliveryData, DeliveryType, UserData } from 'src/app/interface/data';
+import { DeliveryData, DeliveryType, PaymentMethod, UserData } from 'src/app/interface/data';
 import { paymentMethods } from "../../app.constants";
 import { OrderService } from "../../services/order.service";
 import { AutocompleteService } from "../../services/autocomplete.service";
@@ -12,6 +12,10 @@ import { WpJsonService } from "../../services/wp-json.service";
 import { HttpClient, HttpClientModule } from '@angular/common/http';
 import { CookiesService } from 'src/app/services/cookies.service';
 import moment from 'moment';
+import { Order } from 'src/app/models/order';
+import { Store } from '@ngrx/store';
+import * as fromConfig from '../../state/config/config.reducer'
+import { lastValueFrom } from 'rxjs';
 
 
 
@@ -24,7 +28,7 @@ export class UserDataOrderComponent implements OnInit {
 
   @Output() orderSubmitted = new EventEmitter<void>();
   readonly cities = environment.cities;
-  readonly paymentMethods = paymentMethods;
+  public paymentMethods!: PaymentMethod[];
   public loading = false;
   public hasError = false;
   public mainFormGroup!: FormGroup;
@@ -34,6 +38,7 @@ export class UserDataOrderComponent implements OnInit {
   public new_house!: string | null;
   public checkAddress: boolean = true;
   public showMyMessage: boolean = false;
+  public order!: Order;
 
   public userData: UserData = {
     first_name: null,
@@ -45,14 +50,17 @@ export class UserDataOrderComponent implements OnInit {
     phone: null,
   };
   public deliverData: DeliveryData = {
-    deliveryDate: moment().add(1, 'hours').toDate(),
+    deliveryDate: null,
     deliveryType: null,
-    paymentMethod: paymentMethods[0],
+    paymentMethod: null,
     comment: '',
     persons: 1
   };
   public terminalList!: any;
   public selectedTerminal!: any;
+
+  checkoutConfig$ = this.store.select(fromConfig.selectCheckout);
+  checkoutConfig!: any;
 
   constructor(
     private fb: FormBuilder,
@@ -64,14 +72,22 @@ export class UserDataOrderComponent implements OnInit {
     private wpJsonService: WpJsonService,
     private http: HttpClient,
     private cookiesService: CookiesService,
-  ) {
-  }
+    private store: Store
+  ) { }
 
-  ngOnInit(): void {    
+  async ngOnInit() {
     this._createMainForm();
     this.getTerminalList();
     this.selectedTerminal = JSON.parse(this.cookiesService.getItem('selectedTerminal') || '')
-    
+    this.checkoutConfig$.subscribe({
+      next: (value: any) => {
+        this.checkoutConfig = value
+      }
+    })
+    this.deliverData.deliveryDate = moment().add(this.checkoutConfig.timeDelivery.changeTime.defaultValue, 'minutes').toDate()
+    this.paymentMethods = this.checkoutConfig.payments.values
+    this.deliverData.paymentMethod = this.paymentMethods[this.checkoutConfig.payments.default]
+
   }
 
   getTerminalList() {
@@ -81,7 +97,7 @@ export class UserDataOrderComponent implements OnInit {
       },
       error: (err) => {
         console.error(err);
-        
+
       }
     })
   }
@@ -125,21 +141,26 @@ export class UserDataOrderComponent implements OnInit {
     if (this.mainFormGroup.invalid) {
       Object.keys(mainControls).forEach(groupName => {
         const childGroupControls = (mainControls[groupName] as FormGroup).controls;
-        Object.keys(mainControls).forEach(controlName => {
+        Object.keys(childGroupControls).forEach(controlName => {
           childGroupControls[controlName].markAsTouched();
         });
       });
+      this.messageService.add({
+        severity: 'error',
+        summary: 'Заполните обязательные поля',
+      })
       return;
     }
     this.submitOrder();
   }
 
-  submitOrder(): void {
+  async submitOrder() {
     this.loading = true;
-    const userData: UserData = this.mainFormGroup.controls['userDataForm'].value;
+    const userData: UserData = this.mainFormGroup.controls['userDataForm'].getRawValue();
     userData.phone = this.userData.phone;
     this.orderService.setUserData(userData);
-    this.orderService.setDeliveryData(this.mainFormGroup.controls['deliveryDataForm'].value);
+    this.orderService.setDeliveryData(this.mainFormGroup.controls['deliveryDataForm'].getRawValue());
+    
     this.orderService.submit().subscribe({
       next: (_) => {
         this.loading = false;
@@ -175,43 +196,31 @@ export class UserDataOrderComponent implements OnInit {
   }
 
   private async _createUserDataForm(): Promise<FormGroup> {
-    const order = await this.orderService.getOrder(true);
-    this.userData = Object.assign({}, this.userData, order.userData);
+    this.order = await this.orderService.getOrder(true);
+    this.userData = Object.assign({}, this.userData, this.order.userData);
     this.userData.city = this.cities[0];
-    this.userData.phone = order.phone;
+    this.userData.phone = this.order.phone;
     // await this.autoCompleteService.setCity(this.userData.city);
+    const isSelfDelivery = this.deliverData.deliveryType?.type === "self_delivery"
     return this.fb.group({
       phone: [this.userData.phone],
       first_name: [this.userData.first_name, [Validators.required, Validators.minLength(2), Validators.maxLength(255),]],
       // last_name: [this.userData.last_name, [Validators.required, Validators.minLength(2), Validators.maxLength(255),]],
-      street: [this.userData.street, [Validators.required, Validators.minLength(2), Validators.maxLength(255),]],
-      house: [this.userData.house, [Validators.required, Validators.maxLength(10), Validators.pattern('^\\d+[-|\\d]+\\d+$|^\\d*$')]],
+      street: [{ value: this.userData.street, disabled: isSelfDelivery }, isSelfDelivery ?? [Validators.required, Validators.minLength(2), Validators.maxLength(255),]],
+      house: [{ value: this.userData.house, disabled: isSelfDelivery }, isSelfDelivery ?? [Validators.required, Validators.maxLength(10), Validators.pattern('^\\d+[-|\\d]+\\d+$|^\\d*$')]],
       flat: [this.userData.flat, []],
       // city: [this.userData.city, [Validators.required]],
     });
   }
 
   private async _createDeliveryDataForm(): Promise<FormGroup> {
-    this.deliveryTypes = [
-      {
-        "cost": 100,
-        "title": "Доставка",
-        "id": 11,
-        "type": "delivery"
-      },
-      {
-        "cost": 0,
-        "title": "Самовывоз",
-        "id": 16,
-        "type": "self_delivery"
-      }
-    ];
-    this.deliverData.deliveryType = this.deliveryTypes[1];
+    this.deliveryTypes = this.checkoutConfig.delivery.values;
+    this.deliverData.deliveryType = this.deliveryTypes[this.checkoutConfig.delivery.default];
     return this.fb.group({
-      deliveryDate: [this.deliverData.deliveryDate, []],
-      deliveryType: [this.deliverData.deliveryType, [Validators.required]],
-      paymentMethod: [this.deliverData.paymentMethod, [Validators.required]],
-      // persons: [this.deliverData.persons, [Validators.required, Validators.minLength(2), Validators.maxLength(255),]],
+      deliveryDate: [{ value: this.deliverData.deliveryDate, disabled: this.checkoutConfig.timeDelivery.changeTime.disabled }, []],
+      deliveryType: [{ value: this.deliverData.deliveryType, disabled: this.checkoutConfig.delivery.disabled }, [Validators.required]],
+      paymentMethod: [{ value: this.deliverData.paymentMethod, disabled: this.checkoutConfig.payments.disabled }, [Validators.required]],
+      persons: [this.deliverData.persons, [Validators.required, Validators.minLength(2), Validators.maxLength(255),]],
       comment: [this.deliverData.comment, [Validators.maxLength(255),]]
     });
   }

@@ -17,9 +17,9 @@
             <dl *ngFor="let modifier of product.modifier_data" class="variation"
               [ngStyle]="{margin: !modifier.options.length && 0}">
               <ng-container *ngFor="let option of modifier.options">
-                <dt style="max-width: 160px;" class="variation-">{{option.name}}:</dt>
-                <dd style="display: flex; align-items: flex-end; margin-bottom: 0;" class="variation-">
-                  <p>{{product.currency_symbol}}{{option.price ?? 0}}</p>
+                <dt *ngIf="option.quantity" style="max-width: 160px;" class="variation-">{{option.name}}:</dt>
+                <dd *ngIf="option.quantity" style="display: flex; align-items: flex-end; margin-bottom: 0;" class="variation-">
+                  <p>{{option.quantity}} × {{product.currency_symbol}}{{(option.price ?? 0) * option.quantity}}</p>
                 </dd>
               </ng-container>
             </dl>
@@ -27,7 +27,7 @@
 
           <div class="elementor-menu-cart__product-price product-price" data-title="Price">
             <span class="quantity">
-              <span class="product-quantity">{{product.amount}} ×</span>
+              <span class="product-quantity">{{product.amount}} × </span>
               <span class="woocommerce-Price-amount amount">
                 <bdi>
                   <span class="woocommerce-Price-currencySymbol">{{product.currency_symbol}}</span>
@@ -58,7 +58,7 @@
     </div>
     <div *ngIf="order.products.length != 0" class="elementor-menu-cart__bottom-info">
       <div class="elementor-menu-cart__subtotal">
-        <strong>К оплате: </strong>
+        <span class="products-count">Товаров: {{order.products.length}}</span>
         <span class="woocommerce-Price-amount amount"><bdi><span
               class="woocommerce-Price-currencySymbol">{{order.products[0].currency_symbol}}</span>{{order.price}}</bdi></span>
       </div>
@@ -80,10 +80,10 @@
         </div>
         <div class="grid p-fluid">
           <div class="col-6">
-            <button type="button" pButton (click)="onConfirm()" label="Да" class="p-button-success">Да</button>
+            <button type="button" pButton (click)="onConfirm()" label="Да" class="p-button-success"></button>
           </div>
           <div class="col-6">
-            <button type="button" pButton (click)="onReject()" label="Нет" class="p-button-secondary">Нет</button>
+            <button type="button" pButton (click)="onReject()" label="Нет" class="p-button-secondary"></button>
           </div>
         </div>
       </div>

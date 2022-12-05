@@ -41,7 +41,7 @@ export class OrderProduct implements Product{
   get finalPrice(): number{
     const modifiersPrice = this.modifier_data.reduce<number>((previousValue, currentValue) => {
       return previousValue + currentValue.options.reduce<number>((previousOptionValue, currentOptionValue) => {
-        return previousOptionValue + Number(currentOptionValue.price ? currentOptionValue.price : 0);
+        return previousOptionValue + Number(currentOptionValue.price ? currentOptionValue.price * (currentOptionValue.quantity ?? 0) : 0);
       }, 0);
     }, 0);
     return (Number(this.price) + modifiersPrice) * this.amount;
@@ -55,9 +55,14 @@ export class OrderProduct implements Product{
       options: this.modifier_data?.map((modifier) => {
         return {
           option: modifier.name,
-          variant: modifier.options[0]?.name || null
+          variants: modifier.options.map((option) => ({
+            variant: option.name,
+            id: option.id,
+            quantity: option.quantity
+          })).filter((option) => option.quantity) || null,
+          id: modifier.id
         }
-      }),
+      }).filter((modifier) => modifier.variants.length),
       quantity: this.amount,
       name: this.name,
     }

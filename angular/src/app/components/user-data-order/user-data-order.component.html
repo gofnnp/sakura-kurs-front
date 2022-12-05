@@ -34,25 +34,17 @@
         <div formGroupName="deliveryDataForm">
             <p сlass="form-row form-row-wide">
                 <p-dropdown [options]="deliveryTypes" formControlName="deliveryType" placeholder="Доставка"
-                    optionLabel="title" (onChange)="changeDeliveryType($event)" [disabled]="true"></p-dropdown>
+                    optionLabel="title" (onChange)="changeDeliveryType($event)"></p-dropdown>
             </p>
             <p сlass="form-row form-row-wide">
                 <label id="deliveryDate">Время выдачи</label>
-                <p-calendar
-                    formControlName="deliveryDate"
-                    [showTime]="true"
-                    [showSeconds]="false"
-                    [disabled]="true"
-                    [touchUI]="true"
-                    inputId="time"
-                    placeholder="Время выдачи"
-                    dateFormat="dd.mm.yy"
-                ></p-calendar>
+                <p-calendar formControlName="deliveryDate" [showTime]="true" [showSeconds]="false"
+                    [touchUI]="true" inputId="time" placeholder="Время выдачи" dateFormat="dd.mm.yy"></p-calendar>
             </p>
             <p сlass="form-row form-row-wide">
-                <!-- <p-selectButton [options]="paymentMethods" formControlName="paymentMethod" optionLabel="label">
-                </p-selectButton> -->
-                *Оплата бонусами
+                <p-dropdown [options]="paymentMethods" formControlName="paymentMethod" optionLabel="label" placeholder="Тип оплаты">
+                </p-dropdown>
+                <!-- *Оплата бонусами -->
             </p>
             <!-- <p сlass="form-row form-row-last">
                 <input [maxLength]="255" id="promo-code" pInputText placeholder="Промокод" type="text">
@@ -62,10 +54,17 @@
                     rows="1"></textarea>
             </p>
         </div>
-        <button [disabled]="!mainFormGroup.valid" class="elementor-button elementor-button--checkout elementor-size-md"
-            (click)="submit()">
-            <span class="elementor-button-text">Оформить заказ</span>
-        </button>
+        <div class="bootom-info">
+            <div class="subtotal">
+                <span class="products-count">Товаров: {{order.products.length}}</span>
+                <span class="woocommerce-Price-amount amount"><bdi><span
+                            class="woocommerce-Price-currencySymbol">{{order.products[0].currency_symbol}}</span>{{order.price}}</bdi></span>
+            </div>
+            <button 
+                class="elementor-button elementor-button--checkout elementor-size-md">
+                <span class="elementor-button-text">Оформить заказ</span>
+            </button>
+        </div>
         <p *ngIf="showMyMessage" style="color: red; font-size: 20px">Такой адрес не найден! Введите правильный адрес</p>
     </form>
 </div>
