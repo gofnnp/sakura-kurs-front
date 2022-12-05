@@ -3,23 +3,29 @@
     <div class="products-container__filters-container">
         <label>Категория</label>
         <p-treeSelect *ngIf="groups" [(ngModel)]="selectedGroup" [options]="groups"
-            (onNodeUnselect)="onGroupUnselect($event)" placeholder="Группа"></p-treeSelect>
+            (onNodeSelect)="changeGroup()" (onNodeUnselect)="onGroupUnselect($event)" placeholder="Группа"></p-treeSelect>
         <label>Пункт выдачи</label>
         <p-treeSelect *ngIf="terminalList" [(ngModel)]="selectedTerminal" [options]="terminalList"
             (onNodeSelect)="changeTerminal()" (onNodeUnselect)="onTerminalUnselect($event)"
             placeholder="Пункт самовывоза" [disabled]="!!cartService.cartCount"></p-treeSelect>
     </div>
+    <p-paginator [style]="{'background': 'transparent', padding: '8px 0'}" [alwaysShow]="false" [first]="currentPage" [rows]="8"
+        [totalRecords]="filterByGroup().length" (onPageChange)="onPageChange($event)" [pageLinkSize]="3"
+        [showPageLinks]="true"></p-paginator>
     <div class="products-container__items">
-        <div *ngFor="let product of filterByGroup()" class="products-container__item">
+        <div *ngFor="let product of cropList(filterByGroup(), 8)" (click)="addToCart($event, product)" class="products-container__item">
             <img *ngIf="!product.image" src="./assets/no-image.png" alt="{{product.name}}">
             <img *ngIf="product.image" src="{{product.image}}" alt="{{product.name}}">
             <div class="products-container__name-container">
                 <p>{{product.name}}</p>
                 <span>{{product.price}}₽</span>
             </div>
-            <button class="products-container__add-to-cart" (click)="addToCart($event, product)">В корзину</button>
+            <button class="products-container__add-to-cart">В корзину</button>
         </div>
     </div>
+    <p-paginator [style]="{'background': 'transparent', padding: '8px 0'}" [alwaysShow]="false" [first]="currentPage" [rows]="8"
+        [totalRecords]="filterByGroup().length" (onPageChange)="onPageChange($event)" [pageLinkSize]="3"
+        [showPageLinks]="true"></p-paginator>
     <p-toast position="bottom-center" key="c" (onClose)="onReject()" [baseZIndex]="5000">
         <ng-template let-message pTemplate="message">
             <div class="flex flex-column" style="flex: 1">
@@ -31,11 +37,11 @@
                 <div class="grid p-fluid">
                     <div class="col-6">
                         <button type="button" pButton (click)="onConfirm()" label="Да"
-                            class="p-button-success">Да</button>
+                            class="p-button-success"></button>
                     </div>
                     <div class="col-6">
                         <button type="button" pButton (click)="onReject()" label="Нет"
-                            class="p-button-secondary">Нет</button>
+                            class="p-button-secondary"></button>
                     </div>
                 </div>
             </div>

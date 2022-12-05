@@ -24,6 +24,7 @@ export class ProductsComponent implements OnInit {
   public terminalList!: any;
   public selectedTerminal!: any;
   public loading: boolean = false;
+  public currentPage: number = 0
 
   constructor(
     public dialogService: DialogService,
@@ -99,10 +100,18 @@ export class ProductsComponent implements OnInit {
     })
   }
 
+  onPageChange(event: any) {
+    this.currentPage = event.first;    
+  }
+
   filterByGroup() {    
     if (!this.selectedGroup) return []
     if (this.selectedGroup.label === 'Все') return this.products
-    return this.products.filter((product) => product.groupId === this.selectedGroup.id)
+    return JSON.parse(JSON.stringify(this.products.filter((product) => product.groupId === this.selectedGroup.id)))
+  }
+
+  cropList(list: Array<any>, quantity: number) {
+    return list.slice(this.currentPage, this.currentPage + quantity)
   }
 
   addToCart(event: MouseEvent, product: Product) {
@@ -119,7 +128,7 @@ export class ProductsComponent implements OnInit {
       contentStyle: {
         'max-height': '90vh',
         height: 'auto',
-        'max-width': '90vw',
+        'max-width': '600px',
         overflow: 'auto',
       },
       data: {
@@ -142,7 +151,12 @@ export class ProductsComponent implements OnInit {
       this.getData()
       this.cartService.changeTerminal(this.selectedTerminal);
       this.loading = false;
+      this.currentPage = 0
     }, 0);
+  }
+
+  changeGroup() {
+    this.currentPage = 0
   }
 
   onGroupUnselect(event: any) {    

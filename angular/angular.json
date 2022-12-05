@@ -34,6 +34,7 @@
               "src/firebase-messaging-sw.js"
             ],
             "styles": [
+              "node_modules/mdb-angular-ui-kit/assets/scss/mdb.scss",
               "node_modules/primeng/resources/themes/saga-blue/theme.css",
               "node_modules/primeicons/primeicons.css",
               "node_modules/primeng/resources/primeng.min.css",

@@ -12,7 +12,8 @@ export enum PageCode {
 export enum MainPageCode {
     Account,
     Products,
-    Cart
+    Cart,
+    Info
 }
 
 export interface Page {
@@ -23,6 +24,7 @@ export interface Page {
     getMethod?: string;
     resName?: string;
     onSideBar: boolean
+    icon?: string;
 }
 
 export interface UserDataForm {
@@ -150,9 +152,11 @@ export interface ModifiersGroup {
 
 export interface Modifier {
     id: string,
+    idLocal: string,
     name: string,
     groupId: string,
     price?: number,
+    quantity?: number,
     restrictions: {
         minQuantity: number,
         maxQuantity: number,
@@ -163,8 +167,16 @@ export interface Modifier {
 
 export interface CartModifier {
     id: string;
+    idLocal: string;
     name: string;
     options: Modifier[];
+    allQuantity: number;
+    restrictions: {
+        minQuantity: number,
+        maxQuantity: number,
+        freeQuantity: number,
+        byDefault: number
+    }
 }
 
 export interface Cart {
@@ -212,7 +224,7 @@ export interface OrderModifier {
 }
 
 export interface DeliveryData {
-    paymentMethod: PaymentMethod;
+    paymentMethod: PaymentMethod | null;
     deliveryDate: Date | null;
     deliveryType: DeliveryType | null;
     persons: number;

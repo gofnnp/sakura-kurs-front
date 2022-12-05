@@ -7,7 +7,7 @@ export const environment = {
   appWPEndpoint: './',
   hasBonusProgram: true,
   systemId: 'StyrkNFW9vKga1KlJP',
-  defaultUrl: 'http://192.168.0.12:4200',
+  defaultUrl: 'http://192.168.0.14:4200',
   firebase: {
     apiKey: 'AIzaSyCnKvln5itnrBj62POCPHxshAN_Vmd0zds',
     authDomain: 'fashionlogicanotification.firebaseapp.com',
@@ -21,7 +21,7 @@ export const environment = {
   appleWalletEndpoint: 'http://192.168.0.179:4200/apns/api',
   appleWalletSecret: 'Token F5mbzEERAznGKVbB6l',
   webhookItRetail: 'https://webhook.it-retail.tech/handlers/tillda/1eb3fb56-3c4c-43b7-9a04-ce532ab7548f',
-  icardProxy: 'http://192.168.0.12:4200/icard-proxy/',
+  icardProxy: 'http://192.168.0.14:4200/icard-proxy/',
   clientName: 'Sakura',
   cities: ['Менделеевск'],
 };

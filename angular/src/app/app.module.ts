@@ -43,6 +43,16 @@ import { UserDataOrderComponent } from './components/user-data-order/user-data-o
 import {DropdownModule} from "primeng/dropdown";
 import {SelectButtonModule} from 'primeng/selectbutton';
 import { CalendarModule } from 'primeng/calendar';
+import {MatIconModule} from '@angular/material/icon';
+import { InfoComponent } from './pages/info/info.component';
+import { MdbCarouselModule } from 'mdb-angular-ui-kit/carousel';
+import { StoreModule } from '@ngrx/store';
+import { configReducer } from './state/config/config.reducer';
+import { EffectsModule } from '@ngrx/effects';
+import { ConfigEffects } from './state/config/config.effects';
+import {PaginatorModule} from 'primeng/paginator';
+import {InputTextModule} from 'primeng/inputtext';
+import { ChangeQuantityComponent } from './components/change-quantity/change-quantity.component';
 
 @NgModule({
   declarations: [
@@ -64,7 +74,9 @@ import { CalendarModule } from 'primeng/calendar';
     CartComponent,
     ProductModalComponent,
     CheckboxGroupComponent,
-    UserDataOrderComponent
+    UserDataOrderComponent,
+    InfoComponent,
+    ChangeQuantityComponent
   ],
   imports: [
     BrowserModule,
@@ -101,7 +113,13 @@ import { CalendarModule } from 'primeng/calendar';
     TreeSelectModule,
     DropdownModule,
     SelectButtonModule,
-    CalendarModule
+    CalendarModule,
+    MatIconModule,
+    MdbCarouselModule,
+    StoreModule.forRoot({config: configReducer}),
+    EffectsModule.forRoot([ConfigEffects]),
+    PaginatorModule,
+    InputTextModule
   ],
   providers: [DialogService, MessageService, MessagingService ],
   bootstrap: [AppComponent]

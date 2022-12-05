@@ -8,10 +8,13 @@
         <li *ngIf="page.onSideBar" class="main-menu-container__item" [ngClass]="{
             'cart': page.resName === 'cart',
             'is-active': page === currentPageMain
-          }" [ngStyle]="{
-            border: last && 0,
-            'border-radius': first ? '6px 0 0 6px' : (last ? '0 6px 6px 0' : 0)
           }" [attr.data-counter]="page.resName === 'cart' ? cartCount : null" (click)="changeMainPage(page, $event)">
+          <mat-icon [ngClass]="{
+              'mat-icon': true,
+              'is-active': page === currentPageMain
+            }">
+            {{page.icon}}
+          </mat-icon>
           <span>
             {{page.name}}
           </span>
@@ -53,7 +56,7 @@
                 </div>
               </li>
             </ng-container>
-            <li class="woocommerce-MyAccount-navigation-link" (click)="logout($event)">
+            <li class="woocommerce-MyAccount-navigation-link" (click)="logout()">
               <div class="container">
                 <img src="./assets/menu-icons/exit.png" alt="Иконка меню" />
                 <div class="menu-item-info">
@@ -71,6 +74,9 @@
     <ng-container *ngSwitchCase="MainPageCode.Cart">
       <app-cart *ngIf="!showAuthoriztion" (showAuthoriztion)="checkAuthorization($event)"></app-cart>
     </ng-container>
+    <ng-container *ngSwitchCase="MainPageCode.Info">
+      <app-info></app-info>
+    </ng-container>
 
     <ng-container>
       <app-auth *ngIf="showAuthoriztion && currentPageMain !== mainPageList[1]" [handleHttpError]="handleHttpErrorFunc"
@@ -83,4 +89,24 @@
     }">
     v{{ version }}
   </span>
+
+  <p-toast position="bottom-center" key="c" (onClose)="onReject()" [baseZIndex]="5000">
+    <ng-template let-message pTemplate="message">
+      <div class="flex flex-column" style="flex: 1">
+        <div class="text-center">
+          <i class="pi pi-exclamation-triangle" style="font-size: 3rem"></i>
+          <h4>{{message.summary}}</h4>
+          <p style="font-weight: 600;">{{message.detail}}</p>
+        </div>
+        <div class="grid p-fluid">
+          <div class="col-6">
+            <button type="button" pButton (click)="onConfirm()" label="Да" class="p-button-success"></button>
+          </div>
+          <div class="col-6">
+            <button type="button" pButton (click)="onReject()" label="Нет" class="p-button-secondary"></button>
+          </div>
+        </div>
+      </div>
+    </ng-template>
+  </p-toast>
 </div>

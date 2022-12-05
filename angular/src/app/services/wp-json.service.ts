@@ -58,6 +58,10 @@ export class WpJsonService {
     return this._request(`trans/${systemId}/${token}/`, 'GET', null, false, url)
   }
 
+  getSiteConfig(): Observable<any> {
+    return this._request(`/assets/site-config.json`, 'GET', null, false)
+  }
+
   _request(path: string, method: string, body?: any, auth = false, baseUrl?: string): Observable<any> {
     const token = decodeURI(this.cookiesService.getItem('token') ?? '');
     let headers = new HttpHeaders();

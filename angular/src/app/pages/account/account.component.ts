@@ -203,35 +203,16 @@ export class AccountComponent implements OnInit {
     // });
   }
 
-  logout(event?: MouseEvent) {
-    if (event) {
-      event.preventDefault();
-    }
-    this.ref = this.dialogService.open(ExitComponent, {
-      width: 'auto',
-      style: {
-        'max-width': '90vw',
-        'max-height': '90vh',
-      },
-      contentStyle: {
-        'max-height': '90vh',
-        height: 'auto',
-        'max-width': '90vw',
-        overflow: 'auto',
-        'border-radius': '4px',
-        padding: '16px'
-      },
-      baseZIndex: 10000,
-      autoZIndex: true,
-      dismissableMask: true,
-      closeOnEscape: true,
-      showHeader: false,
-    });
-    this.ref.onClose.subscribe((result) => {
-      if (result) {
-        this.deleteToken();
-        this.showAuthoriztion = true;
-      }
-    });
+  onReject() {
+    this.messageService.clear('c');
+  }
+
+  onConfirm() {
+    this.deleteToken();
+    this.showAuthoriztion = true;
+  }
+
+  logout() {
+    this.messageService.add({ key: 'c', sticky: true, severity: 'warn', summary: 'Вы уверены, что хотите выйти?' });
   }
 }

@@ -58,19 +58,29 @@ export const PageListMain: Page[] = [
         name: 'Аккаунт',
         resName: 'account',
         onSideBar: true,
+        icon: 'person'
     },
     {
         code: MainPageCode.Products,
         name: 'Товары',
         resName: 'products',
         onSideBar: true,
+        icon: 'manage_search'
     },
     {
         code: MainPageCode.Cart,
         name: 'Корзина',
         resName: 'cart',
         onSideBar: true,
+        icon: 'shopping_bag'
     },
+    // {
+    //     code: MainPageCode.Info,
+    //     name: 'О нас',
+    //     resName: 'info',
+    //     onSideBar: true,
+    //     icon: 'info'
+    // },
 ]
 
 export const orderStatuses: OrderStatus = {
