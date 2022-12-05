@@ -39,7 +39,7 @@ export class RefSystemComponent implements OnInit {
     if (navigator.share) {
       navigator.share({
         title: document.title,
-        text: "Sakura",
+        text: "Demo stand",
         url: this.refUrl
       })
         .then(() => console.log('Successful share'))

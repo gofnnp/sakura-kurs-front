@@ -1,6 +1,6 @@
 {
-  "name": "Sakura",
-  "short_name": "Sakura",
+  "name": "demo-stand",
+  "short_name": "demo-stand",
   "theme_color": "#1976d2",
   "background_color": "#fafafa",
   "display": "standalone",

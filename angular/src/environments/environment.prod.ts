@@ -7,7 +7,7 @@ export const environment = {
   appWPEndpoint: 'http://213.239.210.240:4500/wp-json/woofood/v1/',
   hasBonusProgram: true,
   systemId: 'StyrkNFW9vKga1KlJP',
-  defaultUrl: 'https://sakura.lk.crm4retail.ru',
+  defaultUrl: 'https://demo-stand.lk.crm4retail.ru',
   firebase: {
     apiKey: "AIzaSyCnKvln5itnrBj62POCPHxshAN_Vmd0zds",
     authDomain: "fashionlogicanotification.firebaseapp.com",
@@ -21,7 +21,7 @@ export const environment = {
   appleWalletEndpoint: 'https://apple-push-notifications.it-retail.tech/apns/api',
   appleWalletSecret: 'Token F5mbzEERAznGKVbB6l',
   webhookItRetail: 'https://webhook.it-retail.tech/handlers/tillda/1eb3fb56-3c4c-43b7-9a04-ce532ab7548f',
-  icardProxy: 'https://sakura.lk.crm4retail.ru/icard-proxy/',
-  clientName: 'Sakura',
+  icardProxy: 'https://demo-stand.lk.crm4retail.ru/icard-proxy/',
+  clientName: 'demo-stand',
   cities: ['Менделеевск'],
 }
