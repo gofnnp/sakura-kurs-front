@@ -12,4 +12,13 @@ export class NavbarComponent implements OnInit {
   ngOnInit(): void {
   }
 
+  showMenu() {
+    const menu = document.getElementsByClassName('main-menu-container')
+    if (menu[0].getAttribute('isShow') === 'true') {
+      menu[0].setAttribute('isShow', 'false')
+    } else {
+      menu[0].setAttribute('isShow', 'true')
+    }
+  }
+
 }

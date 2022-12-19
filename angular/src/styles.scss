@@ -20,6 +20,8 @@ table{border-collapse:collapse;border-spacing:0}
     font-family: 'Raleway', sans-serif;
 }
 
+$base_color: red;
+
 .p-inputtext {
     width: 100%;
     border: 1px solid #B8DEFF;
@@ -98,6 +100,18 @@ input::-webkit-date-and-time-value {
 
 .p-treeselect {
     min-width: 180px;
+    border-radius: 1.125rem;
+    padding: 0 10px;
+    box-shadow: 0 0 6px 2px rgb(221 221 221);
+}
+
+.p-treeselect-panel {
+    border-radius: 1.125rem;
+    top: 44px !important;
+}
+
+.p-tree {
+    border-radius: 1.125rem;
 }
 
 .p-tree .p-tree-container .p-treenode {
@@ -107,6 +121,16 @@ input::-webkit-date-and-time-value {
 
 .p-tree .p-tree-container .p-treenode .p-treenode-content {
     padding: 0;
+}
+
+.p-dialog .p-dialog-header {
+    border-top-right-radius: 1.125rem;
+    border-top-left-radius: 1.125rem;
+}
+
+.p-dialog .p-dialog-content:last-of-type {
+    border-bottom-right-radius: 1.125rem;
+    border-bottom-left-radius: 1.125rem;
 }
 
 .text-center {

@@ -2,7 +2,7 @@
   woocommerce: true,
   'auth-page': showAuthoriztion
 }">
-  <nav class="main-menu-container">
+  <nav class="main-menu-container" isShow="false" #menu>
     <ul>
       <ng-container *ngFor="let page of mainPageList; let index = index; let last = last; let first = first;">
         <li *ngIf="page.onSideBar" class="main-menu-container__item" [ngClass]="{

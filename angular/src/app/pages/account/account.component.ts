@@ -1,4 +1,4 @@
-import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+import { Component, ElementRef, EventEmitter, Input, OnInit, Output, ViewChild } from '@angular/core';
 import { CookiesService } from '../../services/cookies.service';
 import { ActivatedRoute, Router } from '@angular/router';
 import { MainPageCode, Page, PageCode } from '../../interface/data';
@@ -20,6 +20,7 @@ import { CartService } from 'src/app/services/cart.service';
 })
 export class AccountComponent implements OnInit {
   @Output() setUserDataOrderPage = new EventEmitter<null>();
+  @ViewChild('menu', { static: true}) menu!: ElementRef;
   public refSystemId: string = '';
 
   constructor(
@@ -160,6 +161,7 @@ export class AccountComponent implements OnInit {
     if (this.currentPageMain === this.mainPageList[2]) {
       this.checkAuthorization(false)
     }
+    this.menu.nativeElement.setAttribute('isShow', 'false')
   }
 
   changePage(page: Page, event?: MouseEvent): void {

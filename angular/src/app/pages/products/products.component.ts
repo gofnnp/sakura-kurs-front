@@ -8,6 +8,7 @@ import { MessageService } from 'primeng/api';
 import { lastValueFrom } from 'rxjs';
 import { CartService } from 'src/app/services/cart.service';
 import { CookiesService } from 'src/app/services/cookies.service';
+import { ActivatedRoute, Router } from '@angular/router';
 
 @Component({
   selector: 'app-products',
@@ -32,6 +33,8 @@ export class ProductsComponent implements OnInit {
     private messageService: MessageService,
     public cartService: CartService,
     private cookiesService: CookiesService,
+    private router: Router,
+    private route: ActivatedRoute,
   ) { }
 
   async ngOnInit() {
@@ -39,7 +42,7 @@ export class ProductsComponent implements OnInit {
     await this.getTerminalList()
     this.getData()
     this.messageService.add({
-      severity:'info',
+      severity: 'info',
       summary: 'В одном заказе могут быть товары только из выбранного пункта выдачи',
       life: 5000
     });
@@ -66,7 +69,7 @@ export class ProductsComponent implements OnInit {
 
   onConfirm() {
     this.messageService.add({
-      severity:'info',
+      severity: 'info',
       summary: 'В одном заказе могут быть товары только из выбранного пункта выдачи',
       life: 5000
     });
@@ -76,7 +79,7 @@ export class ProductsComponent implements OnInit {
   onReject() {
     this.messageService.clear('c');
     this.messageService.add({
-      severity:'info',
+      severity: 'info',
       summary: 'Выберите пункт выдачи. В одном заказе могут быть товары только из выбранного пункта.',
       life: 6000
     });
@@ -96,17 +99,26 @@ export class ProductsComponent implements OnInit {
         this.selectedGroup = this.groups[0]
         this.modifiersGroups = value.modifiers_groups
         this.modifiers = value.modifiers
+
+        this.route.queryParams.subscribe((params) => {
+          if (params['group']) {
+            this.selectedGroup = this.groups.find((group) => group.label === params['group']) || this.groups[0]
+          }
+        })
       }
     })
   }
 
   onPageChange(event: any) {
-    this.currentPage = event.first;    
+    this.currentPage = event.first;
   }
 
-  filterByGroup() {    
+  filterByGroup(group?: Group) {
     if (!this.selectedGroup) return []
-    if (this.selectedGroup.label === 'Все') return this.products
+    if (this.selectedGroup.label === 'Все') {
+      if (group) return JSON.parse(JSON.stringify(this.products.filter((product) => product.groupId === group.id))).slice(0, 4)
+      return this.products
+    }
     return JSON.parse(JSON.stringify(this.products.filter((product) => product.groupId === this.selectedGroup.id)))
   }
 
@@ -151,21 +163,29 @@ export class ProductsComponent implements OnInit {
       this.getData()
       this.cartService.changeTerminal(this.selectedTerminal);
       this.loading = false;
+      this.router.navigate([]);
       this.currentPage = 0
     }, 0);
   }
 
-  changeGroup() {
+  changeGroup(group: Group) {
+    this.selectedGroup = group
+    this.router.navigate([], {
+      queryParams: {
+        group: group.label,
+      },
+      queryParamsHandling: 'merge',
+    });
     this.currentPage = 0
   }
 
-  onGroupUnselect(event: any) {    
+  onGroupUnselect(event: any) {
     setTimeout(() => {
-      this.selectedGroup = event.node      
+      this.selectedGroup = event.node
     }, 0);
   }
 
-  onTerminalUnselect(event: any) {    
+  onTerminalUnselect(event: any) {
     setTimeout(() => {
       this.selectedTerminal = event.node
       this.cartService.changeTerminal(this.selectedTerminal)
