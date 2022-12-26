@@ -136,6 +136,7 @@ export class ProductsComponent implements OnInit {
       style: {
         'max-width': '90vw',
         'max-height': '90vh',
+        'border-radius': '1.125rem'
       },
       contentStyle: {
         'max-height': '90vh',
