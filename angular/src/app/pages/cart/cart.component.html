@@ -1,104 +1,215 @@
-<div class="cart" *ngIf="!loading && order && !orderConfirmed" [ngStyle]="{margin: !order.products.length && 0}">
-  <div class="widget_shopping_cart_content" style="opacity: 1;">
-    <div class="elementor-menu-cart__products woocommerce-mini-cart cart woocommerce-cart-form__contents"
-      [ngStyle]="{margin: !order.products.length && 0}">
-      <div *ngFor="let product of order.products; let last = last">
-        <div class="elementor-menu-cart__product woocommerce-cart-form__cart-item cart_item"
-          style="grid-template-columns: 70px auto;">
+<p-sidebar
+  [(visible)]="visibleSidebar"
+  [fullScreen]="isFullScreen"
+  [baseZIndex]="10000"
+  position="right"
+>
+  <div
+    class="cart"
+    *ngIf="!loading && order && !orderConfirmed"
+    [ngStyle]="{ margin: !order.products.length && 0 }"
+  >
+    <div class="widget_shopping_cart_content" style="opacity: 1">
+      <div
+        class="elementor-menu-cart__products woocommerce-mini-cart cart woocommerce-cart-form__contents"
+        [ngStyle]="{ margin: !order.products.length && 0 }"
+      >
+        <div *ngFor="let product of order.products; let last = last">
+          <div
+            class="elementor-menu-cart__product woocommerce-cart-form__cart-item cart_item"
+            style="grid-template-columns: 70px auto"
+          >
+            <div class="elementor-menu-cart__product-image product-thumbnail">
+              <img
+                *ngIf="product.image"
+                width="70"
+                height="70"
+                src="{{ product.image }}"
+                class="attachment-woocommerce_thumbnail size-woocommerce_thumbnail"
+                alt="{{ product.name }}"
+                loading="lazy"
+              />
+              <img
+                *ngIf="!product.image"
+                width="70"
+                height="70"
+                src="./assets/no-image.png"
+                class="attachment-woocommerce_thumbnail size-woocommerce_thumbnail"
+                alt="{{ product.name }}"
+                loading="lazy"
+              />
+            </div>
+            <div
+              class="elementor-menu-cart__product-name product-name"
+              data-title="Product"
+            >
+              <span>{{ product.name }}</span>
+              <dl
+                *ngFor="let modifier of product.modifier_data"
+                class="variation"
+                [ngStyle]="{ margin: !modifier.options.length && 0 }"
+              >
+                <ng-container *ngFor="let option of modifier.options">
+                  <dt
+                    *ngIf="option.quantity"
+                    style="max-width: 160px"
+                    class="variation-"
+                  >
+                    {{ option.name }}:
+                  </dt>
+                  <dd
+                    *ngIf="option.quantity"
+                    style="
+                      display: flex;
+                      align-items: flex-end;
+                      margin-bottom: 0;
+                    "
+                    class="variation-"
+                  >
+                    <p>
+                      {{ option.quantity }} × {{ product.currency_symbol
+                      }}{{ (option.price ?? 0) * option.quantity }}
+                    </p>
+                  </dd>
+                </ng-container>
+              </dl>
+            </div>
 
-          <div class="elementor-menu-cart__product-image product-thumbnail">
-            <img *ngIf="product.image" width="70" height="70" src="{{product.image}}"
-              class="attachment-woocommerce_thumbnail size-woocommerce_thumbnail" alt="{{product.name}}" loading="lazy">
-            <img *ngIf="!product.image" width="70" height="70" src="./assets/no-image.png"
-              class="attachment-woocommerce_thumbnail size-woocommerce_thumbnail" alt="{{product.name}}" loading="lazy">
-          </div>
-          <div class="elementor-menu-cart__product-name product-name" data-title="Product">
-            <span>{{product.name}}</span>
-            <dl *ngFor="let modifier of product.modifier_data" class="variation"
-              [ngStyle]="{margin: !modifier.options.length && 0}">
-              <ng-container *ngFor="let option of modifier.options">
-                <dt *ngIf="option.quantity" style="max-width: 160px;" class="variation-">{{option.name}}:</dt>
-                <dd *ngIf="option.quantity" style="display: flex; align-items: flex-end; margin-bottom: 0;" class="variation-">
-                  <p>{{option.quantity}} × {{product.currency_symbol}}{{(option.price ?? 0) * option.quantity}}</p>
-                </dd>
-              </ng-container>
-            </dl>
-          </div>
-
-          <div class="elementor-menu-cart__product-price product-price" data-title="Price">
-            <span class="quantity">
-              <span class="product-quantity">{{product.amount}} × </span>
-              <span class="woocommerce-Price-amount amount">
-                <bdi>
-                  <span class="woocommerce-Price-currencySymbol">{{product.currency_symbol}}</span>
-                  {{product.finalPrice}}
-                </bdi>
+            <div
+              class="elementor-menu-cart__product-price product-price"
+              data-title="Price"
+            >
+              <span class="quantity">
+                <span class="product-quantity">{{ product.amount }} × </span>
+                <span class="woocommerce-Price-amount amount">
+                  <bdi>
+                    <span class="woocommerce-Price-currencySymbol">{{
+                      product.currency_symbol
+                    }}</span>
+                    {{ product.finalPrice }}
+                  </bdi>
+                </span>
               </span>
-            </span>
-            <div class="product-change-amount">
-              <div class="product-change-amount__symbol" (click)="setAmount(product, 'minus')">
-                -
-              </div>
-              <div class="product-change-amount__symbol" (click)="setAmount(product, 'plus')">
-                +
+              <div class="product-change-amount">
+                <div
+                  class="product-change-amount__symbol"
+                  (click)="setAmount(product, 'minus')"
+                >
+                  -
+                </div>
+                <div
+                  class="product-change-amount__symbol"
+                  (click)="setAmount(product, 'plus')"
+                >
+                  +
+                </div>
               </div>
             </div>
-          </div>
 
-          <div class="elementor-menu-cart__product-remove product-remove">
-            <a href="#" class="remove_from_cart_button" aria-label="Remove this item"
-              (click)="removeFromCart($event, product.guid)"></a>
+            <div class="elementor-menu-cart__product-remove product-remove">
+              <a
+                href="#"
+                class="remove_from_cart_button"
+                aria-label="Remove this item"
+                (click)="removeFromCart($event, product.guid)"
+              ></a>
+            </div>
+          </div>
+          <hr *ngIf="!last" />
+        </div>
+        <button
+          *ngIf="order.products.length != 0"
+          class="clear-cart"
+          (click)="confirmClearCart()"
+        >
+          Очистить корзину
+        </button>
+      </div>
+      <div
+        *ngIf="order.products.length != 0"
+        class="elementor-menu-cart__bottom-info"
+      >
+        <div class="elementor-menu-cart__subtotal">
+          <span class="products-count"
+            >Товаров: {{ order.products.length }}</span
+          >
+          <span class="woocommerce-Price-amount amount"
+            ><bdi
+              ><span class="woocommerce-Price-currencySymbol">{{
+                order.products[0].currency_symbol
+              }}</span
+              >{{ order.price }}</bdi
+            ></span
+          >
+        </div>
+        <div class="elementor-menu-cart__footer-buttons">
+          <a
+            href="#"
+            class="elementor-button elementor-button--checkout elementor-size-md"
+            (click)="confirmOrder($event)"
+          >
+            <span class="elementor-button-text">Оформление заказа</span>
+          </a>
+        </div>
+      </div>
+    </div>
+    <p-toast
+      position="bottom-center"
+      key="c"
+      (onClose)="onReject()"
+      [baseZIndex]="5000"
+    >
+      <ng-template let-message pTemplate="message">
+        <div class="flex flex-column" style="flex: 1">
+          <div class="text-center">
+            <i class="pi pi-exclamation-triangle" style="font-size: 3rem"></i>
+            <h4>{{ message.summary }}</h4>
+            <p style="font-weight: 600">{{ message.detail }}</p>
+          </div>
+          <div class="grid p-fluid">
+            <div class="col-6">
+              <button
+                type="button"
+                pButton
+                (click)="onConfirm()"
+                label="Да"
+                class="p-button-success"
+              ></button>
+            </div>
+            <div class="col-6">
+              <button
+                type="button"
+                pButton
+                (click)="onReject()"
+                label="Нет"
+                class="p-button-secondary"
+              ></button>
+            </div>
           </div>
         </div>
-        <hr *ngIf="!last">
-      </div>
-      <button *ngIf="order.products.length != 0" class="clear-cart" (click)="confirmClearCart()">
-        Очистить корзину
-      </button>
-    </div>
-    <div *ngIf="order.products.length != 0" class="elementor-menu-cart__bottom-info">
-      <div class="elementor-menu-cart__subtotal">
-        <span class="products-count">Товаров: {{order.products.length}}</span>
-        <span class="woocommerce-Price-amount amount"><bdi><span
-              class="woocommerce-Price-currencySymbol">{{order.products[0].currency_symbol}}</span>{{order.price}}</bdi></span>
-      </div>
-      <div class="elementor-menu-cart__footer-buttons">
-        <a href="#" class="elementor-button elementor-button--checkout elementor-size-md"
-          (click)="confirmOrder($event)">
-          <span class="elementor-button-text">Оформление заказа</span>
-        </a>
-      </div>
+      </ng-template>
+    </p-toast>
+  </div>
+
+  <app-user-data-order
+    *ngIf="orderConfirmed"
+    (orderSubmitted)="orderSubmitted()"
+  ></app-user-data-order>
+
+  <div #loadingEl *ngIf="loading && !orderConfirmed">
+    <div
+      class="angular-spinner-container"
+      style="width: fit-content; height: 100%; margin: 16px auto"
+    >
+      <p-progressSpinner styleClass="angular-spinner"></p-progressSpinner>
     </div>
   </div>
-  <p-toast position="bottom-center" key="c" (onClose)="onReject()" [baseZIndex]="5000">
-    <ng-template let-message pTemplate="message">
-      <div class="flex flex-column" style="flex: 1">
-        <div class="text-center">
-          <i class="pi pi-exclamation-triangle" style="font-size: 3rem"></i>
-          <h4>{{message.summary}}</h4>
-          <p style="font-weight: 600;">{{message.detail}}</p>
-        </div>
-        <div class="grid p-fluid">
-          <div class="col-6">
-            <button type="button" pButton (click)="onConfirm()" label="Да" class="p-button-success"></button>
-          </div>
-          <div class="col-6">
-            <button type="button" pButton (click)="onReject()" label="Нет" class="p-button-secondary"></button>
-          </div>
-        </div>
-      </div>
-    </ng-template>
-  </p-toast>
-</div>
 
-<app-user-data-order *ngIf="orderConfirmed" (orderSubmitted)="orderSubmitted()"></app-user-data-order>
-
-<div #loadingEl *ngIf="loading && !orderConfirmed">
-  <div class="angular-spinner-container" style="width: fit-content; height: 100%; margin: 16px auto;">
-    <p-progressSpinner styleClass="angular-spinner"></p-progressSpinner>
+  <div #empty *ngIf="!loading && (!order || !order.products.length)">
+    <div
+      class="woocommerce-mini-cart__empty-message jupiterx-icon-shopping-cart-6"
+    >
+      Корзина пустая.
+    </div>
   </div>
-</div>
-
-<div #empty *ngIf="!loading && (!order || !order.products.length)">
-  <div class="woocommerce-mini-cart__empty-message jupiterx-icon-shopping-cart-6">Корзина пустая.</div>
-</div>
+</p-sidebar>

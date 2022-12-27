@@ -186,6 +186,11 @@ p-toast[key="c"] .p-toast {
     bottom: 57px;
 }
 
+.p-sidebar-right {
+    width: 450px !important;
+    max-width: 85% !important;
+}
+
 @media screen and (min-width: 550px) {
     p-toast[key="c"] .p-toast {
         bottom: 73px;

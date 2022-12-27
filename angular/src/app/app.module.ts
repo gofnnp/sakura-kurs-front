@@ -1,6 +1,6 @@
 import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
-import { RouterModule } from '@angular/router';
+import { RouterModule, Routes } from '@angular/router';
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
@@ -53,6 +53,17 @@ import { ConfigEffects } from './state/config/config.effects';
 import {PaginatorModule} from 'primeng/paginator';
 import {InputTextModule} from 'primeng/inputtext';
 import { ChangeQuantityComponent } from './components/change-quantity/change-quantity.component';
+import { MenuComponent } from './components/menu/menu.component';
+import { SidebarModule } from 'primeng/sidebar';
+import {RippleModule} from 'primeng/ripple';
+
+const routes: Routes = [
+  { path: '', redirectTo: 'products', pathMatch: 'full' },
+  { path: 'products', component: ProductsComponent },
+  // { path: 'cart', component: CartComponent },
+  { path: 'account', component: AccountComponent },
+  { path: '**', component: NotFoundComponent }
+];
 
 @NgModule({
   declarations: [
@@ -76,18 +87,13 @@ import { ChangeQuantityComponent } from './components/change-quantity/change-qua
     CheckboxGroupComponent,
     UserDataOrderComponent,
     InfoComponent,
-    ChangeQuantityComponent
+    ChangeQuantityComponent,
+    MenuComponent
   ],
   imports: [
     BrowserModule,
     AppRoutingModule,
-    RouterModule.forRoot([
-      {
-          path: '**',
-          component: MainComponent
-      },
-      // { path: '**', component: NotFoundComponent }
-    ]),
+    RouterModule.forRoot(routes),
     InputMaskModule,
     ProgressSpinnerModule,
     FormsModule,
@@ -119,7 +125,9 @@ import { ChangeQuantityComponent } from './components/change-quantity/change-qua
     StoreModule.forRoot({config: configReducer}),
     EffectsModule.forRoot([ConfigEffects]),
     PaginatorModule,
-    InputTextModule
+    InputTextModule,
+    SidebarModule,
+    RippleModule
   ],
   providers: [DialogService, MessageService, MessagingService ],
   bootstrap: [AppComponent]

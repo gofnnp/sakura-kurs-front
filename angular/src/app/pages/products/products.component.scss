@@ -112,6 +112,7 @@
                     margin: 0;
                     font-size: 30px;
                     font-weight: 500;
+                    max-width: 150px;
                 }
 
                 button {
@@ -234,17 +235,21 @@
 
     @media screen and (max-width: 631px) {
         .products-container {
-            max-width: 306px;
-        }
-    }
-
-    @media screen and (max-width: 450px) {
-        .products-container {
-            max-width: none;
+            max-width: 400px;
 
             &__item {
                 width: 100%;
             }
         }
     }
+
+    // @media screen and (max-width: 631px) {
+    //     .products-container {
+    //         // max-width: none;
+
+    //         &__item {
+    //             width: 100%;
+    //         }
+    //     }
+    // }
 }

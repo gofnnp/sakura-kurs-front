@@ -1,8 +1,8 @@
 <div class="not-found-page">
-  <app-navbar></app-navbar>
   <div class="not-found-page__container">
     <h1>404</h1>
     <p>Упс, что-то пошло не так!</p>
-    <button (click)="routeHome()">Вернуться на главную</button>
+    <a href="#" (click)="routeHome($event)">Перейти на главную</a>
+    <!-- <button (click)="routeHome()">Вернуться на главную</button> -->
   </div>
 </div>

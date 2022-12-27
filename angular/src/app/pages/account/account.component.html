@@ -1,109 +1,94 @@
-<div [ngClass]="{
-  woocommerce: true,
-  'auth-page': showAuthoriztion
-}">
-  <nav class="main-menu-container" isShow="false" #menu>
-    <ul>
-      <ng-container *ngFor="let page of mainPageList; let index = index; let last = last; let first = first;">
-        <li *ngIf="page.onSideBar" class="main-menu-container__item" [ngClass]="{
-            'cart': page.resName === 'cart',
-            'is-active': page === currentPageMain
-          }" [attr.data-counter]="page.resName === 'cart' ? cartCount : null" (click)="changeMainPage(page, $event)">
-          <mat-icon [ngClass]="{
-              'mat-icon': true,
-              'is-active': page === currentPageMain
-            }">
-            {{page.icon}}
-          </mat-icon>
-          <span>
-            {{page.name}}
-          </span>
-        </li>
+<div
+  [ngClass]="{
+    woocommerce: true,
+    'auth-page': showAuthoriztion
+  }"
+>
+  <div *ngIf="!showAuthoriztion" class="account-page">
+    <div *ngIf="showAuthoriztion" class="top-left-attribute"></div>
+    <div [ngSwitch]="currentPage.code" class="">
+      <ng-container *ngSwitchCase="PageCode.Orders">
+        <app-orders (deauthorization)="changePage(pageList[0])"></app-orders>
       </ng-container>
-    </ul>
-  </nav>
-  <div [ngSwitch]="currentPageMain.code">
-    <ng-container *ngSwitchCase="MainPageCode.Account">
-      <div *ngIf="!showAuthoriztion" class="account-page">
-        <div *ngIf="showAuthoriztion" class="top-left-attribute"></div>
-        <div [ngSwitch]="currentPage.code" class="">
-          <ng-container *ngSwitchCase="PageCode.Orders">
-            <app-orders (deauthorization)="changePage(pageList[0])"></app-orders>
-          </ng-container>
-          <ng-container *ngSwitchCase="PageCode.BonusProgram">
-            <app-bonus-program (deauthorization)="changePage(pageList[0])"></app-bonus-program>
-          </ng-container>
-          <ng-container *ngSwitchCase="PageCode.UserData">
-            <app-user-data></app-user-data>
-          </ng-container>
-          <ng-container *ngSwitchCase="PageCode.RefSystem">
-            <app-ref-system></app-ref-system>
-          </ng-container>
-        </div>
-        <nav *ngIf="!showAuthoriztion" class="woocommerce-MyAccount-navigation">
-          <ul>
-            <ng-container *ngFor="let page of pageList; let index = index">
-              <li *ngIf="page.onSideBar" class="woocommerce-MyAccount-navigation-link" [ngClass]="{
+      <ng-container *ngSwitchCase="PageCode.BonusProgram">
+        <app-bonus-program
+          (deauthorization)="changePage(pageList[0])"
+        ></app-bonus-program>
+      </ng-container>
+      <ng-container *ngSwitchCase="PageCode.UserData">
+        <app-user-data></app-user-data>
+      </ng-container>
+      <ng-container *ngSwitchCase="PageCode.RefSystem">
+        <app-ref-system></app-ref-system>
+      </ng-container>
+    </div>
+    <nav *ngIf="!showAuthoriztion" class="woocommerce-MyAccount-navigation">
+      <ul>
+        <ng-container *ngFor="let page of pageList; let index = index">
+          <li
+            *ngIf="page.onSideBar"
+            class="woocommerce-MyAccount-navigation-link"
+            [ngClass]="{
               'is-active': page === currentPage,
               first: index === 1
-            }" (click)="changePage(page, $event)">
-                <div class="container">
-                  <img src="{{ './assets/menu-icons/' + page.resName + '.png' }}" alt="Иконка меню" />
-                  <div class="menu-item-info">
-                    <a href="#">{{ page.name }}</a>
-                    <p>{{ page.description }}</p>
-                  </div>
-                </div>
-              </li>
-            </ng-container>
-            <li class="woocommerce-MyAccount-navigation-link" (click)="logout()">
-              <div class="container">
-                <img src="./assets/menu-icons/exit.png" alt="Иконка меню" />
-                <div class="menu-item-info">
-                  <a href="#">Выход</a>
-                </div>
+            }"
+            (click)="changePage(page, $event)"
+          >
+            <div class="container">
+              <img
+                src="{{ './assets/menu-icons/' + page.resName + '.png' }}"
+                alt="Иконка меню"
+              />
+              <div class="menu-item-info">
+                <a href="#">{{ page.name }}</a>
+                <p>{{ page.description }}</p>
               </div>
-            </li>
-          </ul>
-        </nav>
-      </div>
-    </ng-container>
-    <ng-container *ngSwitchCase="MainPageCode.Products">
-      <app-products></app-products>
-    </ng-container>
-    <ng-container *ngSwitchCase="MainPageCode.Cart">
-      <app-cart *ngIf="!showAuthoriztion" (showAuthoriztion)="checkAuthorization($event)"></app-cart>
-    </ng-container>
-    <ng-container *ngSwitchCase="MainPageCode.Info">
-      <app-info></app-info>
-    </ng-container>
-
-    <ng-container>
-      <app-auth *ngIf="showAuthoriztion && currentPageMain !== mainPageList[1]" [handleHttpError]="handleHttpErrorFunc"
-        (phoneConfirmed)="phoneConfirmed()"></app-auth>
-    </ng-container>
+            </div>
+          </li>
+        </ng-container>
+        <li class="woocommerce-MyAccount-navigation-link" (click)="logout()">
+          <div class="container">
+            <img src="./assets/menu-icons/exit.png" alt="Иконка меню" />
+            <div class="menu-item-info">
+              <a href="#">Выход</a>
+            </div>
+          </div>
+        </li>
+      </ul>
+    </nav>
   </div>
 
-  <span class="version" [ngClass]="{
-      version: true
-    }">
-    v{{ version }}
-  </span>
-
-  <p-toast position="bottom-center" key="c" (onClose)="onReject()" [baseZIndex]="5000">
+  <p-toast
+    position="bottom-center"
+    key="c"
+    (onClose)="onReject()"
+    [baseZIndex]="5000"
+  >
     <ng-template let-message pTemplate="message">
       <div class="flex flex-column" style="flex: 1">
         <div class="text-center">
           <i class="pi pi-exclamation-triangle" style="font-size: 3rem"></i>
-          <h4>{{message.summary}}</h4>
-          <p style="font-weight: 600;">{{message.detail}}</p>
+          <h4>{{ message.summary }}</h4>
+          <p style="font-weight: 600">{{ message.detail }}</p>
         </div>
         <div class="grid p-fluid">
           <div class="col-6">
-            <button type="button" pButton (click)="onConfirm()" label="Да" class="p-button-success"></button>
+            <button
+              type="button"
+              pButton
+              (click)="onConfirm()"
+              label="Да"
+              class="p-button-success"
+            ></button>
           </div>
           <div class="col-6">
-            <button type="button" pButton (click)="onReject()" label="Нет" class="p-button-secondary"></button>
+            <button
+              type="button"
+              pButton
+              (click)="onReject()"
+              label="Нет"
+              class="p-button-secondary"
+            ></button>
           </div>
         </div>
       </div>

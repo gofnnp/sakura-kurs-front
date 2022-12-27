@@ -1,0 +1,120 @@
+:host {
+  .main-menu-container {
+    // position: fixed;
+    // width: 100%;
+    // bottom: 0;
+    // left: 0;
+    // margin: 0;
+    // z-index: 777;
+    // height: 57px;
+    // border-top: solid 1px #dfdfdf;
+    // background-color: #fff;
+
+    ul {
+      display: flex;
+      height: 100%;
+      font-size: 14px;
+      flex-wrap: nowrap;
+      flex-direction: row;
+      gap: 32px;
+
+      li {
+        width: 100%;
+        height: 100%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        flex-direction: column;
+        gap: 4px;
+        font-size: 14px;
+        font-weight: 600;
+        letter-spacing: 2px;
+        color: #b5b5b9;
+        transition: color 0.3s ease;
+        cursor: pointer;
+
+        &.active {
+          color: #252525;
+
+          a {
+            border-bottom: 2px solid #e16f38;
+          }
+        }
+
+        &:hover {
+          color: #252525;
+          
+          a {
+            border-bottom: 2px solid #e16f38;
+            
+          }
+        }
+        a {
+          border-bottom: 2px solid #e16f3800;
+        }
+
+        & .mat-icon {
+          display: none;
+
+          &.is-active {
+            color: #000;
+          }
+        }
+
+        &.is-active {
+          color: #000;
+        }
+
+        &.cart {
+          position: relative;
+
+          &::before {
+            content: attr(data-counter);
+            color: #fff;
+            position: absolute;
+            right: -18px;
+            top: -8px;
+            background: #d7120b;
+            border-radius: 50px;
+            min-width: 1.2rem;
+            line-height: 1.2rem;
+            font-size: 0.8rem;
+            text-align: center;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+          }
+        }
+      }
+    }
+  }
+
+  @media screen and (max-width: 600px) {
+    .main-menu-container {
+      position: fixed;
+      width: 100%;
+      bottom: 0;
+      left: 0;
+      margin: 0;
+      z-index: 777;
+      height: 57px;
+      border-top: solid 1px #dfdfdf;
+      background-color: #fff;
+
+      ul {
+        li {
+          &.cart {
+            &::before {
+              right: 34px;
+              top: 5px;
+            }
+          }
+
+          & .mat-icon {
+            display: block;
+          }
+        }
+      }
+    }
+  }
+}

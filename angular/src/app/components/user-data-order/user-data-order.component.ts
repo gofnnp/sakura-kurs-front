@@ -84,7 +84,7 @@ export class UserDataOrderComponent implements OnInit {
         this.checkoutConfig = value
       }
     })
-    this.deliverData.deliveryDate = moment().add(this.checkoutConfig.timeDelivery.changeTime.defaultValue, 'minutes').toDate()
+    this.deliverData.deliveryDate = moment().add(this.checkoutConfig?.timeDelivery?.changeTime?.defaultValue || 0, 'minutes').toDate()
     this.paymentMethods = this.checkoutConfig.payments.values
     this.deliverData.paymentMethod = this.paymentMethods[this.checkoutConfig.payments.default]
 

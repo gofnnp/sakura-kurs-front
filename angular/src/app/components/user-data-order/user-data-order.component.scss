@@ -1,160 +1,159 @@
 :host {
-    .woocommerce-shipping-fields__field-wrapper {
-        margin: 8px auto 0 auto;
-        max-width: 400px;
+  .woocommerce-shipping-fields__field-wrapper {
+    margin: 8px auto 0 auto;
+    max-width: 400px;
+  }
+
+  .order_form__title {
+    font-weight: 700;
+    font-size: 18px;
+    margin-bottom: 12px;
+  }
+
+  input {
+    width: 100%;
+    color: #000000;
+    border: 1px solid #000000;
+    font-family: -apple-system, BlinkMacSystemFont, Segoe UI, Roboto, Helvetica,
+      Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", Segoe UI Symbol;
+    font-size: 1rem;
+    color: #495057;
+    background: #ffffff;
+    padding: 0.5rem 0.75rem;
+    border: 1px solid #ced4da;
+    transition: background-color 0.15s, border-color 0.15s, box-shadow 0.15s;
+    -webkit-appearance: none;
+    appearance: none;
+    border-radius: 4px;
+    &.ng-dirty.ng-invalid {
+      border-color: red;
     }
-
-
-    .order_form__title {
-        font-weight: 700;
-        font-size: 18px;
-        margin-bottom: 12px;
+    &.ng-invalid.ng-touched {
+      border-color: red;
     }
+  }
 
-    input {
+  p {
+    margin-top: 0;
+    margin-bottom: 1rem;
+  }
+
+  textarea {
+    width: 100%;
+    height: 52px;
+    color: #000000;
+    border: 1px solid #000000;
+    font-family: -apple-system, BlinkMacSystemFont, Segoe UI, Roboto, Helvetica,
+      Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", Segoe UI Symbol;
+    font-size: 1rem;
+    color: #495057;
+    background: #ffffff;
+    padding: 0.5rem 0.75rem;
+    border: 1px solid #ced4da;
+    transition: background-color 0.15s, border-color 0.15s, box-shadow 0.15s;
+    -webkit-appearance: none;
+    appearance: none;
+    border-radius: 4px;
+  }
+
+  .terminal-list-container {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 16px;
+    margin: 8px 0 16px;
+
+    .terminal-container {
+      width: calc(50% - 8px);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 8px;
+      border: solid #09467f 1px;
+      border-radius: 16px;
+      overflow: hidden;
+      padding-bottom: 16px;
+      opacity: 0.5;
+      text-align: center;
+
+      &.selected {
+        opacity: 1;
+      }
+
+      img {
         width: 100%;
-        color: #000000;
-        border: 1px solid #000000;
-        font-family: -apple-system, BlinkMacSystemFont, Segoe UI, Roboto, Helvetica, Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", Segoe UI Symbol;
-        font-size: 1rem;
-        color: #495057;
-        background: #ffffff;
-        padding: 0.5rem 0.75rem;
-        border: 1px solid #ced4da;
-        transition: background-color .15s, border-color .15s, box-shadow .15s;
-        -webkit-appearance: none;
-        appearance: none;
-        border-radius: 4px;
-        &.ng-dirty.ng-invalid {
-            border-color: red;
-        }
-        &.ng-invalid.ng-touched {
-            border-color: red;
-        }
-    }
+        height: 120px;
+        object-fit: cover;
+      }
 
-    p {
-        margin-top: 0;
-        margin-bottom: 1rem;
-    }
+      &__name {
+      }
 
-    textarea {
-        width: 100%;
-        height: 52px;
-        color: #000000;
-        border: 1px solid #000000;
-        font-family: -apple-system, BlinkMacSystemFont, Segoe UI, Roboto, Helvetica, Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", Segoe UI Symbol;
-        font-size: 1rem;
-        color: #495057;
-        background: #ffffff;
-        padding: 0.5rem 0.75rem;
-        border: 1px solid #ced4da;
-        transition: background-color .15s, border-color .15s, box-shadow .15s;
-        -webkit-appearance: none;
-        appearance: none;
-        border-radius: 4px;
-    }
-
-    .terminal-list-container {
-        display: flex;
-        flex-wrap: wrap;
-        gap: 16px;
-        margin: 8px 0 16px;
-
-        .terminal-container {
-            width: calc(50% - 8px);
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            gap: 8px;
-            border: solid #09467f 1px;
-            border-radius: 16px;
-            overflow: hidden;
-            padding-bottom: 16px;
-            opacity: .5;
-            text-align: center;
-
-            &.selected {
-                opacity: 1;
-            }
-
-            img {
-                width: 100%;
-                height: 120px;
-                object-fit: cover;
-            }
-
-            &__name {}
-
-            &__address {
-                font-size: 14px;
-            }
-        }
-    }
-
-    .terminal-list-label {
-        margin-left: 8px;
+      &__address {
         font-size: 14px;
+      }
+    }
+  }
+
+  .terminal-list-label {
+    margin-left: 8px;
+    font-size: 14px;
+  }
+
+  .form-row-wide {
+    display: flex;
+    flex-direction: column;
+  }
+
+  #deliveryDate {
+    margin-left: 8px;
+    margin-bottom: 4px;
+    display: block;
+    font-size: 14px;
+  }
+
+  .bootom-info {
+    position: fixed;
+    width: 100%;
+    left: 0;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    bottom: 0;
+    padding: 18px;
+    background: #fff;
+    z-index: 3;
+    border-top: solid 1px #e7e7e7;
+
+    .subtotal {
+      font-weight: 600;
+      font-size: 20px;
+      display: flex;
+      flex-direction: column;
+
+      .products-count {
+        font-size: 12px;
+        font-weight: 400;
+      }
     }
 
-    .form-row-wide {
-        display: flex;
-        flex-direction: column;
+    .elementor-button--checkout {
+      background-color: #09467f;
+      color: #fff;
+      border-radius: 6px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      border: none;
+      padding: 12px;
+      font-size: 12px;
+      cursor: pointer;
     }
-
-    #deliveryDate {
-        margin-left: 8px;
-        margin-bottom: 4px;
-        display: block;
-        font-size: 14px;
-    }
-
+  }
+  @media screen and (min-width: 650px) {
     .bootom-info {
-        position: fixed;
-        bottom: 58px;
-        width: 100%;
-        display: flex;
-        padding: 12px 18px;
-        justify-content: space-between;
-        left: 0;
-        align-items: center;
-        background: #fff;
-        z-index: 9999;
-
-        .subtotal {
-            font-weight: 600;
-            font-size: 20px;
-            display: flex;
-            flex-direction: column;
-
-            .products-count {
-                font-size: 12px;
-                font-weight: 400;
-            }
-        }
-
-        .elementor-button--checkout {
-            background-color: #09467f;
-            color: #fff;
-            border-radius: 6px;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            border: none;
-            padding: 12px;
-            font-size: 12px;
-            cursor: pointer;
-        }
-
+      width: 450px;
+      right: 0;
+      left: auto;
     }
-    @media screen and (min-width: 550px) {
-        .bootom-info {
-            bottom: 84px;
-            width: 500px;
-            left: 50%;
-            transform: translate(-50%, 0);
-            border: solid 1px #dfdfdf;
-            border-radius: 12px;
-        }
-    }
+  }
 }

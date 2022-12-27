@@ -1,10 +1,23 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
+import { Store } from '@ngrx/store';
+import { PrimeNGConfig } from 'primeng/api';
+import * as ConfigActions from './state/config/config.actions'
 
 @Component({
   selector: 'app-root',
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.scss']
 })
-export class AppComponent {
+export class AppComponent implements OnInit {
   title = 'Demo stand';
+
+  constructor(private primengConfig: PrimeNGConfig,
+    private store: Store) {}
+
+  ngOnInit() {
+    this.primengConfig.ripple = true;
+    this.store.dispatch(ConfigActions.getConfig());
+  }
+
+
 }

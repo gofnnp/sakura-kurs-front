@@ -1,4 +1,4 @@
-import { Component, EventEmitter, OnInit, Output } from '@angular/core';
+import { Component, EventEmitter, HostListener, OnInit, Output } from '@angular/core';
 import { MessageService } from 'primeng/api';
 import { Order } from 'src/app/models/order';
 import { OrderProduct } from 'src/app/models/order-product';
@@ -16,6 +16,9 @@ export class CartComponent implements OnInit {
   public orderConfirmed = false;
   public order!: Order;
   public price!: number;
+  public visibleSidebar: boolean = false;
+  public isFullScreen!: boolean;
+  public width!: number;
 
   constructor(
     private orderService: OrderService,
@@ -24,7 +27,29 @@ export class CartComponent implements OnInit {
   ) { }
 
   ngOnInit(): void {
+    this.width = window.innerWidth;
+    this.changeDullScreenMode()
     this.loadCart()
+  }
+
+  // Изменение размера окна
+  @HostListener('window:resize', ['$event'])
+  onResize(event: any) {
+      this.width = event.target.innerWidth;
+      this.changeDullScreenMode()
+  }
+
+  toggleSideBar(): void{
+    this.visibleSidebar = !this.visibleSidebar;
+    this.loadCart()
+  }
+
+  changeDullScreenMode() {
+    if (this.width < 650) {
+      this.isFullScreen = true
+    } else {
+      this.isFullScreen = false
+    }
   }
 
   async loadCart(): Promise<void> {

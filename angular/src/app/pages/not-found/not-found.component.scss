@@ -1,27 +1,30 @@
 :host {
   .not-found-page {
+    height: calc(100vh - 70px);
     &__container {
       text-align: center;
-      margin-top: 32px;
+      height: 100%;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      -moz-user-select: none;
+      -khtml-user-select: none;
+      user-select: none;
       h1 {
-        font-size: 108px;
+        font-size: 136px;
         font-weight: 600;
-        color: #09467f;
+        color: #252525;
       }
       p {
-        margin: 16px 0;
+        margin: 48px 0;
         font-size: 14px;
       }
-      button {
-        background-color: #09467f;
-        color: #fff;
-        border-radius: 8px;
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        padding: 12px;
-        margin: 0 auto;
-        border: 0;
+      a {
+        letter-spacing: 1px;
+        color: #252525;
+        border-bottom: 2px solid #252525;
+        font-weight: 600;
       }
     }
   }

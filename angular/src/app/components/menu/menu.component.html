@@ -1,0 +1,54 @@
+<nav class="main-menu-container" isShow="false" #menu>
+  <ul>
+    <ng-container
+      *ngFor="
+        let page of mainPageList;
+        let index = index;
+        let last = last;
+        let first = first
+      "
+    >
+      <li
+        *ngIf="page.onSideBar && !last"
+        class="main-menu-container__item"
+        [ngClass]="{
+          cart: page.resName === 'cart'
+        }"
+        [attr.data-counter]="page.resName === 'cart' ? cartCount : null"
+        [routerLink]="page.resName"
+        routerLinkActive="active"
+      >
+        <mat-icon
+          [ngClass]="{
+            'mat-icon': true
+          }"
+        >
+          {{ page.icon }}
+        </mat-icon>
+        <a>
+          {{ page.name }}
+        </a>
+      </li>
+    </ng-container>
+    <li
+      *ngIf="mainPageList[mainPageList.length - 1].onSideBar"
+      class="main-menu-container__item"
+      [ngClass]="{
+        cart: true
+      }"
+      [attr.data-counter]="cartCount"
+      (click)="changeMainPage(mainPageList[mainPageList.length - 1])"
+    >
+      <mat-icon
+        [ngClass]="{
+          'mat-icon': true
+        }"
+      >
+        {{ mainPageList[mainPageList.length - 1].icon }}
+      </mat-icon>
+      <a>
+        {{ mainPageList[mainPageList.length - 1].name }}
+      </a>
+    </li>
+  </ul>
+</nav>
