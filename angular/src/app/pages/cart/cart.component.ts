@@ -41,6 +41,7 @@ export class CartComponent implements OnInit {
 
   toggleSideBar(): void{
     this.visibleSidebar = !this.visibleSidebar;
+    this.orderConfirmed = false;
     this.loadCart()
   }
 
@@ -98,6 +99,7 @@ export class CartComponent implements OnInit {
   onConfirm() {
     this.cartService.clearCart()
     this.loadCart()
+    this.visibleSidebar = false
     this.messageService.clear('c');
   }
 

@@ -39,6 +39,7 @@ export class UserDataOrderComponent implements OnInit {
   public checkAddress: boolean = true;
   public showMyMessage: boolean = false;
   public order!: Order;
+  public showAuthoriztion = false;
 
   public userData: UserData = {
     first_name: null,
@@ -76,6 +77,7 @@ export class UserDataOrderComponent implements OnInit {
   ) { }
 
   async ngOnInit() {
+    this.checkAuthorization(true)
     this._createMainForm();
     this.getTerminalList();
     this.selectedTerminal = JSON.parse(this.cookiesService.getItem('selectedTerminal') || '')
@@ -100,6 +102,21 @@ export class UserDataOrderComponent implements OnInit {
 
       }
     })
+  }
+
+  checkAuthorization(showAuthoriztion: boolean, forced = false) {
+    if (!this.getToken() || forced) {
+      this.showAuthoriztion = showAuthoriztion
+    }
+  }
+
+  getToken(): string | void {
+    return this.cookiesService.getItem('token');
+  }
+
+  phoneConfirmed() {
+    this.showAuthoriztion = false
+    this.checkAuthorization(true)
   }
 
   changeDeliveryType(event: any) {

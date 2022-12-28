@@ -1,7 +1,7 @@
 import { HttpErrorResponse } from '@angular/common/http';
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
-import { Purchase } from 'src/app/interface/data';
+import { Page, Purchase } from 'src/app/interface/data';
 import * as moment from 'moment-timezone';
 import { lastValueFrom } from 'rxjs';
 import { JsonrpcService, RpcService } from 'src/app/services/jsonrpc.service';
@@ -15,6 +15,7 @@ import { CookiesService } from 'src/app/services/cookies.service';
   styleUrls: ['./orders.component.scss']
 })
 export class OrdersComponent implements OnInit {
+  @Input() currentPage!: Page;
   @Input() handleHttpError!: (error: HttpErrorResponse) => void;
   @Output() deauthorization = new EventEmitter<boolean>(false)
   public lastViewOrder: number = 3;

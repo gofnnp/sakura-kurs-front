@@ -1,4 +1,4 @@
-import { Component, EventEmitter, Inject, OnInit, Output } from '@angular/core';
+import { Component, EventEmitter, Inject, Input, OnInit, Output } from '@angular/core';
 import { lastValueFrom } from 'rxjs';
 import { orderStatuses, PageList, PageListWithBonus } from 'src/app/app.constants';
 import { BonusProgramAccount, Page, Purchase, Transaction } from 'src/app/interface/data';
@@ -18,6 +18,7 @@ import { WpJsonService } from 'src/app/services/wp-json.service';
   styleUrls: ['./bonus-program.component.scss']
 })
 export class BonusProgramComponent implements OnInit {
+  @Input() currentPage!: Page;
   @Output() deauthorization = new EventEmitter<boolean>(false)
   public accountData!: BonusProgramAccount;
   public purchases: Purchase[] = [];
@@ -25,7 +26,6 @@ export class BonusProgramComponent implements OnInit {
   readonly orderStatuses = orderStatuses;
   readonly moment = moment;
   readonly pageList = environment.hasBonusProgram ? PageListWithBonus : PageList;
-  public currentPage: Page = this.pageList[1];
   public userName: string = '';
   public deviceType: 'ios' | 'android' | null = null;
 

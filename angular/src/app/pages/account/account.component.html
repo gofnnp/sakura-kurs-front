@@ -4,14 +4,18 @@
     'auth-page': showAuthoriztion
   }"
 >
-  <div *ngIf="!showAuthoriztion" class="account-page">
+  <div *ngIf="!showAuthoriztion; else authEl" class="account-page">
     <div *ngIf="showAuthoriztion" class="top-left-attribute"></div>
     <div [ngSwitch]="currentPage.code" class="">
       <ng-container *ngSwitchCase="PageCode.Orders">
-        <app-orders (deauthorization)="changePage(pageList[0])"></app-orders>
+        <app-orders
+          [currentPage]="currentPage"
+          (deauthorization)="changePage(pageList[0])"
+        ></app-orders>
       </ng-container>
       <ng-container *ngSwitchCase="PageCode.BonusProgram">
         <app-bonus-program
+          [currentPage]="currentPage"
           (deauthorization)="changePage(pageList[0])"
         ></app-bonus-program>
       </ng-container>
@@ -46,7 +50,7 @@
             </div>
           </li>
         </ng-container>
-        <li class="woocommerce-MyAccount-navigation-link" (click)="logout()">
+        <li class="woocommerce-MyAccount-navigation-link" (click)="logout($event)">
           <div class="container">
             <img src="./assets/menu-icons/exit.png" alt="Иконка меню" />
             <div class="menu-item-info">
@@ -95,3 +99,7 @@
     </ng-template>
   </p-toast>
 </div>
+
+<ng-template #authEl>
+  <app-auth (phoneConfirmed)="phoneConfirmed()"></app-auth>
+</ng-template>

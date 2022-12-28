@@ -83,7 +83,8 @@ export class AccountComponent implements OnInit {
 
   phoneConfirmed(): void {
     this.refSystem();
-    this.checkAuthorization(false, true)
+    this.showAuthoriztion = false
+    this.checkAuthorization(true)
   }
 
   async refSystem() {
@@ -212,9 +213,13 @@ export class AccountComponent implements OnInit {
   onConfirm() {
     this.deleteToken();
     this.showAuthoriztion = true;
+    this.messageService.clear('c')
   }
 
-  logout() {
+  logout(event?: MouseEvent) {
+    if (event) {
+      event.preventDefault()
+    }
     this.messageService.add({ key: 'c', sticky: true, severity: 'warn', summary: 'Вы уверены, что хотите выйти?' });
   }
 }

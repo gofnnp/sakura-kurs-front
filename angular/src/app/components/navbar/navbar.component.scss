@@ -29,6 +29,12 @@
     margin-left: 12px;
 }
 
+@media screen and (max-width: 600px) {
+    .container-navbar {
+        justify-content: center;
+    }
+}
+
 @media screen and (max-width: 549px) {
     .container-navbar {
         .menu {

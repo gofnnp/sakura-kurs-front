@@ -52,10 +52,10 @@
             justify-content: space-between;
             font-size: 14px;
             align-items: center;
-            // margin-left: -24px;
             overflow-x: auto;
             width: 100%;
             margin-right: 16px;
+            gap: 8px;
 
             &::-webkit-scrollbar {
                 width: 0;
@@ -63,9 +63,12 @@
 
             .group-container {
                 font-weight: 600;
-                padding: 6px 24px;
-                transition: all .5s;
+                padding: 8px 24px;
+                transition: all 0.5s;
                 border-radius: 1.125rem;
+                text-align: center;
+                background: #ededed;
+                border: none;
                 cursor: pointer;
 
                 &.non-visible {
