@@ -1,0 +1,12 @@
+<div class="modifier-container">
+  <ng-content select="[counter]"></ng-content>
+  <h3>{{ modifier.name }}</h3>
+  <div class="modifier-container__options">
+    <app-option
+      *ngFor="let option of modifier.options"
+      [option]="option"
+      [modifier]="modifier"
+      [product]="product"
+    ></app-option>
+  </div>
+</div>

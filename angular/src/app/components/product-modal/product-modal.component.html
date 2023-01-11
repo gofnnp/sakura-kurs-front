@@ -1,10 +1,20 @@
 <div class="product-modal">
-    <img *ngIf="!product.image" src="./assets/no-image.png" alt="{{product.name}}">
-    <img *ngIf="product.image" src="{{product.image}}" alt="{{product.name}}">
+  <div class="product-modal__information-container">
+    <img
+      src="{{
+        product.image?.length ? product.image : './assets/no-image.png'
+      }}"
+      alt="{{ product.name }}"
+    />
+    <p class="product-modal__description">Lorem ipsum dolor sit amet consectetur adipisicing elit. Quasi quas libero consequatur dolorum itaque dolor deserunt aut facilis debitis!</p>
+  </div>
 
-    <div class="product-modal__modifiers-container">
-        <ng-container *ngIf="product.modifiers_group.length">
-            <div *ngFor="let modifierGroup of cartProduct.modifiers" [attr.isShow]="false"
+  <div
+    *ngIf="product.modifiers_group.length"
+    class="product-modal__modifiers-container"
+  >
+    <!-- <ng-container *ngIf="product.modifiers_group.length">
+      <div *ngFor="let modifierGroup of cartProduct.modifiers" [attr.isShow]="false"
                 [ngClass]="{'product-modal__modifier': true, 'no-valid': isValidate && modifierGroup.allQuantity < modifierGroup.restrictions.minQuantity}" #modifierContainer>
                 <a (click)="setOptionsView($event, modifierContainer)">
                     {{modifierGroup.name}}
@@ -22,13 +32,24 @@
                     </app-checkbox-group>
                 </div>
             </div>
-        </ng-container>
-    </div>
+        </ng-container> -->
+    <app-modifier
+      *ngFor="let modifier of cartProduct.modifiers; let index = index"
+      [modifier]="modifier"
+      [product]="cartProduct"
+    >
+      <span counter>{{ index + 1 }} из {{ cartProduct.modifiers.length }}</span>
+    </app-modifier>
+  </div>
 
-    <div class="product-modal__footer">
-        <span class="product-modal__footer-price">{{product.price}}₽</span>
-        <button class="product-modal__add-to-cart" (click)="addToCart($event)">
-            Добавить
-        </button>
+  <div class="product-modal__footer">
+    <!-- <app-change-quantity (onChangeValue)="changeProductAmount()"></app-change-quantity> -->
+    <span class="product-modal__footer-price">{{ cartProduct.finalPrice }}₽</span>
+    <div class="product-modal__footer-buttons">
+      <app-change-quantity [disabledButton]="cartProduct.amount === 1 ? 'minus' : 'none'" [value]="cartProduct.amount" (onChangeValue)="changeProductAmount($event)"></app-change-quantity>
+      <button class="product-modal__add-to-cart" (click)="addToCart($event)">
+        Добавить
+      </button>
     </div>
+  </div>
 </div>

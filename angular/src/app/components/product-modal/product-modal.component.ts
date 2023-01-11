@@ -32,7 +32,7 @@ export class ProductModalComponent implements OnInit {
     this.product = this.config.data.product
     this.modifiersGroups = this.config.data.modifiersGroups
     this.modifiers = this.config.data.modifiers
-    this.cartProduct = new CartProduct(this.product.id, this.product.name, this.modifiersFilter(), this.modifiers);
+    this.cartProduct = new CartProduct(this.product.id, this.product.name, this.modifiersFilter(), this.modifiers, this.product.price);
   }
 
   modifiersFilter(): ModifiersGroup[] {
@@ -42,25 +42,6 @@ export class ProductModalComponent implements OnInit {
   optionsFilter(modifierGroup: ModifiersGroup): Modifier[] {
     return this.modifiers.filter((modifier) => modifier.groupId === modifierGroup.id)
   }
-
-  changeQuantity(event: any) {
-    const value: ChangeValue = event.value
-    const modifierGroup: CartModifier = event.modifierGroup
-    const option: Modifier = event.option
-
-    const modifGroup = this.cartProduct.modifiers.find((modifGroup) => modifGroup.idLocal === modifierGroup.idLocal)
-    const modifier = modifGroup?.options.find((modifier) => modifier.idLocal == option.idLocal)
-
-    if (!modifier) return
-    if (!modifier.quantity && modifier.quantity !== 0) modifier.quantity = modifier.restrictions.byDefault
-    if (value.type === 'minus') {
-      modifier.quantity -= value.variableQuantity
-    } else {
-      modifier.quantity += value.variableQuantity
-    }
-  }
-
-
 
   selectedOptions(modifier: ModifiersGroup): Modifier[] {
     const cartModifier = this.cartProduct.modifiers.find(cartModifier => cartModifier.id === modifier.id)
@@ -101,6 +82,15 @@ export class ProductModalComponent implements OnInit {
       return
     }
     element.setAttribute('isShow', 'true')
+  }
+
+  changeProductAmount({type, variableQuantity}: ChangeValue) {
+    if (type === 'plus') {
+      this.cartProduct.increment()
+    } else {
+      this.cartProduct.decrement()
+    }
+    
   }
 
   addToCart(event: Event) {

@@ -68,7 +68,7 @@
       flex-direction: column;
       align-items: center;
       gap: 8px;
-      border: solid #09467f 1px;
+      border: solid var(--orange-main) 1px;
       border-radius: 16px;
       overflow: hidden;
       padding-bottom: 16px;
@@ -137,7 +137,7 @@
     }
 
     .elementor-button--checkout {
-      background-color: #09467f;
+      background-color: var(--orange-main);
       color: #fff;
       border-radius: 6px;
       display: flex;

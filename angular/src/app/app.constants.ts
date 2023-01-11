@@ -27,7 +27,7 @@ export const PageListWithBonus: Page[] = [
         name: 'Ваша карта лояльности',
         description: '',
         resName: 'bonus-program',
-        onSideBar: true,
+        onSideBar: false,
     },
     {
         code: PageCode.Orders,

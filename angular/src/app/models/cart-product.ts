@@ -1,14 +1,15 @@
-import { CartModifier, Modifier, ModifiersGroup, Option } from "../interface/data";
+import { CartModifier, Modifier, ModifiersGroup } from "../interface/data";
 import { v4 as uuidv4 } from 'uuid';
 
 export class CartProduct {
 
 
-  constructor(id: string, name: string, modifiers: ModifiersGroup[] = [], options: Modifier[], amount: number = 1) {
+  constructor(id: string, name: string, modifiers: ModifiersGroup[] = [], options: Modifier[], price: number, amount: number = 1) {
     this.id = id;
     this.guid = uuidv4();
     this.amount = amount;
     this.name = name;
+    this.price = price * amount
     this.modifiers = modifiers.map(modifier => ({
       name: modifier.name,
       id: modifier.id,
@@ -33,6 +34,7 @@ export class CartProduct {
   guid: string;
   amount: number;
   name: string;
+  price: number;
   modifiers: CartModifier[];
 
   increment(): void {
@@ -43,6 +45,29 @@ export class CartProduct {
     if (this.amount > 0) {
       this.amount--;
     }
+  }
+
+  incrementOption(modifierId: string, optionId: string): void {
+    const modifier = this.modifiers.find((modifier) => modifier.idLocal === modifierId)
+    const option = modifier?.options.find((option) => option.idLocal === optionId)
+    if (!option?.quantity && option?.quantity !== 0) return
+    option.quantity++
+  }
+
+  decrementOption(modifierId: string, optionId: string): void {
+    const modifier = this.modifiers.find((modifier) => modifier.idLocal === modifierId)
+    const option = modifier?.options.find((option) => option.idLocal === optionId)
+    if (!option?.quantity && option?.quantity !== 0) return
+    option.quantity--
+  }
+
+  get finalPrice(): number{
+    const modifiersPrice = this.modifiers.reduce<number>((previousValue, currentValue) => {
+      return previousValue + currentValue.options.reduce<number>((previousOptionValue, currentOptionValue) => {
+        return previousOptionValue + Number(currentOptionValue.price ? currentOptionValue.price * (currentOptionValue.quantity ?? 0) : 0);
+      }, 0);
+    }, 0);
+    return (Number(this.price) + modifiersPrice) * this.amount;
   }
 
   // addOption(modifier: ModifiersGroup, option: Modifier): void {

@@ -6,7 +6,11 @@
 >
   <div *ngIf="!showAuthoriztion; else authEl" class="account-page">
     <div *ngIf="showAuthoriztion" class="top-left-attribute"></div>
-    <div [ngSwitch]="currentPage.code" class="">
+    <app-bonus-program
+      [currentPage]="currentPage"
+      (deauthorization)="changePage(pageList[0])"
+    ></app-bonus-program>
+    <!-- <div [ngSwitch]="currentPage.code" class="">
       <ng-container *ngSwitchCase="PageCode.Orders">
         <app-orders
           [currentPage]="currentPage"
@@ -14,10 +18,6 @@
         ></app-orders>
       </ng-container>
       <ng-container *ngSwitchCase="PageCode.BonusProgram">
-        <app-bonus-program
-          [currentPage]="currentPage"
-          (deauthorization)="changePage(pageList[0])"
-        ></app-bonus-program>
       </ng-container>
       <ng-container *ngSwitchCase="PageCode.UserData">
         <app-user-data></app-user-data>
@@ -25,8 +25,8 @@
       <ng-container *ngSwitchCase="PageCode.RefSystem">
         <app-ref-system></app-ref-system>
       </ng-container>
-    </div>
-    <nav *ngIf="!showAuthoriztion" class="woocommerce-MyAccount-navigation">
+    </div> -->
+    <!-- <nav *ngIf="!showAuthoriztion" class="woocommerce-MyAccount-navigation">
       <ul>
         <ng-container *ngFor="let page of pageList; let index = index">
           <li
@@ -59,7 +59,28 @@
           </div>
         </li>
       </ul>
-    </nav>
+    </nav> -->
+
+    <mat-tab-group mat-stretch-tabs="false" mat-align-tabs="center">
+      <ng-container *ngFor="let page of pageList">
+        <mat-tab *ngIf="page.onSideBar" label="{{ page.name }}">
+          <div [ngSwitch]="page.resName" class="">
+            <ng-container *ngSwitchCase="'orders'">
+              <app-orders
+                [currentPage]="currentPage"
+                (deauthorization)="changePage(pageList[0])"
+              ></app-orders>
+            </ng-container>
+            <ng-container *ngSwitchCase="'user-data'">
+              <app-user-data></app-user-data>
+            </ng-container>
+            <ng-container *ngSwitchCase="'ref-system'">
+              <app-ref-system></app-ref-system>
+            </ng-container>
+          </div>
+        </mat-tab>
+      </ng-container>
+    </mat-tab-group>
   </div>
 
   <p-toast

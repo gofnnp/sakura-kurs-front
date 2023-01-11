@@ -1,0 +1,17 @@
+<div
+  appChangeQuantityOption
+  [option]="option"
+  [modifier]="modifier"
+  [product]="product"
+  [ngClass]="{
+    'option-container': true,
+    'selected': option.quantity
+  }"
+  [attr.quantity]="option.quantity"
+>
+  <img
+    src="{{ option.image?.length ? option.image : './assets/no-image.png' }}"
+    alt="{{ option.name }}"
+  />
+  <h4>{{ option.name }}</h4>
+</div>

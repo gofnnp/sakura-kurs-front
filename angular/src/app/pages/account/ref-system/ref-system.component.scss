@@ -8,7 +8,7 @@
             margin: 0 auto;
             .share {
                 width: 50px;
-                background-color: #09467f;
+                background-color: var(--orange-main);
                 border-radius: 8px;
                 display: flex;
                 justify-content: center;
@@ -19,7 +19,7 @@
                 }
             }
             .copy {
-                background-color: #09467f;
+                background-color: var(--orange-main);
                 color: #fff;
                 border-radius: 8px;
                 width: calc(100% - 66px);

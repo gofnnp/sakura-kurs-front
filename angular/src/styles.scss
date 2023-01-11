@@ -16,11 +16,13 @@ blockquote,q{quotes:none}
 blockquote:before,blockquote:after,q:before,q:after{content:'';content:none}
 table{border-collapse:collapse;border-spacing:0}
 
+:root {
+    --orange-main: #C43F00;
+}
+
 * {
     font-family: 'Raleway', sans-serif;
 }
-
-$base_color: red;
 
 .p-inputtext {
     width: 100%;
@@ -71,11 +73,11 @@ button {
 
 .p-toast-message-custom {
     background-color: #fff;
-    border: solid #09467F;
+    border: solid var(--orange-main);
     border-width: 0 0 0 6px;
     color: #000;
     .p-toast-icon-close {
-        color: #09467F;
+        color: var(--orange-main);
     }
 }
 
@@ -196,6 +198,31 @@ p-toast[key="c"] .p-toast {
         bottom: 73px;
     }
 }
+
+@media screen and (max-width: 1070px) {
+    .product-modal-view {
+        width: 50vw !important;
+    }
+}
+
+@media screen and (max-width: 800px) {
+    .product-modal-view {
+        width: 70vw !important;
+    }
+}
+
+@media screen and (max-width: 600px) {
+    .product-modal-view {
+        width: 80vw !important;
+    }
+}
+
+@media screen and (max-width: 450px) {
+    .product-modal-view {
+        width: 94vw !important;
+    }
+}
+
 
 .p-calendar {
     width: 100%;

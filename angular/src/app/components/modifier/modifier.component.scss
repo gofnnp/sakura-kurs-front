@@ -1,0 +1,15 @@
+:host {
+    .modifier-container {
+        margin-bottom: 32px;
+        &__options {
+            display: flex;
+            flex-direction: row;
+            flex-wrap: wrap;
+            gap: 12px;
+        }
+
+        h3 {
+            font-weight: 500;
+        }
+    }
+}

@@ -157,6 +157,7 @@ export interface Modifier {
     groupId: string,
     price?: number,
     quantity?: number,
+    image?: string; 
     restrictions: {
         minQuantity: number,
         maxQuantity: number,
@@ -166,6 +167,7 @@ export interface Modifier {
 }
 
 export interface CartModifier {
+    lastChangeOption?: string;
     id: string;
     idLocal: string;
     name: string;

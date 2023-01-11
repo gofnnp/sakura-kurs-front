@@ -56,6 +56,10 @@ import { ChangeQuantityComponent } from './components/change-quantity/change-qua
 import { MenuComponent } from './components/menu/menu.component';
 import { SidebarModule } from 'primeng/sidebar';
 import {RippleModule} from 'primeng/ripple';
+import {MatTabsModule} from '@angular/material/tabs';
+import { ModifierComponent } from './components/modifier/modifier.component';
+import { OptionComponent } from './components/option/option.component';
+import { ChangeQuantityOptionDirective } from './directives/change-quantity-option.directive';
 
 const routes: Routes = [
   { path: '', redirectTo: 'products', pathMatch: 'full' },
@@ -88,7 +92,10 @@ const routes: Routes = [
     UserDataOrderComponent,
     InfoComponent,
     ChangeQuantityComponent,
-    MenuComponent
+    MenuComponent,
+    ModifierComponent,
+    OptionComponent,
+    ChangeQuantityOptionDirective
   ],
   imports: [
     BrowserModule,
@@ -127,7 +134,8 @@ const routes: Routes = [
     PaginatorModule,
     InputTextModule,
     SidebarModule,
-    RippleModule
+    RippleModule,
+    MatTabsModule
   ],
   providers: [DialogService, MessageService, MessagingService ],
   bootstrap: [AppComponent]

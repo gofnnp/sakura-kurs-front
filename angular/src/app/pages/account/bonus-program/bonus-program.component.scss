@@ -22,11 +22,12 @@
     }
 
     .card-container {
-      background: #09467f;
+      background: var(--orange-main);
       box-shadow: 0px 0px 5px rgb(0 0 0 / 15%);
       border-radius: 15px;
       margin-top: 11px;
       overflow: hidden;
+      min-width: 400px;
       max-width: 400px;
       width: 100%;
 
@@ -65,7 +66,7 @@
       }
 
       &__content {
-        background-color: #09467f;
+        background-color: var(--orange-main);
         color: #fff;
 
         .info {
@@ -195,9 +196,17 @@
       margin-top: 12px;
       height: 36px;
       border-radius: 8px;
-      background: #09467f;
-      border-color: #09467f;
+      background: var(--orange-main);
+      border-color: var(--orange-main);
       color: #fff;
+    }
+  }
+
+  @media screen and (max-width: 895px) {
+    .woocommerce-MyAccount-content {
+      .card-container {
+        min-width: auto;
+      }
     }
   }
 }

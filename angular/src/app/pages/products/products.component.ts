@@ -130,20 +130,24 @@ export class ProductsComponent implements OnInit {
     if (event) {
       event.preventDefault()
     }
+    const productModalWidth = product.modifiers_group.length ? '94vw' : '50vw'
+    const productModalMaxWidth = product.modifiers_group.length ? '1400px' : '500px'
     const ref = this.dialogService.open(ProductModalComponent, {
       header: product.name,
-      width: 'auto',
+      width: 'fit-content',
       style: {
-        'max-width': '90vw',
+        'max-width': productModalMaxWidth,
+        'min-width': '300px',
         'max-height': '90vh',
-        'border-radius': '1.125rem'
+        'border-radius': '1.125rem',
+        width: productModalWidth
       },
       contentStyle: {
         'max-height': '90vh',
         height: 'auto',
-        'max-width': '600px',
         overflow: 'auto',
       },
+      styleClass: 'product-modal-view',
       data: {
         product: product,
         modifiersGroups: this.modifiersGroups,

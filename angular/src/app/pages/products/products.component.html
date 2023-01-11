@@ -1,111 +1,165 @@
 <p-toast position="top-center"></p-toast>
 <div *ngIf="!loading; else loadingEl" class="products-container">
-    <div class="products-container__filters-container">
-        <!-- <label>Категория</label>
+  <div class="products-container__filters-container">
+    <!-- <label>Категория</label>
         <p-treeSelect *ngIf="groups" [(ngModel)]="selectedGroup" [options]="groups"
             (onNodeSelect)="changeGroup()" (onNodeUnselect)="onGroupUnselect($event)" placeholder="Группа"></p-treeSelect> -->
-        <div class="products-container__categories-container">
-            <div *ngFor="let group of groups; let first = first" (click)="changeGroup(group)" [ngClass]="{
-                    'group-container': true,
-                    'active': group.id === selectedGroup.id,
-                    'non-visible': first
-                }">
-                <span>
-                    {{group.label}}
-                </span>
-            </div>
-        </div>
-        <p-treeSelect *ngIf="terminalList" [(ngModel)]="selectedTerminal" [options]="terminalList"
-            (onNodeSelect)="changeTerminal()" (onNodeUnselect)="onTerminalUnselect($event)"
-            placeholder="Пункт самовывоза" [disabled]="!!cartService.cartCount"></p-treeSelect>
-        <!-- <label>Пункт выдачи</label> -->
+    <div class="products-container__categories-container">
+      <div
+        *ngFor="let group of groups; let first = first"
+        (click)="changeGroup(group)"
+        [ngClass]="{
+          'group-container': true,
+          active: group.id === selectedGroup.id,
+          'non-visible': first
+        }"
+      >
+        <span>
+          {{ group.label }}
+        </span>
+      </div>
     </div>
-    <!-- <p-paginator [style]="{'background': 'transparent', padding: '8px 0'}" [alwaysShow]="false" [first]="currentPage" [rows]="10"
+    <p-treeSelect
+      *ngIf="terminalList"
+      [(ngModel)]="selectedTerminal"
+      [options]="terminalList"
+      (onNodeSelect)="changeTerminal()"
+      (onNodeUnselect)="onTerminalUnselect($event)"
+      placeholder="Пункт самовывоза"
+      [disabled]="!!cartService.cartCount"
+    ></p-treeSelect>
+    <!-- <label>Пункт выдачи</label> -->
+  </div>
+  <!-- <p-paginator [style]="{'background': 'transparent', padding: '8px 0'}" [alwaysShow]="false" [first]="currentPage" [rows]="10"
         [totalRecords]="filterByGroup().length" (onPageChange)="onPageChange($event)" [pageLinkSize]="3"
         [showPageLinks]="true"></p-paginator> -->
-    <div *ngIf="selectedGroup && selectedGroup.label !== 'Все'" class="products-container__category-name-container">
-        <h1>{{selectedGroup.label}}</h1>
-        <div class="bread-crumbs">
-            <span class="all" (click)="changeGroup(groups[0])">Все </span>
-            >
-            <span class="selected-category"> {{selectedGroup.label}}</span>
-        </div>
+  <div
+    *ngIf="selectedGroup && selectedGroup.label !== 'Все'"
+    class="products-container__category-name-container"
+  >
+    <h1>{{ selectedGroup.label }}</h1>
+    <div class="bread-crumbs">
+      <span class="all" (click)="changeGroup(groups[0])">Все </span>
+      >
+      <span class="selected-category"> {{ selectedGroup.label }}</span>
     </div>
-    <ng-container *ngIf="selectedGroup && selectedGroup.label === 'Все'">
-        <div *ngFor="let group of groups.slice(1)" [ngClass]="{
-                'products-container__category-container': true
-            }">
-            <div class="header">
-                <h2>{{group.label}}</h2>
-                <button (click)="changeGroup(group)">
-                    Перейти в категорию
-                </button>
-            </div>
-            <div class="products-container__items">
-                <div *ngFor="let product of filterByGroup(group)" (click)="addToCart($event, product)"
-                    class="products-container__item" #currentCategoryList>
-                    <img *ngIf="!product.image" src="./assets/no-image.png" alt="{{product.name}}">
-                    <img *ngIf="product.image" src="{{product.image}}" alt="{{product.name}}">
-                    <div class="products-container__name-container">
-                        <p>{{product.name}}</p>
-                    </div>
-                    <p class="products-container__product-composition">Lorem ipsum dolor sit amet consectetur
-                        adipisicing elit.
-                        Odio consequuntur voluptates est.</p>
-                    <div class="products-container__item-footer">
-                        <span>{{product.price}}₽</span>
-                        <button class="products-container__add-to-cart">В корзину</button>
-                    </div>
-                </div>
-            </div>
+  </div>
+  <ng-container *ngIf="selectedGroup && selectedGroup.label === 'Все'">
+    <div
+      *ngFor="let group of groups.slice(1)"
+      [ngClass]="{
+        'products-container__category-container': true
+      }"
+    >
+      <div class="header">
+        <h2>{{ group.label }}</h2>
+        <button (click)="changeGroup(group)">Перейти в категорию</button>
+      </div>
+      <div class="products-container__items">
+        <div
+          *ngFor="let product of filterByGroup(group)"
+          (click)="addToCart($event, product)"
+          class="products-container__item"
+          #currentCategoryList
+        >
+          <img
+            src="{{
+              product.image?.length ? product.image : './assets/no-image.png'
+            }}"
+            alt="{{ product.name }}"
+          />
+          <div class="products-container__name-container">
+            <p>{{ product.name }}</p>
+          </div>
+          <p class="products-container__product-composition">
+            Lorem ipsum dolor sit amet consectetur adipisicing elit. Odio
+            consequuntur voluptates est.
+          </p>
+          <div class="products-container__item-footer">
+            <span>{{ product.price }}₽</span>
+            <button class="products-container__add-to-cart">В корзину</button>
+          </div>
         </div>
-    </ng-container>
-    <ng-container *ngIf="selectedGroup && selectedGroup.label !== 'Все'">
-        <div class="products-container__items">
-            <div *ngFor="let product of filterByGroup()" (click)="addToCart($event, product)"
-                class="products-container__item" #currentCategoryList>
-                <img *ngIf="!product.image" src="./assets/no-image.png" alt="{{product.name}}">
-                <img *ngIf="product.image" src="{{product.image}}" alt="{{product.name}}">
-                <div class="products-container__name-container">
-                    <p>{{product.name}}</p>
-                </div>
-                <p class="products-container__product-composition">Lorem ipsum dolor sit amet consectetur adipisicing
-                    elit.
-                    Odio consequuntur voluptates est.</p>
-                <div class="products-container__item-footer">
-                    <span>{{product.price}}₽</span>
-                    <button class="products-container__add-to-cart">В корзину</button>
-                </div>
-            </div>
+      </div>
+    </div>
+  </ng-container>
+  <ng-container *ngIf="selectedGroup && selectedGroup.label !== 'Все'">
+    <div class="products-container__items">
+      <div
+        *ngFor="let product of filterByGroup()"
+        (click)="addToCart($event, product)"
+        class="products-container__item"
+        #currentCategoryList
+      >
+        <img
+          *ngIf="!product.image"
+          src="./assets/no-image.png"
+          alt="{{ product.name }}"
+        />
+        <img
+          *ngIf="product.image"
+          src="{{ product.image }}"
+          alt="{{ product.name }}"
+        />
+        <div class="products-container__name-container">
+          <p>{{ product.name }}</p>
         </div>
-    </ng-container>
-    <!-- <p-paginator [style]="{'background': 'transparent', padding: '8px 0'}" [alwaysShow]="false" [first]="currentPage" [rows]="10"
+        <p class="products-container__product-composition">
+          Lorem ipsum dolor sit amet consectetur adipisicing elit. Odio
+          consequuntur voluptates est.
+        </p>
+        <div class="products-container__item-footer">
+          <span>{{ product.price }}₽</span>
+          <button class="products-container__add-to-cart">В корзину</button>
+        </div>
+      </div>
+    </div>
+  </ng-container>
+  <!-- <p-paginator [style]="{'background': 'transparent', padding: '8px 0'}" [alwaysShow]="false" [first]="currentPage" [rows]="10"
         [totalRecords]="filterByGroup().length" (onPageChange)="onPageChange($event)" [pageLinkSize]="3"
         [showPageLinks]="true"></p-paginator> -->
-    <p-toast position="bottom-center" key="c" (onClose)="onReject()" [baseZIndex]="5000">
-        <ng-template let-message pTemplate="message">
-            <div class="flex flex-column" style="flex: 1">
-                <div class="text-center">
-                    <i class="pi pi-exclamation-triangle" style="font-size: 3rem"></i>
-                    <h4>{{message.summary}}</h4>
-                    <p style="font-weight: 600;">{{message.detail}}</p>
-                </div>
-                <div class="grid p-fluid">
-                    <div class="col-6">
-                        <button type="button" pButton (click)="onConfirm()" label="Да"
-                            class="p-button-success"></button>
-                    </div>
-                    <div class="col-6">
-                        <button type="button" pButton (click)="onReject()" label="Нет"
-                            class="p-button-secondary"></button>
-                    </div>
-                </div>
-            </div>
-        </ng-template>
-    </p-toast>
+  <p-toast
+    position="bottom-center"
+    key="c"
+    (onClose)="onReject()"
+    [baseZIndex]="5000"
+  >
+    <ng-template let-message pTemplate="message">
+      <div class="flex flex-column" style="flex: 1">
+        <div class="text-center">
+          <i class="pi pi-exclamation-triangle" style="font-size: 3rem"></i>
+          <h4>{{ message.summary }}</h4>
+          <p style="font-weight: 600">{{ message.detail }}</p>
+        </div>
+        <div class="grid p-fluid">
+          <div class="col-6">
+            <button
+              type="button"
+              pButton
+              (click)="onConfirm()"
+              label="Да"
+              class="p-button-success"
+            ></button>
+          </div>
+          <div class="col-6">
+            <button
+              type="button"
+              pButton
+              (click)="onReject()"
+              label="Нет"
+              class="p-button-secondary"
+            ></button>
+          </div>
+        </div>
+      </div>
+    </ng-template>
+  </p-toast>
 </div>
 <ng-template #loadingEl>
-    <div class="angular-spinner-container" style="width: fit-content; height: 100%; margin: 16px auto;">
-        <p-progressSpinner styleClass="angular-spinner"></p-progressSpinner>
-    </div>
+  <div
+    class="angular-spinner-container"
+    style="width: fit-content; height: 100%; margin: 16px auto"
+  >
+    <p-progressSpinner styleClass="angular-spinner"></p-progressSpinner>
+  </div>
 </ng-template>
