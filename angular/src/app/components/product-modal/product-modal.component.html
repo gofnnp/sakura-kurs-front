@@ -1,5 +1,7 @@
 <div class="product-modal">
-  <div class="product-modal__information-container">
+  <div class="product-modal__information-container" [ngStyle]="{
+    'max-width': product.modifiers_group.length ? 'calc(50% - 16px)' : '100%'
+  }">
     <img
       src="{{
         product.image?.length ? product.image : './assets/no-image.png'

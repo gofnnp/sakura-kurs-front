@@ -7,7 +7,6 @@
     gap: 32px;
 
     &__information-container {
-      max-width: calc(50% - 16px);
       img {
         width: 100%;
         border-radius: 1.125rem;
@@ -133,7 +132,7 @@
       flex-direction: column;
 
       &__information-container {
-        max-width: 100%;
+        max-width: 100% !important;
       }
     }
   }
