@@ -20,7 +20,7 @@ export const environment = {
   version: packageJson.version,
   appleWalletEndpoint: 'https://apple-push-notifications.it-retail.tech/apns/api',
   appleWalletSecret: 'Token F5mbzEERAznGKVbB6l',
-  webhookItRetail: 'https://webhook.it-retail.tech/handlers/tillda/1eb3fb56-3c4c-43b7-9a04-ce532ab7548f',
+  webhookItRetail: 'https://https://demo-stand.lk.crm4retail.ru/it-retail/handlers/tillda/1eb3fb56-3c4c-43b7-9a04-ce532ab7548f',
   icardProxy: 'https://p1.icard-proxy.crm4retail.ru/',
   clientName: 'demo-stand',
   cities: ['Менделеевск'],
