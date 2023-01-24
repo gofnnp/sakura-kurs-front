@@ -1,8 +1,26 @@
-import {CartModifier, Modifier, Product} from "../interface/data";
-export class OrderProduct implements Product{
+import { CartModifier, Modifier, Product } from '../interface/data';
 
+export interface OrderProductToJson {
+  id: string;
+  amount: number;
+  price: number;
+  quantity: number;
+  name: string;
+  options?: OrderProductOption[];
+}
 
-  constructor(product: Product,guid: string, amount: number = 1) {
+export interface OrderProductOption {
+  option: string;
+  variants: {
+    variant: string;
+    id: string;
+    quantity: number | undefined;
+  }[];
+  id: string;
+}
+
+export class OrderProduct implements Product {
+  constructor(product: Product, guid: string, amount: number = 1) {
     this.category_id = product.category_id;
     this.currency_symbol = product.currency_symbol;
     this.description = product.description;
@@ -20,7 +38,6 @@ export class OrderProduct implements Product{
     this.modifiers_group = product.modifiers_group;
   }
 
-
   public amount: number;
   public category_id: number;
   public currency_symbol: string;
@@ -37,34 +54,58 @@ export class OrderProduct implements Product{
   public groupId: string;
   public modifiers_group: string[];
 
-
-  get finalPrice(): number{
-    const modifiersPrice = this.modifier_data.reduce<number>((previousValue, currentValue) => {
-      return previousValue + currentValue.options.reduce<number>((previousOptionValue, currentOptionValue) => {
-        return previousOptionValue + Number(currentOptionValue.price ? currentOptionValue.price * (currentOptionValue.quantity ?? 0) : 0);
-      }, 0);
-    }, 0);
+  get finalPrice(): number {
+    const modifiersPrice = this.modifier_data.reduce<number>(
+      (previousValue, currentValue) => {
+        return (
+          previousValue +
+          currentValue.options.reduce<number>(
+            (previousOptionValue, currentOptionValue) => {
+              return (
+                previousOptionValue +
+                Number(
+                  currentOptionValue.price
+                    ? currentOptionValue.price *
+                        (currentOptionValue.quantity ?? 0)
+                    : 0
+                )
+              );
+            },
+            0
+          )
+        );
+      },
+      0
+    );
     return (Number(this.price) + modifiersPrice) * this.amount;
   }
 
-  toJson(){
-    return {
+  toJson(): OrderProductToJson {
+    const product: OrderProductToJson = {
       id: this.id,
       amount: this.amount * this.price,
       price: this.price,
-      options: this.modifier_data?.map((modifier) => {
-        return {
-          option: modifier.name,
-          variants: modifier.options.map((option) => ({
-            variant: option.name,
-            id: option.id,
-            quantity: option.quantity
-          })).filter((option) => option.quantity) || null,
-          id: modifier.id
-        }
-      }).filter((modifier) => modifier.variants.length),
       quantity: this.amount,
       name: this.name,
-    }
+    };
+    const options = this.modifier_data
+      ?.map((modifier) => {
+        return {
+          option: modifier.name,
+          variants:
+            modifier.options
+              .map((option) => ({
+                variant: option.name,
+                id: option.id,
+                quantity: option.quantity,
+              }))
+              .filter((option) => option.quantity) || null,
+          id: modifier.id,
+        };
+      })
+      .filter((modifier) => modifier.variants.length);
+
+    if (options.length) product.options = options;
+    return product;
   }
 }

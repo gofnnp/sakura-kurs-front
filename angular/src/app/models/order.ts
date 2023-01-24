@@ -10,6 +10,7 @@ export interface OrderInfo {
   deliveryData?: DeliveryData;
   phone: string;
   token: string | undefined;
+  terminal_id: string;
 }
 
 export class Order {
