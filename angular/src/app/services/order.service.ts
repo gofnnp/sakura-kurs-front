@@ -149,10 +149,6 @@ export class OrderService {
                 true
               )
               .subscribe();
-            this.messageService.add({
-              severity: 'success',
-              summary: 'Заказ создан',
-            });
           },
         })
       );

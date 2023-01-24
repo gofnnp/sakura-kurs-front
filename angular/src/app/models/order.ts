@@ -20,6 +20,7 @@ export class Order {
   public deliveryData?: DeliveryData;
   public phone: string;
   public token: string | undefined;
+  public terminal_id: string;
 
   constructor(
     orderInfo: OrderInfo
@@ -29,6 +30,7 @@ export class Order {
     this.deliveryData = orderInfo.deliveryData;
     this.phone = orderInfo.phone;
     this.token = orderInfo.token;
+    this.terminal_id = orderInfo.terminal_id;
   }
 
   get price(): number {
@@ -53,7 +55,8 @@ export class Order {
         delivery_comment: this.deliveryData?.comment,
         delivery: this.deliveryData?.deliveryType?.type,
         delivery_address: this.deliveryData?.deliveryType?.type === "self_delivery" ? null : `${environment.cities[0]}, ул ${this.userData?.street},  ${this.userData?.house}`,
-        amount: this.price + 100
+        amount: this.price + 100,
+        terminal_id: this.terminal_id
      },
     }
   }
