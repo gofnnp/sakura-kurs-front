@@ -84,9 +84,9 @@ export class CartComponent implements OnInit {
     }
   }
 
-  orderSubmitted() {
+  orderSubmitted(orderid: number) {
     this.visibleSidebar = false
-    this.messageService.add({ severity: 'success', summary: 'Заказ оформлен!' });
+    this.messageService.add({ severity: 'success', summary: `Заказ оформлен! Номер заказа: ${orderid}` });
   }
 
   confirmClearCart() {
