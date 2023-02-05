@@ -1,4 +1,4 @@
-import { Component, EventEmitter, OnInit, Output } from '@angular/core';
+import { Component, EventEmitter, OnDestroy, OnInit, Output } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { DeliveryData, DeliveryType, PaymentMethod, UserData } from 'src/app/interface/data';
 import { paymentMethods } from "../../app.constants";
@@ -24,7 +24,7 @@ import { lastValueFrom } from 'rxjs';
   templateUrl: './user-data-order.component.html',
   styleUrls: ['./user-data-order.component.scss']
 })
-export class UserDataOrderComponent implements OnInit {
+export class UserDataOrderComponent implements OnInit, OnDestroy {
 
   @Output() orderSubmitted = new EventEmitter<void>();
   readonly cities = environment.cities;
@@ -40,6 +40,7 @@ export class UserDataOrderComponent implements OnInit {
   public showMyMessage: boolean = false;
   public order!: Order;
   public showAuthoriztion = false;
+  private intervalTimeDelivery!: any
 
   public userData: UserData = {
     first_name: null,
@@ -87,6 +88,11 @@ export class UserDataOrderComponent implements OnInit {
       }
     })
     this.deliverData.deliveryDate = moment().add(this.checkoutConfig?.timeDelivery?.changeTime?.defaultValue || 0, 'minutes').toDate()
+    this.intervalTimeDelivery = setInterval(() => {
+      this.mainFormGroup.controls['deliveryDataForm'].patchValue({
+        deliveryDate: moment().add(this.checkoutConfig?.timeDelivery?.changeTime?.defaultValue || 0, 'minutes').toDate()
+      })
+    }, 60_000)
     this.paymentMethods = this.checkoutConfig.payments.values
     this.deliverData.paymentMethod = this.paymentMethods[this.checkoutConfig.payments.default]
 
@@ -115,6 +121,7 @@ export class UserDataOrderComponent implements OnInit {
   }
 
   phoneConfirmed() {
+    this._createMainForm();
     this.showAuthoriztion = false
     this.checkAuthorization(true)
   }
@@ -203,7 +210,7 @@ export class UserDataOrderComponent implements OnInit {
       this.loading = false;
     }
     catch (e) {
-      console.error('Erroe: ', e);
+      console.error('Error: ', e);
 
       this.messageService.add({
         severity: 'error',
@@ -240,6 +247,10 @@ export class UserDataOrderComponent implements OnInit {
       persons: [this.deliverData.persons, [Validators.required, Validators.minLength(2), Validators.maxLength(255),]],
       comment: [this.deliverData.comment, [Validators.maxLength(255),]]
     });
+  }
+
+  ngOnDestroy(): void {
+    clearInterval(this.intervalTimeDelivery)
   }
 }
 

@@ -45,6 +45,10 @@ export class CartComponent implements OnInit {
     this.loadCart()
   }
 
+  hide() {
+    this.orderConfirmed = false;
+  }
+
   changeDullScreenMode() {
     if (this.width < 650) {
       this.isFullScreen = true

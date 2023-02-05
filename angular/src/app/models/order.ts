@@ -44,7 +44,7 @@ export class Order {
       paymentsystem: this.deliveryData?.paymentMethod?.type,
       phone: this.phone,
       persons: 1,
-      name: "31",
+      name: this.userData?.first_name,
       payment: {
         delivery_price: 100,
         products: this.products.map(product => {
@@ -54,7 +54,7 @@ export class Order {
         subtotal: this.price,
         delivery_comment: this.deliveryData?.comment,
         delivery: this.deliveryData?.deliveryType?.type,
-        delivery_address: this.deliveryData?.deliveryType?.type === "self_delivery" ? null : `${environment.cities[0]}, ул ${this.userData?.street},  ${this.userData?.house}`,
+        delivery_address: this.deliveryData?.deliveryType?.type === "self_delivery" ? '' : `${environment.cities[0]}, ул ${this.userData?.street},  ${this.userData?.house}`,
         amount: this.price + 100,
         terminal_id: this.terminal_id
      },
