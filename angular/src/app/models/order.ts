@@ -46,6 +46,7 @@ export class Order {
       persons: 1,
       name: this.userData?.first_name,
       payment: {
+        orderid: this.deliveryData?.orderid,
         delivery_price: 100,
         products: this.products.map(product => {
           return product.toJson();

@@ -26,7 +26,7 @@ import { lastValueFrom } from 'rxjs';
 })
 export class UserDataOrderComponent implements OnInit, OnDestroy {
 
-  @Output() orderSubmitted = new EventEmitter<void>();
+  @Output() orderSubmitted = new EventEmitter<number>();
   readonly cities = environment.cities;
   public paymentMethods!: PaymentMethod[];
   public loading = false;
@@ -56,7 +56,8 @@ export class UserDataOrderComponent implements OnInit, OnDestroy {
     deliveryType: null,
     paymentMethod: null,
     comment: '',
-    persons: 1
+    persons: 1,
+    orderid: 0
   };
   public terminalList!: any;
   public selectedTerminal!: any;
@@ -182,14 +183,16 @@ export class UserDataOrderComponent implements OnInit, OnDestroy {
     this.loading = true;
     const userData: UserData = this.mainFormGroup.controls['userDataForm'].getRawValue();
     userData.phone = this.userData.phone;
+    const deliveryData = this.mainFormGroup.controls['deliveryDataForm'].getRawValue()
+    deliveryData.orderid = Math.floor(Math.random() * (10 ** 12))
     this.orderService.setUserData(userData);
-    this.orderService.setDeliveryData(this.mainFormGroup.controls['deliveryDataForm'].getRawValue());
+    this.orderService.setDeliveryData(deliveryData);
     
     this.orderService.submit().subscribe({
       next: (_) => {
         this.loading = false;
         this.cartService.clearCart();
-        this.orderSubmitted.next();
+        this.orderSubmitted.next(deliveryData.orderid);
       },
       error: () => {
         this.loading = false;

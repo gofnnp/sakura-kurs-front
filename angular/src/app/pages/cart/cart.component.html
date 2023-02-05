@@ -194,7 +194,7 @@
 
   <app-user-data-order
     *ngIf="orderConfirmed"
-    (orderSubmitted)="orderSubmitted()"
+    (orderSubmitted)="orderSubmitted($event)"
   ></app-user-data-order>
 
   <div #loadingEl *ngIf="loading && !orderConfirmed">

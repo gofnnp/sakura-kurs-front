@@ -231,6 +231,7 @@ export interface DeliveryData {
     deliveryType: DeliveryType | null;
     persons: number;
     comment: string;
+    orderid: number;
 }
 
 export interface PaymentMethod {
