@@ -4,7 +4,7 @@
   "version": 1,
   "newProjectRoot": "projects",
   "projects": {
-    "demo-stand": {
+    "sakura": {
       "projectType": "application",
       "schematics": {
         "@schematics/angular:component": {
@@ -19,7 +19,7 @@
         "build": {
           "builder": "@angular-devkit/build-angular:browser",
           "options": {
-            "outputPath": "/var/www/html/lk.crm4retail.ru/demo-stand",
+            "outputPath": "/var/www/html/lk.crm4retail.ru/sakura",
             "deleteOutputPath": false,
             "baseHref": "/",
             "index": "src/index.html",
@@ -84,10 +84,10 @@
           "builder": "@angular-devkit/build-angular:dev-server",
           "configurations": {
             "production": {
-              "browserTarget": "demo-stand:build:production"
+              "browserTarget": "sakura:build:production"
             },
             "development": {
-              "browserTarget": "demo-stand:build:development",
+              "browserTarget": "sakura:build:development",
               "proxyConfig": "proxy.confi.json"
             }
           },
@@ -96,7 +96,7 @@
         "extract-i18n": {
           "builder": "@angular-devkit/build-angular:extract-i18n",
           "options": {
-            "browserTarget": "demo-stand:build"
+            "browserTarget": "sakura:build"
           }
         },
         "test": {

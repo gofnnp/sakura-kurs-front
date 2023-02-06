@@ -18,7 +18,7 @@
       "logLevel": "debug"
     },
     "/static": {
-      "target": "https://demo-stand.lk.crm4retail.ru/static",
+      "target": "https://sakura.lk.crm4retail.ru/static",
       "secure": false,
       "pathRewrite": {
         "^/static": ""
@@ -27,7 +27,7 @@
       "logLevel": "debug"
     },
     "/it-retail": {
-      "target": "https://demo-stand.lk.crm4retail.ru/it-retail",
+      "target": "https://sakura.lk.crm4retail.ru/it-retail",
       "secure": false,
       "pathRewrite": {
         "^/it-retail": ""

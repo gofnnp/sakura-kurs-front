@@ -22,6 +22,6 @@ export const environment = {
   appleWalletSecret: 'Token F5mbzEERAznGKVbB6l',
   webhookItRetail: 'http://192.168.0.14:4200/it-retail/handlers/tillda/1eb3fb56-3c4c-43b7-9a04-ce532ab7548f',
   icardProxy: 'http://192.168.0.14:4200/icard-proxy/',
-  clientName: 'demo-stand',
+  clientName: 'sakura',
   cities: ['Менделеевск'],
 };

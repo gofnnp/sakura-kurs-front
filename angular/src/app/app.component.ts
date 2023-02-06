@@ -9,7 +9,7 @@ import * as ConfigActions from './state/config/config.actions'
   styleUrls: ['./app.component.scss']
 })
 export class AppComponent implements OnInit {
-  title = 'Demo stand';
+  title = 'Sakura';
 
   constructor(private primengConfig: PrimeNGConfig,
     private store: Store) {}
