@@ -20,7 +20,7 @@
                 </p>
             </div>
             <label class="terminal-list-label">Пункты самовывоза</label>
-            <div *ngIf="deliverData.deliveryType?.title === 'Самовывоз'" class="terminal-list-container">
+            <div *ngIf="deliverData.deliveryType?.name === 'Самовывоз'" class="terminal-list-container">
                 <div *ngFor="let terminal of terminalList" [ngClass]="{
                     'terminal-container': true,
                     'selected': terminal.label === selectedTerminal.label
@@ -34,7 +34,7 @@
         <div formGroupName="deliveryDataForm">
             <p сlass="form-row form-row-wide">
                 <p-dropdown [options]="deliveryTypes" formControlName="deliveryType" placeholder="Доставка"
-                    optionLabel="title" (onChange)="changeDeliveryType($event)"></p-dropdown>
+                    optionLabel="name" (onChange)="changeDeliveryType($event)"></p-dropdown>
             </p>
             <p сlass="form-row form-row-wide">
                 <label id="deliveryDate">Время выдачи</label>

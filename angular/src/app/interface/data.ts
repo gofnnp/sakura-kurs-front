@@ -86,6 +86,7 @@ export interface DeliveryType {
     title: string;
     id: number;
     type: string;
+    name: string;
 }
 
 export interface AcceptedOrder {

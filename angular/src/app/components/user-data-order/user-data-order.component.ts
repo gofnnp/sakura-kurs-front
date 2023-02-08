@@ -109,6 +109,11 @@ export class UserDataOrderComponent implements OnInit, OnDestroy {
 
       }
     })
+    // this.wpJsonService.getTerminalList().subscribe({
+    //   next: (value) => {
+    //     this.terminalList = value
+    //   }
+    // })
   }
 
   checkAuthorization(showAuthoriztion: boolean, forced = false) {
@@ -241,8 +246,8 @@ export class UserDataOrderComponent implements OnInit, OnDestroy {
   }
 
   private async _createDeliveryDataForm(): Promise<FormGroup> {
-    this.deliveryTypes = this.checkoutConfig.delivery.values;
-    this.deliverData.deliveryType = this.deliveryTypes[this.checkoutConfig.delivery.default];
+    this.deliveryTypes = this.checkoutConfig.delivery.filter((value: any) => value.isPickUp);
+    this.deliverData.deliveryType = this.deliveryTypes[0];
     return this.fb.group({
       deliveryDate: [{ value: this.deliverData.deliveryDate, disabled: this.checkoutConfig.timeDelivery.changeTime.disabled }, []],
       deliveryType: [{ value: this.deliverData.deliveryType, disabled: this.checkoutConfig.delivery.disabled }, [Validators.required]],
