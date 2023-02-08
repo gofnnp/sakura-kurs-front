@@ -53,7 +53,7 @@
     >
       <div class="header">
         <h2>{{ group.label }}</h2>
-        <button (click)="changeGroup(group)">Перейти в категорию</button>
+        <button (click)="changeGroup(group)">В категорию</button>
       </div>
       <div class="products-container__items">
         <div
@@ -72,8 +72,7 @@
             <p>{{ product.name }}</p>
           </div>
           <p class="products-container__product-composition">
-            Lorem ipsum dolor sit amet consectetur adipisicing elit. Odio
-            consequuntur voluptates est.
+            {{product.description}}
           </p>
           <div class="products-container__item-footer">
             <span>{{ product.price }}₽</span>

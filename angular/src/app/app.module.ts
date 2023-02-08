@@ -100,7 +100,9 @@ const routes: Routes = [
   imports: [
     BrowserModule,
     AppRoutingModule,
-    RouterModule.forRoot(routes),
+    RouterModule.forRoot(routes, {
+      scrollPositionRestoration: 'enabled'
+    }),
     InputMaskModule,
     ProgressSpinnerModule,
     FormsModule,

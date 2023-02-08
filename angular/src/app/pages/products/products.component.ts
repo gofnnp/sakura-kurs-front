@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
 import { Group, Modifier, ModifiersGroup, Product } from "../../interface/data";
 import { v4 as uuidv4 } from 'uuid';
 import { DialogService } from 'primeng/dynamicdialog';
@@ -57,6 +57,13 @@ export class ProductsComponent implements OnInit {
       this.wpJsonService.getTerminalList()
     ))
     this.terminalList = this.toTreeJson(this.keyValue(terminalList), terminalList)
+    const terminalFromCookie = JSON.parse(this.cookiesService.getItem('selectedTerminal') || 'null')
+
+    const conditionDelete = this.terminalList.find((terminal: any) => JSON.stringify(terminal) === JSON.stringify(terminalFromCookie))
+    if (!conditionDelete) {
+      this.cookiesService.deleteCookie('selectedTerminal')
+    }
+    
     this.selectedTerminal = JSON.parse(this.cookiesService.getItem('selectedTerminal') || 'null') || this.terminalList[0]
     this.cartService.changeTerminal(this.selectedTerminal)
   }
@@ -201,7 +208,7 @@ export class ProductsComponent implements OnInit {
     return Object.keys(obj)
   }
 
-  toTreeJson(array: Array<string>, terminalList: any) {
+  toTreeJson(array: Array<string>, terminalList: any): Array<any> {
     let treeJson: Object[] = []
     for (const key of array) {
       treeJson.push(

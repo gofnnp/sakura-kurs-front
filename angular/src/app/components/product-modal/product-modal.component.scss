@@ -10,8 +10,8 @@
       img {
         width: 100%;
         border-radius: 1.125rem;
-        height: fit-content;
-        object-fit: cover;
+        object-fit: contain;
+        max-height: 50vh;
       }
     }
 
