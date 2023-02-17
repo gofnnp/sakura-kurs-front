@@ -57,7 +57,7 @@ export class BonusProgramComponent implements OnInit {
       next: (res) => {
         this.userName = res.customer_info.name
         this.accountData = {
-          CardNumber: res.customer_info.cards[0].Number,
+          CardNumber: res.customer_info.cards[0]?.Number || '',
           Bonuses: res.customer_info.walletBalances[0].balance
         }
         barcode("#barcode")

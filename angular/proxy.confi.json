@@ -9,7 +9,7 @@
       "logLevel": "debug"
     },
     "/icard-proxy": {
-      "target": "https://p1.icard-proxy.crm4retail.ru",
+      "target": "https://sakura.lk.crm4retail.ru/api/icard-proxy",
       "secure": false,
       "pathRewrite": {
         "^/icard-proxy": ""

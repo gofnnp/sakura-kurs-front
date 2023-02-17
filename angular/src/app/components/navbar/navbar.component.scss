@@ -1,44 +1,44 @@
 .container-navbar {
-    box-sizing: border-box;
-    padding: 0 54px;
-    width: 100%;
-    height: 54px;
-    // background: var(--orange-main);
-    color: #fff;
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
+  box-sizing: border-box;
+  padding: 16px 54px;
+  width: 100%;
+  height: fit-content;
+  color: #fff;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
 
-    img {
-        height: 26px;
-    }
+  img {
+    height: 68px;
+    border-radius: 12px;
+  }
 
-    .menu {
-        color: #252525;
-        font-weight: 600;
-        font-size: 14px;
-        letter-spacing: 2px;
-        border-bottom: 2px solid #E16F38;
-        cursor: pointer;
-    }
+  .menu {
+    color: #252525;
+    font-weight: 600;
+    font-size: 14px;
+    letter-spacing: 2px;
+    border-bottom: 2px solid #e16f38;
+    cursor: pointer;
+  }
 }
 
 .title {
-    font-weight: 400;
-    font-size: 18px;
-    margin-left: 12px;
+  font-weight: 400;
+  font-size: 18px;
+  margin-left: 12px;
 }
 
 @media screen and (max-width: 600px) {
-    .container-navbar {
-        justify-content: center;
-    }
+  .container-navbar {
+    justify-content: center;
+  }
 }
 
 @media screen and (max-width: 549px) {
-    .container-navbar {
-        .menu {
-            display: none;
-        }
+  .container-navbar {
+    .menu {
+      display: none;
     }
+  }
 }
