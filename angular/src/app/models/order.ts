@@ -54,8 +54,13 @@ export class Order {
         delivery_fio: this.userData?.first_name,
         subtotal: this.price,
         delivery_comment: this.deliveryData?.comment,
-        delivery: this.deliveryData?.deliveryType?.type,
-        delivery_address: this.deliveryData?.deliveryType?.type === "self_delivery" ? '' : `${environment.cities[0]}, ул ${this.userData?.street},  ${this.userData?.house}`,
+        delivery: this.deliveryData?.deliveryType?.name,
+        delivery_address: {
+          street: this.userData?.street || '',
+          house: this.userData?.house || '',
+          flat: '',
+          city: ''
+        },
         amount: this.price + 100,
         terminal_id: this.terminal_id
      },

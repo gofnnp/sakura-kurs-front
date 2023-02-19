@@ -134,15 +134,15 @@ export class UserDataOrderComponent implements OnInit, OnDestroy {
 
   changeDeliveryType(event: any) {
     this.deliverData.deliveryType = event.value;
-    if (this.deliverData.deliveryType?.title) {
-      this.changeValidators(this.deliverData.deliveryType.title)
+    if (this.deliverData.deliveryType?.name) {
+      this.changeValidators(this.deliverData.deliveryType.name)
     }
   }
 
-  changeValidators(title: string) {
+  changeValidators(name: string) {
     const comment = this.mainFormGroup.controls['deliveryDataForm'].value.comment;
-    const streetValidators = title === 'Доставка' ? [Validators.required, Validators.minLength(2), Validators.maxLength(255),] : []
-    const houseValidators = title === 'Доставка' ? [Validators.required, Validators.maxLength(10),] : []
+    const streetValidators = name === 'Доставка' ? [Validators.required, Validators.minLength(2), Validators.maxLength(255),] : []
+    const houseValidators = name === 'Доставка' ? [Validators.required, Validators.maxLength(10),] : []
     const userDataForm = this.fb.group({
       phone: [this.userData.phone],
       first_name: [this.userData.first_name, [Validators.required, Validators.minLength(2), Validators.maxLength(255),]],
@@ -233,7 +233,7 @@ export class UserDataOrderComponent implements OnInit, OnDestroy {
     this.userData.city = this.cities[0];
     this.userData.phone = this.order.phone;
     // await this.autoCompleteService.setCity(this.userData.city);
-    const isSelfDelivery = this.deliverData.deliveryType?.type === "self_delivery"
+    const isSelfDelivery = this.deliverData.deliveryType?.name === "Самовывоз"
     return this.fb.group({
       phone: [this.userData.phone],
       first_name: [this.userData.first_name, [Validators.required, Validators.minLength(2), Validators.maxLength(255),]],

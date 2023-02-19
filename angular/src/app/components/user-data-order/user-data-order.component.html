@@ -8,7 +8,7 @@
             <p сlass="form-row form-row-wide">
                 <input formControlName="first_name" id="first_name" pInputText placeholder="Ваше имя" type="text">
             </p>
-            <div *ngIf="deliverData.deliveryType?.title === 'Доставка'">
+            <div *ngIf="deliverData.deliveryType?.name === 'Доставка'">
                 <p сlass="form-row form-row-last">
                     <input formControlName="flat" id="flat" pInputText placeholder="Квартира" type="number" min="1">
                 </p>
