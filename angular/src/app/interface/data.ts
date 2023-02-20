@@ -59,6 +59,7 @@ export interface Purchase {
   transactionCreateDate: string;
   orderSum: number;
   transactionSum: number;
+  transactionType: 'CancelPayFromWallet' | 'PayFromWallet' | 'RefillWallet';
 }
 
 export interface Transaction {

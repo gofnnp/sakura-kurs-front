@@ -58,7 +58,7 @@ export class OrdersComponent implements OnInit {
       //   return same;
       // });
       return purchase;
-    });
+    }).filter((purchase: Purchase) => ['PayFromWallet', 'CancelPayFromWallet', 'RefillWallet'].includes(purchase.transactionType));
     this.purchasesShortArray = this.purchases.slice(0, this.lastViewOrder)
     this.ordersLoadingStatus = false;
   }
