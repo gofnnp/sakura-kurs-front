@@ -47,7 +47,7 @@ export class Order {
       name: this.userData?.first_name,
       payment: {
         orderid: this.deliveryData?.orderid,
-        delivery_price: 100,
+        delivery_price: 0,
         products: this.products.map(product => {
           return product.toJson();
         }),
@@ -61,7 +61,7 @@ export class Order {
           flat: '',
           city: ''
         },
-        amount: this.price + 100,
+        amount: this.price,
         terminal_id: this.terminal_id
      },
     }
