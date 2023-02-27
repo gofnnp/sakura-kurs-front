@@ -3,6 +3,7 @@
 @import '~@fortawesome/fontawesome-free/scss/solid.scss';
 @import '~@fortawesome/fontawesome-free/scss/regular.scss';
 @import '~@fortawesome/fontawesome-free/scss/brands.scss';
+@import 'src/sass/mixins';
  
 // @import '~mdb-angular-ui-kit/assets/scss/mdb.scss';
 
@@ -22,6 +23,17 @@ table{border-collapse:collapse;border-spacing:0}
 
 * {
     font-family: 'Raleway', sans-serif;
+}
+
+div.cdk-overlay-container {
+    z-index: 11200;
+}
+
+.mat-snack-bar-container {
+    transform: scale(1);
+    opacity: 1;
+    background: #fff;
+    color: #323232;
 }
 
 .p-inputtext {
@@ -52,9 +64,11 @@ table{border-collapse:collapse;border-spacing:0}
     border-color: #f9b004;
 }
 
-.p-selectbutton .p-button.p-highlight:hover {
-    background: #f9b004;
-    border-color: #f9b004;
+.p-selectbutton .p-button.p-highlight {
+    @include hover-supported() {
+        background: #f9b004;
+        border-color: #f9b004;
+    }
 }
 
 mark {
@@ -251,6 +265,9 @@ p-toast[key="c"] .p-toast {
 
 html, body { height: 100%; }
 body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; background: #f9f9f9; }
+
+html, body { height: 100%; }
+body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
 
 html, body { height: 100%; }
 body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }

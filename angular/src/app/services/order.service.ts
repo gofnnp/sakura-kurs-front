@@ -42,14 +42,20 @@ export class OrderService {
       const cart = this.cartService.getCart();
 
       if (cart.products.length) {
+        const token = this.cookiesService.getItem('token') || '';
         const products = await this.getProducts(cart);
-        const additionalInfo = this.jsonRpcService.rpc(
-          {
-            method: 'getAdditionalInfo',
-            params: [],
-          },
-          RpcService.authService,
-          true
+        // const additionalInfo = this.jsonRpcService.rpc(
+        //   {
+        //     method: 'getAdditionalInfo',
+        //     params: [],
+        //   },
+        //   RpcService.authService,
+        //   true
+        // );
+        const additionalInfo = this.wpJsonService.getCustomerInfo(
+          environment.systemId,
+          token,
+          environment.icardProxy
         );
 
         const tokenData = this.jsonRpcService.rpc(
@@ -64,14 +70,15 @@ export class OrderService {
         const info = await lastValueFrom(
           forkJoin([additionalInfo, tokenData, products])
         );
-        const token = this.cookiesService.getItem('token');
+        const customer_info = info[0]?.customer_info
+
         const terminal =
           JSON.parse(
             this.cookiesService.getItem('selectedTerminal') || 'null'
           ) || this.cartService.selectedTerminal$;
         this.order = new Order({
           products: products,
-          userData: info[0]?.data,
+          userData: customer_info,
           phone: info[1].data?.mobile_number,
           token: token,
           terminal_id: terminal.id,
@@ -95,6 +102,10 @@ export class OrderService {
       const productSub = allData.products.find(
         (product: any) => product.id === cart.products[i].id
       );
+      if (!productSub) {
+        this.cartService.removeFromCart(cart.products[i].guid);
+        break;
+      }
       const product = Object.assign(cloneDeep(cart.products[i]), {
         category_id: 0,
         price: productSub.price,

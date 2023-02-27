@@ -60,6 +60,15 @@ import {MatTabsModule} from '@angular/material/tabs';
 import { ModifierComponent } from './components/modifier/modifier.component';
 import { OptionComponent } from './components/option/option.component';
 import { ChangeQuantityOptionDirective } from './directives/change-quantity-option.directive';
+import {MatSelectModule} from '@angular/material/select';
+import {MatFormFieldModule, MAT_FORM_FIELD_DEFAULT_OPTIONS} from '@angular/material/form-field';
+import { MatInputModule } from '@angular/material/input';
+import {MatBottomSheetModule} from '@angular/material/bottom-sheet';
+import { TerminalListComponent } from './components/terminal-list/terminal-list.component';
+import {MatButtonModule} from '@angular/material/button';
+import {MatListModule} from '@angular/material/list';
+import {MatSnackBarModule} from '@angular/material/snack-bar';
+import { SnackBarComponent } from './components/snack-bar/snack-bar.component';
 
 const routes: Routes = [
   { path: '', redirectTo: 'products', pathMatch: 'full' },
@@ -95,7 +104,9 @@ const routes: Routes = [
     MenuComponent,
     ModifierComponent,
     OptionComponent,
-    ChangeQuantityOptionDirective
+    ChangeQuantityOptionDirective,
+    TerminalListComponent,
+    SnackBarComponent
   ],
   imports: [
     BrowserModule,
@@ -137,9 +148,16 @@ const routes: Routes = [
     InputTextModule,
     SidebarModule,
     RippleModule,
-    MatTabsModule
+    MatTabsModule,
+    MatSelectModule,
+    MatFormFieldModule,
+    MatInputModule,
+    MatBottomSheetModule,
+    MatButtonModule,
+    MatListModule,
+    MatSnackBarModule
   ],
-  providers: [DialogService, MessageService, MessagingService ],
+  providers: [DialogService, MessageService, MessagingService, {provide: MAT_FORM_FIELD_DEFAULT_OPTIONS, useValue: {appearance: 'outline'}} ],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

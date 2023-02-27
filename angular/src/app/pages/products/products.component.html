@@ -1,9 +1,6 @@
 <p-toast position="top-center"></p-toast>
 <div *ngIf="!loading; else loadingEl" class="products-container">
   <div class="products-container__filters-container">
-    <!-- <label>Категория</label>
-        <p-treeSelect *ngIf="groups" [(ngModel)]="selectedGroup" [options]="groups"
-            (onNodeSelect)="changeGroup()" (onNodeUnselect)="onGroupUnselect($event)" placeholder="Группа"></p-treeSelect> -->
     <div class="products-container__categories-container">
       <div
         *ngFor="let group of groups; let first = first"
@@ -19,20 +16,10 @@
         </span>
       </div>
     </div>
-    <p-treeSelect
-      *ngIf="terminalList"
-      [(ngModel)]="selectedTerminal"
-      [options]="terminalList"
-      (onNodeSelect)="changeTerminal()"
-      (onNodeUnselect)="onTerminalUnselect($event)"
-      placeholder="Пункт самовывоза"
-      [disabled]="!!cartService.cartCount"
-    ></p-treeSelect>
-    <!-- <label>Пункт выдачи</label> -->
+    <button mat-stroked-button [disabled]="!!cartService.cartCount" (click)="showTerminals()">
+      {{ selectedTerminal.label }}
+    </button>
   </div>
-  <!-- <p-paginator [style]="{'background': 'transparent', padding: '8px 0'}" [alwaysShow]="false" [first]="currentPage" [rows]="10"
-        [totalRecords]="filterByGroup().length" (onPageChange)="onPageChange($event)" [pageLinkSize]="3"
-        [showPageLinks]="true"></p-paginator> -->
   <div
     *ngIf="selectedGroup && selectedGroup.label !== 'Все'"
     class="products-container__category-name-container"
@@ -72,7 +59,7 @@
             <p>{{ product.name }}</p>
           </div>
           <p class="products-container__product-composition">
-            {{product.description}}
+            {{ product.description }}
           </p>
           <div class="products-container__item-footer">
             <span>{{ product.price }}₽</span>
@@ -104,8 +91,7 @@
           <p>{{ product.name }}</p>
         </div>
         <p class="products-container__product-composition">
-          Lorem ipsum dolor sit amet consectetur adipisicing elit. Odio
-          consequuntur voluptates est.
+          {{ product.description }}
         </p>
         <div class="products-container__item-footer">
           <span>{{ product.price }}₽</span>
@@ -114,45 +100,6 @@
       </div>
     </div>
   </ng-container>
-  <!-- <p-paginator [style]="{'background': 'transparent', padding: '8px 0'}" [alwaysShow]="false" [first]="currentPage" [rows]="10"
-        [totalRecords]="filterByGroup().length" (onPageChange)="onPageChange($event)" [pageLinkSize]="3"
-        [showPageLinks]="true"></p-paginator> -->
-  <p-toast
-    position="bottom-center"
-    key="c"
-    (onClose)="onReject()"
-    [baseZIndex]="5000"
-  >
-    <ng-template let-message pTemplate="message">
-      <div class="flex flex-column" style="flex: 1">
-        <div class="text-center">
-          <i class="pi pi-exclamation-triangle" style="font-size: 3rem"></i>
-          <h4>{{ message.summary }}</h4>
-          <p style="font-weight: 600">{{ message.detail }}</p>
-        </div>
-        <div class="grid p-fluid">
-          <div class="col-6">
-            <button
-              type="button"
-              pButton
-              (click)="onConfirm()"
-              label="Да"
-              class="p-button-success"
-            ></button>
-          </div>
-          <div class="col-6">
-            <button
-              type="button"
-              pButton
-              (click)="onReject()"
-              label="Нет"
-              class="p-button-secondary"
-            ></button>
-          </div>
-        </div>
-      </div>
-    </ng-template>
-  </p-toast>
 </div>
 <ng-template #loadingEl>
   <div

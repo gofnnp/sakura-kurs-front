@@ -1,5 +1,5 @@
 import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
-import { Group, Modifier, ModifiersGroup, Product } from "../../interface/data";
+import { Group, Modifier, ModifiersGroup, Product } from '../../interface/data';
 import { v4 as uuidv4 } from 'uuid';
 import { DialogService } from 'primeng/dynamicdialog';
 import { ProductModalComponent } from 'src/app/components/product-modal/product-modal.component';
@@ -9,12 +9,16 @@ import { lastValueFrom } from 'rxjs';
 import { CartService } from 'src/app/services/cart.service';
 import { CookiesService } from 'src/app/services/cookies.service';
 import { ActivatedRoute, Router } from '@angular/router';
+import { MatSelectChange } from '@angular/material/select';
+import { MatBottomSheet } from '@angular/material/bottom-sheet';
+import { TerminalListComponent } from 'src/app/components/terminal-list/terminal-list.component';
+import { GetTerminalsService } from 'src/app/services/get-terminals.service';
 
 @Component({
   selector: 'app-products',
   templateUrl: './products.component.html',
   styleUrls: ['./products.component.scss'],
-  providers: [MessageService]
+  providers: [MessageService],
 })
 export class ProductsComponent implements OnInit {
   public products!: Product[];
@@ -25,95 +29,60 @@ export class ProductsComponent implements OnInit {
   public terminalList!: any;
   public selectedTerminal!: any;
   public loading: boolean = false;
-  public currentPage: number = 0
+  public currentPage: number = 0;
 
   constructor(
     public dialogService: DialogService,
     private wpJsonService: WpJsonService,
-    private messageService: MessageService,
     public cartService: CartService,
-    private cookiesService: CookiesService,
     private router: Router,
     private route: ActivatedRoute,
-  ) { }
+    private _bottomSheet: MatBottomSheet,
+    private _getTerminals: GetTerminalsService
+  ) {}
 
   async ngOnInit() {
     this.loading = true;
-    await this.getTerminalList()
-    this.getData()
-    this.messageService.add({
-      severity: 'info',
-      summary: 'В одном заказе могут быть товары только из выбранного пункта выдачи',
-      life: 5000
-    });
-    setTimeout(() => {
-      this.confirmTerminalList()
-    }, 0)
+    await this.getTerminalList();
+    this.getData();
+    // this.messageService.add({
+    //   severity: 'info',
+    //   summary: 'В одном заказе могут быть товары только из выбранного пункта выдачи',
+    //   life: 5000
+    // });
     this.loading = false;
   }
 
   async getTerminalList() {
-    const terminalList = (await lastValueFrom(
-      this.wpJsonService.getTerminalList()
-    ))
-    this.terminalList = this.toTreeJson(this.keyValue(terminalList), terminalList)
-    const terminalFromCookie = JSON.parse(this.cookiesService.getItem('selectedTerminal') || 'null')
-
-    const conditionDelete = this.terminalList.find((terminal: any) => JSON.stringify(terminal) === JSON.stringify(terminalFromCookie))
-    if (!conditionDelete) {
-      this.cookiesService.deleteCookie('selectedTerminal')
-    }
-    
-    this.selectedTerminal = JSON.parse(this.cookiesService.getItem('selectedTerminal') || 'null') || this.terminalList[0]
-    this.cartService.changeTerminal(this.selectedTerminal)
-  }
-
-  confirmTerminalList() {
-    if (this.cartService.cartCount) return
-    this.messageService.clear();
-    this.messageService.add({ key: 'c', sticky: true, severity: 'warn', summary: 'Вам подходит пункт выдачи?', detail: this.selectedTerminal.label });
-  }
-
-  onConfirm() {
-    this.messageService.add({
-      severity: 'info',
-      summary: 'В одном заказе могут быть товары только из выбранного пункта выдачи',
-      life: 5000
-    });
-    this.messageService.clear('c');
-  }
-
-  onReject() {
-    this.messageService.clear('c');
-    this.messageService.add({
-      severity: 'info',
-      summary: 'Выберите пункт выдачи. В одном заказе могут быть товары только из выбранного пункта.',
-      life: 6000
-    });
+    const _getTerminals = await this._getTerminals.getTerminalList()
+    this.terminalList = _getTerminals.list
+    this.selectedTerminal = _getTerminals.active
   }
 
   getData() {
-    this.wpJsonService.getAllData(`${this.selectedTerminal.label}${this.selectedTerminal.id}`).subscribe({
-      next: (value) => {
-        this.products = value.products
-        this.groups = value.groups
-        this.groups.unshift(
-          {
+    this.wpJsonService
+      .getAllData(`${this.selectedTerminal.label}${this.selectedTerminal.id}`)
+      .subscribe({
+        next: (value) => {
+          this.products = value.products;
+          this.groups = value.groups;
+          this.groups.unshift({
             id: uuidv4(),
-            label: 'Все'
-          }
-        )
-        this.selectedGroup = this.groups[0]
-        this.modifiersGroups = value.modifiers_groups
-        this.modifiers = value.modifiers
+            label: 'Все',
+          });
+          this.selectedGroup = this.groups[0];
+          this.modifiersGroups = value.modifiers_groups;
+          this.modifiers = value.modifiers;
 
-        this.route.queryParams.subscribe((params) => {
-          if (params['group']) {
-            this.selectedGroup = this.groups.find((group) => group.label === params['group']) || this.groups[0]
-          }
-        })
-      }
-    })
+          this.route.queryParams.subscribe((params) => {
+            if (params['group']) {
+              this.selectedGroup =
+                this.groups.find((group) => group.label === params['group']) ||
+                this.groups[0];
+            }
+          });
+        },
+      });
   }
 
   onPageChange(event: any) {
@@ -121,24 +90,37 @@ export class ProductsComponent implements OnInit {
   }
 
   filterByGroup(group?: Group) {
-    if (!this.selectedGroup) return []
+    if (!this.selectedGroup) return [];
     if (this.selectedGroup.label === 'Все') {
-      if (group) return JSON.parse(JSON.stringify(this.products.filter((product) => product.groupId === group.id))).slice(0, 4)
-      return this.products
+      if (group)
+        return JSON.parse(
+          JSON.stringify(
+            this.products.filter((product) => product.groupId === group.id)
+          )
+        ).slice(0, 4);
+      return this.products;
     }
-    return JSON.parse(JSON.stringify(this.products.filter((product) => product.groupId === this.selectedGroup.id)))
+    return JSON.parse(
+      JSON.stringify(
+        this.products.filter(
+          (product) => product.groupId === this.selectedGroup.id
+        )
+      )
+    );
   }
 
   cropList(list: Array<any>, quantity: number) {
-    return list.slice(this.currentPage, this.currentPage + quantity)
+    return list.slice(this.currentPage, this.currentPage + quantity);
   }
 
   addToCart(event: MouseEvent, product: Product) {
     if (event) {
-      event.preventDefault()
+      event.preventDefault();
     }
-    const productModalWidth = product.modifiers_group.length ? '94vw' : '50vw'
-    const productModalMaxWidth = product.modifiers_group.length ? '1400px' : '500px'
+    const productModalWidth = product.modifiers_group.length ? '94vw' : '50vw';
+    const productModalMaxWidth = product.modifiers_group.length
+      ? '1400px'
+      : '500px';
     const ref = this.dialogService.open(ProductModalComponent, {
       header: product.name,
       width: 'fit-content',
@@ -147,7 +129,7 @@ export class ProductsComponent implements OnInit {
         'min-width': '300px',
         'max-height': '90vh',
         'border-radius': '1.125rem',
-        width: productModalWidth
+        width: productModalWidth,
       },
       contentStyle: {
         'max-height': '90vh',
@@ -158,67 +140,46 @@ export class ProductsComponent implements OnInit {
       data: {
         product: product,
         modifiersGroups: this.modifiersGroups,
-        modifiers: this.modifiers
+        modifiers: this.modifiers,
       },
       baseZIndex: 10000,
       autoZIndex: true,
       dismissableMask: true,
       closeOnEscape: true,
     });
-
   }
 
-  changeTerminal() {
-    setTimeout(() => {
-      this.products.length = 0;
-      this.loading = true;
-      this.getData()
-      this.cartService.changeTerminal(this.selectedTerminal);
-      this.loading = false;
-      this.router.navigate([]);
-      this.currentPage = 0
-    }, 0);
+  showTerminals() {
+    const bottomSheet = this._bottomSheet.open(TerminalListComponent, {
+      data: {
+        list: this.terminalList,
+        active: this.selectedTerminal,
+      },
+      ariaLabel: 'Список точек',
+    });
+    bottomSheet.afterDismissed().subscribe((selectedTerminal) => {
+      if (!selectedTerminal) return;
+      setTimeout(() => {
+        this.products.length = 0;
+        this.loading = true;
+        this.selectedTerminal = selectedTerminal;
+        this.getData();
+        this.cartService.changeTerminal(this.selectedTerminal);
+        this.loading = false;
+        this.router.navigate([]);
+        this.currentPage = 0;
+      }, 0);
+    });
   }
 
   changeGroup(group: Group) {
-    this.selectedGroup = group
+    this.selectedGroup = group;
     this.router.navigate([], {
       queryParams: {
         group: group.label,
       },
       queryParamsHandling: 'merge',
     });
-    this.currentPage = 0
+    this.currentPage = 0;
   }
-
-  onGroupUnselect(event: any) {
-    setTimeout(() => {
-      this.selectedGroup = event.node
-    }, 0);
-  }
-
-  onTerminalUnselect(event: any) {
-    setTimeout(() => {
-      this.selectedTerminal = event.node
-      this.cartService.changeTerminal(this.selectedTerminal)
-    }, 0);
-  }
-
-  keyValue(obj: Object) {
-    return Object.keys(obj)
-  }
-
-  toTreeJson(array: Array<string>, terminalList: any): Array<any> {
-    let treeJson: Object[] = []
-    for (const key of array) {
-      treeJson.push(
-        {
-          label: key,
-          id: terminalList[key]
-        }
-      )
-    }
-    return treeJson
-  }
-
 }

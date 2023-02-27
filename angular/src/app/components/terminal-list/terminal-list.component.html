@@ -1,0 +1,13 @@
+<mat-nav-list>
+  <div
+    mat-list-item
+    *ngFor="let item of data.list"
+    [ngClass]="{
+      'list-item': true,
+      active: item.id === data.active.id
+    }"
+    (click)="selectItem(item)"
+  >
+    <span matListItemTitle>{{ item.label }}</span>
+  </div>
+</mat-nav-list>

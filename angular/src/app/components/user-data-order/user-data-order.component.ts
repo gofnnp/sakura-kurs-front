@@ -16,6 +16,7 @@ import { Order } from 'src/app/models/order';
 import { Store } from '@ngrx/store';
 import * as fromConfig from '../../state/config/config.reducer'
 import { lastValueFrom } from 'rxjs';
+import { GetTerminalsService } from 'src/app/services/get-terminals.service';
 
 
 
@@ -43,6 +44,7 @@ export class UserDataOrderComponent implements OnInit, OnDestroy {
   private intervalTimeDelivery!: any
 
   public userData: UserData = {
+    name: '',
     first_name: null,
     last_name: null,
     street: null,
@@ -50,6 +52,7 @@ export class UserDataOrderComponent implements OnInit, OnDestroy {
     flat: null,
     city: this.cities[0],
     phone: null,
+    selectedTerminal: null
   };
   public deliverData: DeliveryData = {
     deliveryDate: null,
@@ -75,14 +78,14 @@ export class UserDataOrderComponent implements OnInit, OnDestroy {
     private wpJsonService: WpJsonService,
     private http: HttpClient,
     private cookiesService: CookiesService,
-    private store: Store
+    private store: Store,
+    private _getTerminals: GetTerminalsService
   ) { }
 
   async ngOnInit() {
     this.checkAuthorization(true)
     this._createMainForm();
     this.getTerminalList();
-    this.selectedTerminal = JSON.parse(this.cookiesService.getItem('selectedTerminal') || '')
     this.checkoutConfig$.subscribe({
       next: (value: any) => {
         this.checkoutConfig = value
@@ -99,21 +102,18 @@ export class UserDataOrderComponent implements OnInit, OnDestroy {
 
   }
 
-  getTerminalList() {
-    this.http.get('./assets/terminal_list1.json').subscribe({
-      next: (value) => {
-        this.terminalList = value
-      },
-      error: (err) => {
-        console.error(err);
-
-      }
-    })
-    // this.wpJsonService.getTerminalList().subscribe({
+  async getTerminalList() {
+    // this.http.get('./assets/terminal_list1.json').subscribe({
     //   next: (value) => {
     //     this.terminalList = value
+    //   },
+    //   error: (err) => {
+    //     console.error(err);
     //   }
     // })
+    const _getTerminals = await this._getTerminals.getTerminalList()
+    this.terminalList = _getTerminals.list
+    this.selectedTerminal = _getTerminals.active
   }
 
   checkAuthorization(showAuthoriztion: boolean, forced = false) {
@@ -235,8 +235,9 @@ export class UserDataOrderComponent implements OnInit, OnDestroy {
     // await this.autoCompleteService.setCity(this.userData.city);
     const isSelfDelivery = this.deliverData.deliveryType?.name === "Самовывоз"
     return this.fb.group({
+      selectedTerminal: [{ value: this.selectedTerminal, disabled: true }, []],
       phone: [this.userData.phone],
-      first_name: [this.userData.first_name, [Validators.required, Validators.minLength(2), Validators.maxLength(255),]],
+      first_name: [this.userData.name, [Validators.required, Validators.minLength(2), Validators.maxLength(255),]],
       // last_name: [this.userData.last_name, [Validators.required, Validators.minLength(2), Validators.maxLength(255),]],
       street: [{ value: this.userData.street, disabled: isSelfDelivery }, isSelfDelivery ?? [Validators.required, Validators.minLength(2), Validators.maxLength(255),]],
       house: [{ value: this.userData.house, disabled: isSelfDelivery }, isSelfDelivery ?? [Validators.required, Validators.maxLength(10), Validators.pattern('^\\d+[-|\\d]+\\d+$|^\\d*$')]],
@@ -250,7 +251,7 @@ export class UserDataOrderComponent implements OnInit, OnDestroy {
     this.deliverData.deliveryType = this.deliveryTypes[0];
     return this.fb.group({
       deliveryDate: [{ value: this.deliverData.deliveryDate, disabled: this.checkoutConfig.timeDelivery.changeTime.disabled }, []],
-      deliveryType: [{ value: this.deliverData.deliveryType, disabled: this.checkoutConfig.delivery.disabled }, [Validators.required]],
+      deliveryType: [{ value: this.deliverData.deliveryType, disabled: this.checkoutConfig.delivery.disabled || this.deliveryTypes.length < 2 }, [Validators.required]],
       paymentMethod: [{ value: this.deliverData.paymentMethod, disabled: this.checkoutConfig.payments.disabled }, [Validators.required]],
       persons: [this.deliverData.persons, [Validators.required, Validators.minLength(2), Validators.maxLength(255),]],
       comment: [this.deliverData.comment, [Validators.maxLength(255),]]

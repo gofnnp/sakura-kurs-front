@@ -1,14 +1,25 @@
-import { Component, EventEmitter, HostListener, OnInit, Output } from '@angular/core';
+import {
+  Component,
+  EventEmitter,
+  HostListener,
+  OnInit,
+  Output,
+} from '@angular/core';
+import { MatSnackBar } from '@angular/material/snack-bar';
 import { MessageService } from 'primeng/api';
+import { SnackBarComponent } from 'src/app/components/snack-bar/snack-bar.component';
 import { Order } from 'src/app/models/order';
 import { OrderProduct } from 'src/app/models/order-product';
-import { CartService, ProductAmountAction } from 'src/app/services/cart.service';
+import {
+  CartService,
+  ProductAmountAction,
+} from 'src/app/services/cart.service';
 import { OrderService } from 'src/app/services/order.service';
 
 @Component({
   selector: 'app-cart',
   templateUrl: './cart.component.html',
-  styleUrls: ['./cart.component.scss']
+  styleUrls: ['./cart.component.scss'],
 })
 export class CartComponent implements OnInit {
   @Output() showAuthoriztion = new EventEmitter<boolean>();
@@ -24,25 +35,26 @@ export class CartComponent implements OnInit {
     private orderService: OrderService,
     private cartService: CartService,
     private messageService: MessageService,
-  ) { }
+    private _snackBar: MatSnackBar
+  ) {}
 
   ngOnInit(): void {
     this.width = window.innerWidth;
-    this.changeDullScreenMode()
-    this.loadCart()
+    this.changeDullScreenMode();
+    this.loadCart();
   }
 
   // Изменение размера окна
   @HostListener('window:resize', ['$event'])
   onResize(event: any) {
-      this.width = event.target.innerWidth;
-      this.changeDullScreenMode()
+    this.width = event.target.innerWidth;
+    this.changeDullScreenMode();
   }
 
-  toggleSideBar(): void{
+  toggleSideBar(): void {
     this.visibleSidebar = !this.visibleSidebar;
     this.orderConfirmed = false;
-    this.loadCart()
+    this.loadCart();
   }
 
   hide() {
@@ -51,25 +63,25 @@ export class CartComponent implements OnInit {
 
   changeDullScreenMode() {
     if (this.width < 650) {
-      this.isFullScreen = true
+      this.isFullScreen = true;
     } else {
-      this.isFullScreen = false
+      this.isFullScreen = false;
     }
   }
 
   async loadCart(): Promise<void> {
     this.loading = true;
     this.order = await this.orderService.getOrder(true);
-    if (this.order) this.price = this.order.price
-    this.loading = false;    
+    if (this.order) this.price = this.order.price;
+    this.loading = false;
   }
 
-  removeFromCart(event: Event, guid: string): void{
+  removeFromCart(event: Event, guid: string): void {
     event.preventDefault();
     this.orderService.removeFromCart(guid);
   }
 
-  confirmOrder(event: Event): void{
+  confirmOrder(event: Event): void {
     event.preventDefault();
     this.showAuthoriztion.emit(true);
     this.orderConfirmed = true;
@@ -78,23 +90,42 @@ export class CartComponent implements OnInit {
 
   setAmount(product: OrderProduct, method: 'plus' | 'minus') {
     if (method === 'plus') {
-      this.cartService.changeAmountProduct(product.guid, ProductAmountAction.increment)
-      product.amount++
+      this.cartService.changeAmountProduct(
+        product.guid,
+        ProductAmountAction.increment
+      );
+      product.amount++;
       this.price = this.price + Number(product.price);
     } else if (method === 'minus' && product.amount > 1) {
-      this.cartService.changeAmountProduct(product.guid, ProductAmountAction.decrement)
-      product.amount--
+      this.cartService.changeAmountProduct(
+        product.guid,
+        ProductAmountAction.decrement
+      );
+      product.amount--;
       this.price = this.price - Number(product.price);
     }
   }
 
   orderSubmitted(orderid: number) {
-    this.visibleSidebar = false
-    this.messageService.add({ severity: 'success', summary: `Заказ оформлен! Номер заказа: ${orderid}` });
+    this.visibleSidebar = false;
+    this._snackBar.open(`Заказ оформлен! Номер заказа: ${orderid}`, 'Ок')
   }
 
   confirmClearCart() {
-    this.messageService.add({ key: 'c', sticky: true, severity: 'warn', summary: 'Вы уверены, что хотите очистить корзину?' });
+    const snackBar = this._snackBar.openFromComponent(SnackBarComponent, {
+      duration: 4000,
+      data: {
+        text: 'Очистить корзину?',
+      },
+    });
+    snackBar.afterDismissed().subscribe(({ dismissedByAction }) => {
+      if (dismissedByAction) {
+        this.cartService.clearCart();
+        this.loadCart();
+        this.visibleSidebar = false;
+      }
+    });
+    // this.messageService.add({ key: 'c', sticky: true, severity: 'warn', summary: 'Вы уверены, что хотите очистить корзину?' });
   }
 
   onReject() {
@@ -102,10 +133,9 @@ export class CartComponent implements OnInit {
   }
 
   onConfirm() {
-    this.cartService.clearCart()
-    this.loadCart()
-    this.visibleSidebar = false
+    this.cartService.clearCart();
+    this.loadCart();
+    this.visibleSidebar = false;
     this.messageService.clear('c');
   }
-
 }

@@ -251,4 +251,11 @@ export interface UserData {
   flat: string | null;
   city: string;
   phone: string | null;
+  selectedTerminal: ITerminal | null;
+  name: string
+}
+
+export interface ITerminal {
+  label: string;
+  id: string;
 }

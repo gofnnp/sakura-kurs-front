@@ -62,7 +62,7 @@ export class Order {
           city: ''
         },
         amount: this.price,
-        terminal_id: this.terminal_id
+        terminal_id: this.userData?.selectedTerminal?.id || this.terminal_id
      },
     }
   }

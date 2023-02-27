@@ -1,3 +1,5 @@
+@import 'src/sass/mixins';
+
 :host {
   .products-container {
     width: 100%;
@@ -53,7 +55,7 @@
       font-size: 14px;
       align-items: center;
       overflow-x: auto;
-      width: 100%;
+      width: auto;
       margin-right: 16px;
       gap: 8px;
 
@@ -93,7 +95,7 @@
           border: none;
         }
 
-        &:hover {
+        @include hover-supported() {
           color: #fff;
           background: var(--orange-main);
           border: none;
@@ -135,7 +137,7 @@
           color: #fff;
           transition: all 0.3s;
 
-          &:hover {
+          @include hover-supported() {
             box-shadow: 0 0 10px 5px rgb(211 211 211);
           }
         }
@@ -163,7 +165,7 @@
         transition: all 0.3s;
       }
 
-      &:hover {
+      @include hover-supported() {
         scale: 1.01;
         border: none;
 
@@ -243,4 +245,12 @@
       }
     }
   }
+}
+
+.mat-input-element {
+  cursor: pointer;
+}
+
+.mat-stroked-button {
+  border-radius: 1.125rem;
 }

@@ -1,0 +1,16 @@
+<div class="snack-bar">
+  <span>{{ data.text }}</span>
+  <div class="buttons">
+    <button mat-stroked-button matSnackBarAction (click)="buttonClick('no')">
+      Нет
+    </button>
+    <button
+      mat-stroked-button
+      matSnackBarAction
+      color="error"
+      (click)="buttonClick('yes')"
+    >
+      Да
+    </button>
+  </div>
+</div>

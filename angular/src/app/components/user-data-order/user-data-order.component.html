@@ -1,26 +1,69 @@
-<div *ngIf="mainFormGroup && !loading; else loadingEl" class="woocommerce-shipping-fields__field-wrapper">
-    <form *ngIf="!showAuthoriztion; else authEl" (ngSubmit)="submit()" [formGroup]="mainFormGroup" action="false" autocomplete="on">
-        <h2 class="order_form__title">Оформление заказа</h2>
-        <p *ngIf="hasError" class="request-error-message">
-            Произошла ошибка. Попробуйте позже.
+<div
+  *ngIf="mainFormGroup && !loading; else loadingEl"
+  class="woocommerce-shipping-fields__field-wrapper"
+>
+  <form
+    *ngIf="!showAuthoriztion; else authEl"
+    (ngSubmit)="submit()"
+    [formGroup]="mainFormGroup"
+    action="false"
+    autocomplete="on"
+  >
+    <h2 class="order_form__title">Оформление заказа</h2>
+    <p *ngIf="hasError" class="request-error-message">
+      Произошла ошибка. Попробуйте позже.
+    </p>
+    <div class="order_form" formGroupName="userDataForm">
+      <p сlass="form-row form-row-wide">
+        <input
+          formControlName="first_name"
+          id="first_name"
+          pInputText
+          placeholder="Ваше имя"
+          type="text"
+        />
+      </p>
+      <div *ngIf="deliverData.deliveryType?.name === 'Доставка'">
+        <p сlass="form-row form-row-last">
+          <input
+            formControlName="flat"
+            id="flat"
+            pInputText
+            placeholder="Квартира"
+            type="number"
+            min="1"
+          />
         </p>
-        <div class="order_form" formGroupName="userDataForm">
-            <p сlass="form-row form-row-wide">
-                <input formControlName="first_name" id="first_name" pInputText placeholder="Ваше имя" type="text">
-            </p>
-            <div *ngIf="deliverData.deliveryType?.name === 'Доставка'">
-                <p сlass="form-row form-row-last">
-                    <input formControlName="flat" id="flat" pInputText placeholder="Квартира" type="number" min="1">
-                </p>
-                <p сlass="form-row form-row-wide">
-                    <input formControlName="street" id="street" pInputText placeholder="Улица" type="text">
-                </p>
-                <p сlass="form-row form-row-first">
-                    <input formControlName="house" id="house" pInputText placeholder="Номер дома" type="text">
-                </p>
-            </div>
-            <label class="terminal-list-label">Пункты самовывоза</label>
-            <div *ngIf="deliverData.deliveryType?.name === 'Самовывоз'" class="terminal-list-container">
+        <p сlass="form-row form-row-wide">
+          <input
+            formControlName="street"
+            id="street"
+            pInputText
+            placeholder="Улица"
+            type="text"
+          />
+        </p>
+        <p сlass="form-row form-row-first">
+          <input
+            formControlName="house"
+            id="house"
+            pInputText
+            placeholder="Номер дома"
+            type="text"
+          />
+        </p>
+      </div>
+      <p сlass="form-row form-row-wide">
+        <label class="terminal-list-label">Пункты самовывоза</label>
+        <p-dropdown
+          *ngIf="deliverData.deliveryType?.name === 'Самовывоз'"
+          [options]="terminalList"
+          formControlName="selectedTerminal"
+          placeholder="Пункты выдачи"
+          optionLabel="label"
+        ></p-dropdown>
+      </p>
+      <!-- <div *ngIf="deliverData.deliveryType?.name === 'Самовывоз'" class="terminal-list-container">
                 <div *ngFor="let terminal of terminalList" [ngClass]="{
                     'terminal-container': true,
                     'selected': terminal.label === selectedTerminal.label
@@ -29,52 +72,88 @@
                     <span class="terminal-container__name">{{terminal.label}}</span>
                     <span class="terminal-container__address">{{terminal.address}}</span>
                 </div>
-            </div>
-        </div>
-        <div formGroupName="deliveryDataForm">
-            <p сlass="form-row form-row-wide">
-                <p-dropdown [options]="deliveryTypes" formControlName="deliveryType" placeholder="Доставка"
-                    optionLabel="name" (onChange)="changeDeliveryType($event)"></p-dropdown>
-            </p>
-            <p сlass="form-row form-row-wide">
-                <label id="deliveryDate">Время выдачи</label>
-                <p-calendar formControlName="deliveryDate" [showTime]="true" [showSeconds]="false"
-                    [touchUI]="true" inputId="time" placeholder="Время выдачи" dateFormat="dd.mm.yy"></p-calendar>
-            </p>
-            <p сlass="form-row form-row-wide">
-                <p-dropdown [options]="paymentMethods" formControlName="paymentMethod" optionLabel="label" placeholder="Тип оплаты">
-                </p-dropdown>
-                <!-- *Оплата бонусами -->
-            </p>
-            <!-- <p сlass="form-row form-row-last">
+            </div> -->
+    </div>
+    <div formGroupName="deliveryDataForm">
+      <p сlass="form-row form-row-wide">
+        <label class="terminal-list-label">Способ получения</label>
+        <p-dropdown
+          [options]="deliveryTypes"
+          formControlName="deliveryType"
+          placeholder="Доставка"
+          optionLabel="name"
+          (onChange)="changeDeliveryType($event)"
+        ></p-dropdown>
+      </p>
+      <p сlass="form-row form-row-wide">
+        <label id="deliveryDate">Время выдачи</label>
+        <p-calendar
+          formControlName="deliveryDate"
+          [showTime]="true"
+          [showSeconds]="false"
+          [touchUI]="true"
+          inputId="time"
+          placeholder="Время выдачи"
+          dateFormat="dd.mm.yy"
+        ></p-calendar>
+      </p>
+      <p сlass="form-row form-row-wide">
+        <p-dropdown
+          [options]="paymentMethods"
+          formControlName="paymentMethod"
+          optionLabel="label"
+          placeholder="Тип оплаты"
+        >
+        </p-dropdown>
+        <!-- *Оплата бонусами -->
+      </p>
+      <!-- <p сlass="form-row form-row-last">
                 <input [maxLength]="255" id="promo-code" pInputText placeholder="Промокод" type="text">
             </p> -->
-            <p сlass="form-row form-row-wide">
-                <textarea [maxLength]="255" cols="30" formControlName="comment" pInputTextarea placeholder="Комментарий"
-                    rows="1"></textarea>
-            </p>
-        </div>
-        <div class="bootom-info">
-            <div class="subtotal">
-                <span class="products-count">Товаров: {{order.products.length}}</span>
-                <span class="woocommerce-Price-amount amount"><bdi><span
-                            class="woocommerce-Price-currencySymbol">{{order.products[0].currency_symbol}}</span>{{order.price}}</bdi></span>
-            </div>
-            <button 
-                class="elementor-button elementor-button--checkout elementor-size-md">
-                <span class="elementor-button-text">Оформить заказ</span>
-            </button>
-        </div>
-        <p *ngIf="showMyMessage" style="color: red; font-size: 20px">Такой адрес не найден! Введите правильный адрес</p>
-    </form>
+      <p сlass="form-row form-row-wide">
+        <textarea
+          [maxLength]="255"
+          cols="30"
+          formControlName="comment"
+          pInputTextarea
+          placeholder="Комментарий"
+          rows="1"
+        ></textarea>
+      </p>
+    </div>
+    <div class="bootom-info">
+      <div class="subtotal">
+        <span class="products-count">Товаров: {{ order.products.length }}</span>
+        <span class="woocommerce-Price-amount amount"
+          ><bdi
+            ><span class="woocommerce-Price-currencySymbol">{{
+              order.products[0].currency_symbol
+            }}</span
+            >{{ order.price }}</bdi
+          ></span
+        >
+      </div>
+      <button
+        class="elementor-button elementor-button--checkout elementor-size-md"
+      >
+        <span class="elementor-button-text">Оформить заказ</span>
+      </button>
+    </div>
+    <p *ngIf="showMyMessage" style="color: red; font-size: 20px">
+      Такой адрес не найден! Введите правильный адрес
+    </p>
+  </form>
 </div>
 
 <ng-template #loadingEl>
-    <div class="angular-spinner-container" style="width: fit-content; height: 100%; margin: 16px auto;">
-        <p-progressSpinner styleClass="angular-spinner"></p-progressSpinner>
-    </div>
+  <div
+    class="angular-spinner-container"
+    style="width: fit-content; height: 100%; margin: 16px auto"
+  >
+    <p-progressSpinner styleClass="angular-spinner"></p-progressSpinner>
+  </div>
 </ng-template>
 
 <ng-template #authEl>
-    <app-auth (phoneConfirmed)="phoneConfirmed()"></app-auth>
-  </ng-template>
+  <app-auth (phoneConfirmed)="phoneConfirmed()"></app-auth>
+</ng-template>

@@ -1,0 +1,21 @@
+@import 'src/sass/mixins';
+
+:host {
+  .list-item {
+    padding: 12px;
+    font-size: 14px;
+    border-radius: 6px;
+    transition: all .4s ease;
+    text-align: center;
+    font-weight: 600;
+    cursor: pointer;
+    &.active {
+      background-color: var(--orange-main);
+      color: #fff;
+    }
+    @include hover-supported() {
+        background-color: #eee;
+        color: #000;
+    }
+  }
+}
