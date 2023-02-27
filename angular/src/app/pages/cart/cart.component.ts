@@ -72,8 +72,17 @@ export class CartComponent implements OnInit {
   async loadCart(): Promise<void> {
     this.loading = true;
     this.order = await this.orderService.getOrder(true);
+    if (this.order?.userData?.errorCode === 'Customer_CustomerNotFound') {
+      this.userNotFound()
+      return
+    }
     if (this.order) this.price = this.order.price;
     this.loading = false;
+  }
+
+  userNotFound(event: null = null) {
+    this.visibleSidebar = false
+    this._snackBar.open('Пользователь не найден в системе! Обратитесь к руководству', 'Ок')
   }
 
   removeFromCart(event: Event, guid: string): void {
@@ -125,17 +134,5 @@ export class CartComponent implements OnInit {
         this.visibleSidebar = false;
       }
     });
-    // this.messageService.add({ key: 'c', sticky: true, severity: 'warn', summary: 'Вы уверены, что хотите очистить корзину?' });
-  }
-
-  onReject() {
-    this.messageService.clear('c');
-  }
-
-  onConfirm() {
-    this.cartService.clearCart();
-    this.loadCart();
-    this.visibleSidebar = false;
-    this.messageService.clear('c');
   }
 }

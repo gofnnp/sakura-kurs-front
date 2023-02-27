@@ -108,6 +108,7 @@ export class ProductModalComponent implements OnInit {
         return
       }
     }
+    this.cartService.changeTerminal(this.config.data.selectedTerminal)
     this.cartService.addToCart(this.cartProduct);
     this.dialogRef.close();
   }

@@ -28,6 +28,7 @@ import { GetTerminalsService } from 'src/app/services/get-terminals.service';
 export class UserDataOrderComponent implements OnInit, OnDestroy {
 
   @Output() orderSubmitted = new EventEmitter<number>();
+  @Output() userNotFound = new EventEmitter<null>();
   readonly cities = environment.cities;
   public paymentMethods!: PaymentMethod[];
   public loading = false;
@@ -229,6 +230,9 @@ export class UserDataOrderComponent implements OnInit, OnDestroy {
 
   private async _createUserDataForm(): Promise<FormGroup> {
     this.order = await this.orderService.getOrder(true);
+    if (this.order.userData?.errorCode === "Customer_CustomerNotFound") {
+      this.userNotFound.emit(null)
+    }
     this.userData = Object.assign({}, this.userData, this.order.userData);
     this.userData.city = this.cities[0];
     this.userData.phone = this.order.phone;

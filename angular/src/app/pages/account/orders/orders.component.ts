@@ -46,6 +46,10 @@ export class OrdersComponent implements OnInit {
     const customerInfo = (await lastValueFrom(
       this.wpJsonService.getCustomerInfo(environment.systemId, token, environment.icardProxy)
     ))
+    if (customerInfo.customer_info.errorCode === 'Customer_CustomerNotFound') {
+      this.ordersLoadingStatus = false;
+      return
+    }
     const purchases: Purchase[] = (await lastValueFrom(
       this.wpJsonService.getTransactions(environment.systemId, token, environment.icardProxy, 30)
     ))[customerInfo.customer_info.id];

@@ -52,6 +52,20 @@ export class OrderService {
         //   RpcService.authService,
         //   true
         // );
+        const terminal =
+          JSON.parse(
+            this.cookiesService.getItem('selectedTerminal') || 'null'
+          ) || this.cartService.selectedTerminal$;
+        if (!token.length) {
+          this.order = new Order({
+            products: products,
+            userData: null,
+            phone: '',
+            token: token,
+            terminal_id: terminal.id,
+          });
+          return this.order;
+        }
         const additionalInfo = this.wpJsonService.getCustomerInfo(
           environment.systemId,
           token,
@@ -70,12 +84,8 @@ export class OrderService {
         const info = await lastValueFrom(
           forkJoin([additionalInfo, tokenData, products])
         );
-        const customer_info = info[0]?.customer_info
+        const customer_info = info[0]?.customer_info;
 
-        const terminal =
-          JSON.parse(
-            this.cookiesService.getItem('selectedTerminal') || 'null'
-          ) || this.cartService.selectedTerminal$;
         this.order = new Order({
           products: products,
           userData: customer_info,
@@ -92,12 +102,14 @@ export class OrderService {
 
   async getProducts(cart: Cart): Promise<OrderProduct[]> {
     const terminal =
-      JSON.parse(this.cookiesService.getItem('selectedTerminal') || 'null') ||
-      this.cartService.selectedTerminal$;
+      JSON.parse(this.cookiesService.getItem('selectedTerminal') || 'null');
+    const products: OrderProduct[] = [];
+    if (!terminal) {
+      return products
+    }
     const allData = await lastValueFrom(
       this.wpJsonService.getAllData(`${terminal.label}${terminal.id}`)
     );
-    const products: OrderProduct[] = [];
     for (let i = 0; i < cart.products.length; i++) {
       const productSub = allData.products.find(
         (product: any) => product.id === cart.products[i].id

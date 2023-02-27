@@ -11,6 +11,7 @@ import { CookiesService } from 'src/app/services/cookies.service';
 import { DOCUMENT } from '@angular/common';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { WpJsonService } from 'src/app/services/wp-json.service';
+import { MatSnackBar } from '@angular/material/snack-bar';
 
 @Component({
   selector: 'app-bonus-program',
@@ -36,6 +37,7 @@ export class BonusProgramComponent implements OnInit {
     @Inject(DOCUMENT) private document: Document,
     private http: HttpClient,
     private wpJsonService: WpJsonService,
+    private _snackBar: MatSnackBar
   ) { }
 
 
@@ -55,6 +57,11 @@ export class BonusProgramComponent implements OnInit {
     this.loadingBonuses = true;
     this.wpJsonService.getCustomerInfo(environment.systemId, token, environment.icardProxy).subscribe({
       next: (res) => {
+        if (res.customer_info.errorCode === 'Customer_CustomerNotFound') {
+          // this._snackBar.open('Пользователь не найден в системе! Обратитесь к руководству', 'Ок')
+          this.loadingBonuses = false;
+          return
+        }
         this.userName = res.customer_info.name
         this.accountData = {
           CardNumber: res.customer_info.cards[0]?.Number || '',

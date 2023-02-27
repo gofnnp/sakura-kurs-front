@@ -252,7 +252,8 @@ export interface UserData {
   city: string;
   phone: string | null;
   selectedTerminal: ITerminal | null;
-  name: string
+  name: string;
+  errorCode?: string;
 }
 
 export interface ITerminal {

@@ -44,7 +44,7 @@
       </div>
       <div class="products-container__items">
         <div
-          *ngFor="let product of filterByGroup(group)"
+          *ngFor="let product of filterByGroup(group); trackBy: trackProducts"
           (click)="addToCart($event, product)"
           class="products-container__item"
           #currentCategoryList
@@ -72,7 +72,7 @@
   <ng-container *ngIf="selectedGroup && selectedGroup.label !== 'Все'">
     <div class="products-container__items">
       <div
-        *ngFor="let product of filterByGroup()"
+        *ngFor="let product of filterByGroup(); trackBy: trackProducts"
         (click)="addToCart($event, product)"
         class="products-container__item"
         #currentCategoryList

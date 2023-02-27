@@ -15,6 +15,9 @@
       </div>
       <div class="card-container__content">
         <div class="info">
+          <div *ngIf="!accountData && !loadingBonuses" class="info__row">
+            Пользователь не найден, обратитесь к руководству
+          </div>
           <div *ngIf="accountData" class="info__row">
             <span class="key">Имя</span>
             <span class="value" *ngIf="userName.length">{{

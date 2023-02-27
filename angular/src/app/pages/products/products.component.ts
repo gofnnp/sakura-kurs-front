@@ -141,6 +141,7 @@ export class ProductsComponent implements OnInit {
         product: product,
         modifiersGroups: this.modifiersGroups,
         modifiers: this.modifiers,
+        selectedTerminal: this.selectedTerminal
       },
       baseZIndex: 10000,
       autoZIndex: true,
@@ -181,5 +182,9 @@ export class ProductsComponent implements OnInit {
       queryParamsHandling: 'merge',
     });
     this.currentPage = 0;
+  }
+
+  trackProducts(index: number, product: Product) {
+    return product.id
   }
 }

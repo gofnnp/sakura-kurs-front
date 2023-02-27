@@ -6,7 +6,7 @@ import { environment } from "src/environments/environment";
 
 export interface OrderInfo {
   products: OrderProduct[];
-  userData?: UserData;
+  userData: UserData | null;
   deliveryData?: DeliveryData;
   phone: string;
   token: string | undefined;
@@ -16,7 +16,7 @@ export interface OrderInfo {
 export class Order {
 
   public products: OrderProduct[];
-  public userData?: UserData;
+  public userData!: UserData | null;
   public deliveryData?: DeliveryData;
   public phone: string;
   public token: string | undefined;
