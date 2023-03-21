@@ -56,10 +56,25 @@ export interface Purchase {
   // ID: string;
   // Transactions: Transaction[];
   // IsSingleTransaction?: boolean;
+  orderNumber: number;
   transactionCreateDate: string;
   orderSum: number;
   transactionSum: number;
   transactionType: 'CancelPayFromWallet' | 'PayFromWallet' | 'RefillWallet';
+  more_info: PurchaseInfo | null;
+}
+
+export interface PurchaseInfo {
+  date: string;
+  goods_list: [
+    {
+      name: string;
+      price: number;
+      quantity: number;
+    }
+  ];
+  number: string;
+  sum: number;
 }
 
 export interface Transaction {
@@ -82,10 +97,10 @@ export interface OrderStatus {
 }
 
 export interface DeliveryType {
-//   cost: number;
-//   title: string;
-//   id: number;
-//   type: string;
+  //   cost: number;
+  //   title: string;
+  //   id: number;
+  //   type: string;
   name: string;
   iikoId: string;
   iikoName: string;

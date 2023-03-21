@@ -21,9 +21,14 @@
           <span class="nobr">Сумма чека</span>
         </th>
         <th
-          class="woocommerce-orders-table__header woocommerce-orders-table__header-order-actions"
+          class="woocommerce-orders-table__header woocommerce-orders-table__header-order-bonuses"
         >
           <span class="nobr">Бонусы</span>
+        </th>
+        <th
+          class="woocommerce-orders-table__header woocommerce-orders-table__header-order-actions"
+        >
+          <span class="nobr">Действия</span>
         </th>
       </tr>
     </thead>
@@ -55,7 +60,7 @@
           </span>
         </td>
         <td
-          class="woocommerce-orders-table__cell woocommerce-orders-table__cell-order-actions"
+          class="woocommerce-orders-table__cell woocommerce-orders-table__cell-order-bonuses"
           data-title="Бонусы"
           [ngClass]="{
             'red-color': purchase.transactionSum ? purchase.transactionSum < 0 : false,
@@ -63,6 +68,11 @@
           }"
         >
           {{ purchase.transactionSum }}
+        </td>
+        <td *ngIf="purchase.more_info" class="woocommerce-orders-table__cell woocommerce-orders-table__cell-order-actions" data-title="Действия">
+          <button mat-stroked-button (click)="showPurchaseInfo(purchase.more_info)" >
+            Подробнее
+          </button>
         </td>
       </tr>
     </tbody>

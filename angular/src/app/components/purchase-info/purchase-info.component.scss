@@ -1,0 +1,45 @@
+:host {
+  .woocommerce-orders-table {
+    &__cell {
+        padding: 8px 4px;
+      border-bottom: 2px solid #dee2e6;
+      text-align: right !important;
+      display: block;
+      &::before {
+        content: attr(data-title) ": ";
+        font-weight: 700;
+        float: left;
+        margin-right: 20px;
+      }
+    }
+    &__row {
+      display: block;
+      &:nth-child(even) {
+        background: #ebebeb;
+      }
+    }
+    // &__cell-order-actions::before {
+    //     display: none;
+    // }
+    &__cell-order-actions {
+      &.red-color {
+        color: #ed0000;
+      }
+      &.green-color {
+        color: #00a700;
+      }
+    }
+    &__cell-order-number a {
+      text-decoration: none;
+      color: #009688;
+    }
+  }
+}
+
+.amount {
+    font-weight: 600;
+}
+
+.mat-dialog-actions {
+  justify-content: space-between;
+}

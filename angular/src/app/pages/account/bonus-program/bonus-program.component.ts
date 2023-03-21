@@ -57,7 +57,7 @@ export class BonusProgramComponent implements OnInit {
     this.loadingBonuses = true;
     this.wpJsonService.getCustomerInfo(environment.systemId, token, environment.icardProxy).subscribe({
       next: (res) => {
-        if (res.customer_info.errorCode === 'Customer_CustomerNotFound') {
+        if (res.customer_info?.errorCode === 'Customer_CustomerNotFound' || 'Error' in res) {
           // this._snackBar.open('Пользователь не найден в системе! Обратитесь к руководству', 'Ок')
           this.loadingBonuses = false;
           return

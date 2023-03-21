@@ -1,0 +1,34 @@
+<h2 mat-dialog-title>{{ moment(purchaseInfo.date).format("DD.MM.YYYY") }}</h2>
+<mat-dialog-content>
+  <table>
+    <tbody>
+      <tr
+        *ngFor="let good of purchaseInfo.goods_list"
+        class="woocommerce-orders-table__row woocommerce-orders-table__row--status-processing order"
+      >
+        <td
+          class="woocommerce-orders-table__cell woocommerce-orders-table__cell-order-name"
+          data-title="Название"
+        >
+          {{ good.name }}
+        </td>
+        <td
+          class="woocommerce-orders-table__cell woocommerce-orders-table__cell-order-price"
+          data-title="Цена"
+        >
+          {{ good.price }}
+        </td>
+        <td
+          class="woocommerce-orders-table__cell woocommerce-orders-table__cell-order-quantity"
+          data-title="Количество"
+        >
+          {{ good.quantity }}
+        </td>
+      </tr>
+    </tbody>
+  </table>
+</mat-dialog-content>
+<mat-dialog-actions>
+  <span class="amount">Сумма: {{ purchaseInfo.sum }}</span>
+  <button mat-stroked-button mat-dialog-close>Закрыть</button>
+</mat-dialog-actions>

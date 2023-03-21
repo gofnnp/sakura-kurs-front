@@ -58,6 +58,10 @@ export class WpJsonService {
     return this._request(`trans/${systemId}/${token}/`, 'GET', null, false, url)
   }
 
+  getTransactionsInfo(systemId: string, token: string, url: string, delta: number): Observable<any> {
+    return this._request(`purchase/${systemId}/${token}/`, 'GET', null, false, url)
+  }
+
   getSiteConfig(): Observable<any> {
     return this._request(`/assets/site-config.json`, 'GET', null, false)
   }
