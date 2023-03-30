@@ -74,6 +74,9 @@ import { MatSnackBarModule } from '@angular/material/snack-bar';
 import { SnackBarComponent } from './components/snack-bar/snack-bar.component';
 import {MatDialogModule} from '@angular/material/dialog';
 import { PurchaseInfoComponent } from './components/purchase-info/purchase-info.component';
+import { DateFilterComponent } from './components/date-filter/date-filter.component';
+import {MatDatepickerModule} from '@angular/material/datepicker';
+import {MatNativeDateModule} from '@angular/material/core';
 
 const routes: Routes = [
   { path: '', redirectTo: 'products', pathMatch: 'full' },
@@ -113,6 +116,7 @@ const routes: Routes = [
     TerminalListComponent,
     SnackBarComponent,
     PurchaseInfoComponent,
+    DateFilterComponent,
   ],
   imports: [
     BrowserModule,
@@ -162,7 +166,9 @@ const routes: Routes = [
     MatButtonModule,
     MatListModule,
     MatSnackBarModule,
-    MatDialogModule
+    MatDialogModule,
+    MatDatepickerModule,
+    MatNativeDateModule
   ],
   providers: [
     DialogService,

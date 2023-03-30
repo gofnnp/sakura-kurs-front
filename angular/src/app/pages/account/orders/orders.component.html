@@ -1,3 +1,9 @@
+<app-date-filter
+  [options]="dateFilterOptions"
+  [defaultFilterType]="defaultFilterType"
+  (onSubmitFilter)="dateFilter($event)"
+></app-date-filter>
+
 <div class="orders">
   <!-- <h2>{{ currentPage.name }}</h2> -->
   <table
@@ -63,14 +69,25 @@
           class="woocommerce-orders-table__cell woocommerce-orders-table__cell-order-bonuses"
           data-title="Бонусы"
           [ngClass]="{
-            'red-color': purchase.transactionSum ? purchase.transactionSum < 0 : false,
-            'green-color': purchase.transactionSum ? purchase.transactionSum > 0 : false
+            'red-color': purchase.transactionSum
+              ? purchase.transactionSum < 0
+              : false,
+            'green-color': purchase.transactionSum
+              ? purchase.transactionSum > 0
+              : false
           }"
         >
           {{ purchase.transactionSum }}
         </td>
-        <td *ngIf="purchase.more_info" class="woocommerce-orders-table__cell woocommerce-orders-table__cell-order-actions" data-title="Действия">
-          <button mat-stroked-button (click)="showPurchaseInfo(purchase.more_info)" >
+        <td
+          *ngIf="purchase.more_info"
+          class="woocommerce-orders-table__cell woocommerce-orders-table__cell-order-actions"
+          data-title="Действия"
+        >
+          <button
+            mat-stroked-button
+            (click)="showPurchaseInfo(purchase.more_info)"
+          >
             Подробнее
           </button>
         </td>
@@ -78,11 +95,14 @@
     </tbody>
   </table>
   <p
-    *ngIf="purchases.length !== purchasesShortArray.length"
+    *ngIf="filteredOfDatePurchases.length !== purchasesShortArray.length && purchasesShortArray.length"
     class="show-more-orders"
     (click)="getMoreOrders()"
   >
     Показать больше
+  </p>
+  <p *ngIf="!purchasesShortArray.length && !ordersLoadingStatus" class="show-more-orders">
+    Данные не найдены
   </p>
   <p-progressSpinner
     *ngIf="ordersLoadingStatus"

@@ -1,6 +1,6 @@
 import { HttpErrorResponse } from '@angular/common/http';
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
-import { Page, Purchase, PurchaseInfo } from 'src/app/interface/data';
+import { IDateFilter, Page, Purchase, PurchaseInfo } from 'src/app/interface/data';
 import * as moment from 'moment-timezone';
 import { lastValueFrom } from 'rxjs';
 import { WpJsonService } from 'src/app/services/wp-json.service';
@@ -8,6 +8,7 @@ import { environment } from 'src/environments/environment';
 import { CookiesService } from 'src/app/services/cookies.service';
 import { MatDialog } from '@angular/material/dialog';
 import { PurchaseInfoComponent } from 'src/app/components/purchase-info/purchase-info.component';
+import { dateFilterOptions } from 'src/app/app.constants';
 
 @Component({
   selector: 'app-orders',
@@ -24,6 +25,12 @@ export class OrdersComponent implements OnInit {
   public purchases: Purchase[] = [];
   public purchasesShortArray: Purchase[] = [];
 
+
+  public dateFilterOptions = dateFilterOptions
+  public defaultFilterType = 'currentMonth';
+  private startOfMonth = moment().startOf('month').format('YYYY-MM-DD HH:mm');
+  public filteredOfDatePurchases: Purchase[] = []
+
   constructor(
     private wpJsonService: WpJsonService,
     private cookiesService: CookiesService,
@@ -32,6 +39,35 @@ export class OrdersComponent implements OnInit {
 
   ngOnInit(): void {
     this.getOrders();
+  }
+
+  dateFilter(dateFilter: IDateFilter) {
+    this.lastViewOrder = 3
+    switch (dateFilter.filterType) {
+      case 'between':
+        this.filteredOfDatePurchases = this.purchases.filter((value) => {
+          return moment(value.transactionCreateDate).isBetween(dateFilter.from, moment(dateFilter.to).add(1, 'day'))
+        })
+        break;
+
+      case 'currentMonth':
+        this.filteredOfDatePurchases = this.purchases.filter((value) => {
+          return moment(value.transactionCreateDate).isAfter(this.startOfMonth)
+        })
+        break;
+
+      case 'lastMonth':
+        this.filteredOfDatePurchases = this.purchases.filter((value) => {
+          return moment(value.transactionCreateDate).isBetween(moment(this.startOfMonth).subtract(1, 'month'), this.startOfMonth)
+        })
+        break;
+    
+      default:
+        this.filteredOfDatePurchases = this.purchases
+        break;
+    }
+    this.purchasesShortArray = this.filteredOfDatePurchases.slice(0, this.lastViewOrder);
+
   }
 
   async getOrders() {
@@ -98,13 +134,13 @@ export class OrdersComponent implements OnInit {
         )
       );
     
-    this.purchasesShortArray = this.purchases.slice(0, this.lastViewOrder);
+    this.dateFilter({filterType: this.defaultFilterType})
     this.ordersLoadingStatus = false;
   }
 
   getMoreOrders() {
     this.lastViewOrder += 4;
-    this.purchasesShortArray = this.purchases.slice(0, this.lastViewOrder);
+    this.purchasesShortArray = this.filteredOfDatePurchases.slice(0, this.lastViewOrder);
   }
 
   showPurchaseInfo(purchaseInfo: PurchaseInfo) {

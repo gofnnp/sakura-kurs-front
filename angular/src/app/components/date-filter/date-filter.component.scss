@@ -1,0 +1,28 @@
+:host {
+  .date-filter-container {
+    & > form {
+      width: 100%;
+      display: flex;
+      flex-direction: row;
+      gap: 8px;
+    }
+  }
+}
+
+@media screen and (max-width: 1065px) {
+  :host {
+    .date-filter-container {
+      & > form {
+        flex-direction: column;
+      }
+    }
+  }
+
+  .date-range-input-field {
+    width: 100%;
+  }
+}
+
+.apply {
+  height: 51.67px;
+}

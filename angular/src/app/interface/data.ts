@@ -275,3 +275,14 @@ export interface ITerminal {
   label: string;
   id: string;
 }
+
+export interface IOptionDateFilter {
+  name: string;
+  value: string;
+}
+
+export interface IDateFilter {
+  filterType: string;
+  from?: Date;
+  to?: Date;
+}

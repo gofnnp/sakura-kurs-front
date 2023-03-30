@@ -1,0 +1,43 @@
+<div class="date-filter-container">
+  <form [formGroup]="dateFilterForm" (ngSubmit)="submitFilter()">
+    <mat-form-field appearance="fill">
+      <mat-select formControlName="filterType">
+        <mat-option *ngFor="let option of options" [value]="option.value">{{
+          option.name
+        }}</mat-option>
+      </mat-select>
+      <mat-label>Фильтр</mat-label>
+      <mat-hint>Тип</mat-hint>
+    </mat-form-field>
+    <div
+      *ngIf="currentFilterType === 'between'"
+      class="date-filter-container__date-inputs"
+    >
+      <mat-form-field class="date-range-input-field" appearance="fill">
+        <mat-label>Интервал времени</mat-label>
+        <mat-date-range-input
+          [rangePicker]="campaignTwoPicker"
+          [comparisonStart]="dateFilterForm.value.from"
+          [comparisonEnd]="dateFilterForm.value.to" 
+        >
+          <input matStartDate placeholder="От: " formControlName="from" />
+          <input matEndDate placeholder="До: " formControlName="to" />
+        </mat-date-range-input>
+        <mat-hint>дд.мм.гггг – дд.мм.гггг</mat-hint>
+        <mat-datepicker-toggle
+          matIconSuffix
+          [for]="campaignTwoPicker"
+        ></mat-datepicker-toggle>
+        <mat-date-range-picker #campaignTwoPicker>
+          <mat-date-range-picker-actions>
+            <button mat-button matDateRangePickerCancel>Назад</button>
+            <button mat-raised-button color="primary" matDateRangePickerApply>
+              Подтвердить
+            </button>
+          </mat-date-range-picker-actions>
+        </mat-date-range-picker>
+      </mat-form-field>
+    </div>
+    <button mat-stroked-button class="apply" type="submit">Применить</button>
+  </form>
+</div>
