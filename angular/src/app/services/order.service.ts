@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { CartService } from './cart.service';
 import { WpJsonService } from './wp-json.service';
-import { forkJoin, lastValueFrom, Observable, tap } from 'rxjs';
+import { forkJoin, lastValueFrom, Observable, of, tap } from 'rxjs';
 import {
   Cart,
   DeliveryData,
@@ -15,9 +15,10 @@ import { OrderProduct } from '../models/order-product';
 import { JsonrpcService, RpcService } from './jsonrpc.service';
 import { CookiesService } from './cookies.service';
 import { MessageService } from 'primeng/api';
-import { map } from 'rxjs/operators';
+import { catchError, map } from 'rxjs/operators';
 import { cloneDeep } from 'lodash';
 import { environment } from 'src/environments/environment';
+import { ApiService } from './api.service';
 
 @Injectable({
   providedIn: 'root',
@@ -30,7 +31,8 @@ export class OrderService {
     private wpJsonService: WpJsonService,
     private jsonRpcService: JsonrpcService,
     private cookiesService: CookiesService,
-    private messageService: MessageService
+    private messageService: MessageService,
+    private api: ApiService
   ) {}
 
   async getDeliveryTypes(): Promise<DeliveryType[]> {
@@ -52,46 +54,50 @@ export class OrderService {
         //   RpcService.authService,
         //   true
         // );
-        const terminal =
-          JSON.parse(
-            this.cookiesService.getItem('selectedTerminal') || 'null'
-          ) || this.cartService.selectedTerminal$;
-        if (!token.length) {
-          this.order = new Order({
-            products: products,
-            userData: null,
-            phone: '',
-            token: token,
-            terminal_id: terminal.id,
-          });
-          return this.order;
-        }
-        const additionalInfo = this.wpJsonService.getCustomerInfo(
-          environment.systemId,
-          token,
-          environment.icardProxy
-        );
+        // const terminal =
+        //   JSON.parse(
+        //     this.cookiesService.getItem('selectedTerminal') || 'null'
+        //   ) || this.cartService.selectedTerminal$;
+        // if (!token.length) {
+        //   this.order = new Order({
+        //     products: products,
+        //     userData: null,
+        //     phone: '',
+        //     token: token,
+        //     terminal_id: terminal.id,
+        //   });
+        //   return this.order;
+        // }
+        const additionalInfo = this.api.getUser()
 
-        const tokenData = this.jsonRpcService.rpc(
-          {
-            method: 'getTokenData',
-            params: [this.cookiesService.getItem('token')],
-          },
-          RpcService.authService,
-          true
-        );
+        // const tokenData = this.jsonRpcService.rpc(
+        //   {
+        //     method: 'getTokenData',
+        //     params: [this.cookiesService.getItem('token')],
+        //   },
+        //   RpcService.authService,
+        //   true
+        // );
 
         const info = await lastValueFrom(
-          forkJoin([additionalInfo, tokenData, products])
-        );
-        const customer_info = info[0]?.customer_info;
+          forkJoin([additionalInfo]).pipe(
+            map((value: any) => {
+              return value[0]
+            }),
+            catchError(err => of({
+              errorCode: 401
+            }))
+          )
+        ) as UserData;
+        
+        const customer_info = info;
 
         this.order = new Order({
           products: products,
           userData: customer_info,
-          phone: info[1].data?.mobile_number,
+          // phone: info[1].data?.mobile_number,
           token: token,
-          terminal_id: terminal.id,
+          // terminal_id: terminal.id,
         });
       } else if (this.order) {
         this.order.products.length = 0;
@@ -101,17 +107,18 @@ export class OrderService {
   }
 
   async getProducts(cart: Cart): Promise<OrderProduct[]> {
-    const terminal =
-      JSON.parse(this.cookiesService.getItem('selectedTerminal') || 'null');
+    // const terminal =
+    //   JSON.parse(this.cookiesService.getItem('selectedTerminal') || 'null');
     const products: OrderProduct[] = [];
-    if (!terminal) {
-      return products
-    }
-    const allData = await lastValueFrom(
-      this.wpJsonService.getAllData(`${terminal.label}${terminal.id}`)
-    );
+    // if (!terminal) {
+    //   return products
+    // }
+    // const allData = await lastValueFrom(
+    //   this.wpJsonService.getAllData(`${terminal.label}${terminal.id}`)
+    // );
+    const allProducts = await lastValueFrom(this.api.getProducts());
     for (let i = 0; i < cart.products.length; i++) {
-      const productSub = allData.products.find(
+      const productSub = allProducts.values.find(
         (product: any) => product.id === cart.products[i].id
       );
       if (!productSub) {
@@ -126,11 +133,12 @@ export class OrderService {
         short_description: '',
         image_gallery: [],
         image: productSub.image,
-        modifier_data: cart.products[i].modifiers,
+        // modifier_data: cart.products[i].modifiers,
         stock_status: 'instock',
-        groupId: productSub.groupId,
-        modifiers_group: productSub.modifiers_group,
+        group_id: productSub.group_id,
+        // modifiers_group: productSub.modifiers_group,
       });
+      
       const orderProduct: OrderProduct = new OrderProduct(
         product,
         cart.products[i].guid,

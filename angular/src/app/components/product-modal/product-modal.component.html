@@ -1,6 +1,6 @@
 <div class="product-modal">
   <div class="product-modal__information-container" [ngStyle]="{
-    'max-width': product.modifiers_group.length ? 'calc(50% - 16px)' : '100%'
+    'max-width': '100%'
   }">
     <img
       src="{{
@@ -11,11 +11,11 @@
     <p class="product-modal__description">{{product.description}}</p>
   </div>
 
-  <div
+  <!-- <div
     *ngIf="product.modifiers_group.length"
     class="product-modal__modifiers-container"
   >
-    <!-- <ng-container *ngIf="product.modifiers_group.length">
+    <ng-container *ngIf="product.modifiers_group.length">
       <div *ngFor="let modifierGroup of cartProduct.modifiers" [attr.isShow]="false"
                 [ngClass]="{'product-modal__modifier': true, 'no-valid': isValidate && modifierGroup.allQuantity < modifierGroup.restrictions.minQuantity}" #modifierContainer>
                 <a (click)="setOptionsView($event, modifierContainer)">
@@ -34,7 +34,7 @@
                     </app-checkbox-group>
                 </div>
             </div>
-        </ng-container> -->
+        </ng-container>
     <app-modifier
       *ngFor="let modifier of cartProduct.modifiers; let index = index"
       [modifier]="modifier"
@@ -42,7 +42,7 @@
     >
       <span counter>{{ index + 1 }} из {{ cartProduct.modifiers.length }}</span>
     </app-modifier>
-  </div>
+  </div> -->
 
   <div class="product-modal__footer">
     <!-- <app-change-quantity (onChangeValue)="changeProductAmount()"></app-change-quantity> -->

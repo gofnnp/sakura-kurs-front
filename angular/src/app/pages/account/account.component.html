@@ -4,6 +4,7 @@
     'auth-page': showAuthoriztion
   }"
 >
+  <button *ngIf="!showAuthoriztion" style="float: right;" color="warn" mat-stroked-button (click)="logOut()">Выйти из аккаунта</button>
   <div *ngIf="!showAuthoriztion; else authEl" class="account-page">
     <div *ngIf="showAuthoriztion" class="top-left-attribute"></div>
     <app-bonus-program
@@ -122,5 +123,5 @@
 </div>
 
 <ng-template #authEl>
-  <app-auth (phoneConfirmed)="phoneConfirmed()"></app-auth>
+  <app-auth (loginConfirmed)="loginConfirmed()"></app-auth>
 </ng-template>

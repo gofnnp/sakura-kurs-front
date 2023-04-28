@@ -50,16 +50,16 @@ export class ChangeQuantityOptionDirective implements OnInit {
       (quantity < maxOptionQ && allQuantity < maxModifierQ) ||
       (maxOptionQ === 0 && (allQuantity < maxModifierQ || maxModifierQ === 0));
 
-    if (!plusCondition && quantity > minOptionQ && allQuantity > minModifierQ) {
-      this.product.decrementOption(modifier.idLocal, option.idLocal);
-    }
-    if (allQuantity === maxModifierQ && modifier.lastChangeOption) {
-      this.product.decrementOption(modifier.idLocal, modifier.lastChangeOption);
-      this.changeQuantity({ option, modifier });
-    }
-    if (plusCondition) {
-      this.product.incrementOption(modifier.idLocal, option.idLocal);
-      modifier.lastChangeOption = option.idLocal;
-    }
+    // if (!plusCondition && quantity > minOptionQ && allQuantity > minModifierQ) {
+    //   this.product.decrementOption(modifier.idLocal, option.idLocal);
+    // }
+    // if (allQuantity === maxModifierQ && modifier.lastChangeOption) {
+    //   this.product.decrementOption(modifier.idLocal, modifier.lastChangeOption);
+    //   this.changeQuantity({ option, modifier });
+    // }
+    // if (plusCondition) {
+    //   this.product.incrementOption(modifier.idLocal, option.idLocal);
+    //   modifier.lastChangeOption = option.idLocal;
+    // }
   }
 }

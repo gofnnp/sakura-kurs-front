@@ -1,6 +1,6 @@
 import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
-import { RouterModule, Routes } from '@angular/router';
+import { Routes } from '@angular/router';
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
@@ -77,14 +77,11 @@ import { PurchaseInfoComponent } from './components/purchase-info/purchase-info.
 import { DateFilterComponent } from './components/date-filter/date-filter.component';
 import {MatDatepickerModule} from '@angular/material/datepicker';
 import {MatNativeDateModule} from '@angular/material/core';
+import { ProductsListComponent } from './components/products-list/products-list.component';
+import { AdminComponent } from './pages/admin/admin.component';
+import {MatPaginatorModule} from '@angular/material/paginator';
+import {MatTableModule} from '@angular/material/table';
 
-const routes: Routes = [
-  { path: '', redirectTo: 'products', pathMatch: 'full' },
-  { path: 'products', component: ProductsComponent },
-  // { path: 'cart', component: CartComponent },
-  { path: 'account', component: AccountComponent },
-  { path: '**', component: NotFoundComponent },
-];
 
 @NgModule({
   declarations: [
@@ -117,13 +114,12 @@ const routes: Routes = [
     SnackBarComponent,
     PurchaseInfoComponent,
     DateFilterComponent,
+    ProductsListComponent,
+    AdminComponent,
   ],
   imports: [
     BrowserModule,
     AppRoutingModule,
-    RouterModule.forRoot(routes, {
-      scrollPositionRestoration: 'enabled',
-    }),
     InputMaskModule,
     ProgressSpinnerModule,
     FormsModule,
@@ -168,7 +164,9 @@ const routes: Routes = [
     MatSnackBarModule,
     MatDialogModule,
     MatDatepickerModule,
-    MatNativeDateModule
+    MatNativeDateModule,
+    MatPaginatorModule,
+    MatTableModule
   ],
   providers: [
     DialogService,

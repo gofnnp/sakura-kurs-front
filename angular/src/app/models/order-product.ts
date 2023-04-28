@@ -27,15 +27,15 @@ export class OrderProduct implements Product {
     this.id = product.id;
     this.image_gallery = product.image_gallery;
     this.image = product.image;
-    this.modifier_data = product.modifier_data;
+    // this.modifier_data = product.modifier_data;
     this.name = product.name;
     this.price = product.price;
     this.stock_status = product.stock_status;
     this.amount = amount;
     this.guid = guid;
     this.short_description = product.short_description;
-    this.groupId = product.groupId;
-    this.modifiers_group = product.modifiers_group;
+    this.group_id = product.group_id;
+    // this.modifiers_group = product.modifiers_group;
   }
 
   public amount: number;
@@ -46,38 +46,38 @@ export class OrderProduct implements Product {
   public id: string;
   public image_gallery: string[];
   public image: string;
-  public modifier_data: CartModifier[];
+  // public modifier_data: CartModifier[];
   public name: string;
   public price: number;
   public stock_status: string;
   public guid: string;
-  public groupId: string;
-  public modifiers_group: string[];
+  public group_id: string;
+  // public modifiers_group: string[];
 
   get finalPrice(): number {
-    const modifiersPrice = this.modifier_data.reduce<number>(
-      (previousValue, currentValue) => {
-        return (
-          previousValue +
-          currentValue.options.reduce<number>(
-            (previousOptionValue, currentOptionValue) => {
-              return (
-                previousOptionValue +
-                Number(
-                  currentOptionValue.price
-                    ? currentOptionValue.price *
-                        (currentOptionValue.quantity ?? 0)
-                    : 0
-                )
-              );
-            },
-            0
-          )
-        );
-      },
-      0
-    );
-    return (Number(this.price) + modifiersPrice) * this.amount;
+    // const modifiersPrice = this.modifier_data.reduce<number>(
+    //   (previousValue, currentValue) => {
+    //     return (
+    //       previousValue +
+    //       currentValue.options.reduce<number>(
+    //         (previousOptionValue, currentOptionValue) => {
+    //           return (
+    //             previousOptionValue +
+    //             Number(
+    //               currentOptionValue.price
+    //                 ? currentOptionValue.price *
+    //                     (currentOptionValue.quantity ?? 0)
+    //                 : 0
+    //             )
+    //           );
+    //         },
+    //         0
+    //       )
+    //     );
+    //   },
+    //   0
+    // );
+    return Number(this.price) * this.amount;
   }
 
   toJson(): OrderProductToJson {
@@ -88,24 +88,24 @@ export class OrderProduct implements Product {
       quantity: this.amount,
       name: this.name,
     };
-    const options = this.modifier_data
-      ?.map((modifier) => {
-        return {
-          option: modifier.name,
-          variants:
-            modifier.options
-              .map((option) => ({
-                variant: option.name,
-                id: option.id,
-                quantity: option.quantity,
-              }))
-              .filter((option) => option.quantity) || null,
-          id: modifier.id,
-        };
-      })
-      .filter((modifier) => modifier.variants.length);
+    // const options = this.modifier_data
+    //   ?.map((modifier) => {
+    //     return {
+    //       option: modifier.name,
+    //       variants:
+    //         modifier.options
+    //           .map((option) => ({
+    //             variant: option.name,
+    //             id: option.id,
+    //             quantity: option.quantity,
+    //           }))
+    //           .filter((option) => option.quantity) || null,
+    //       id: modifier.id,
+    //     };
+    //   })
+    //   .filter((modifier) => modifier.variants.length);
 
-    if (options.length) product.options = options;
+    // if (options.length) product.options = options;
     return product;
   }
 }

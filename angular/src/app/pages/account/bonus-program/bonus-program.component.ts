@@ -12,6 +12,8 @@ import { DOCUMENT } from '@angular/common';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { WpJsonService } from 'src/app/services/wp-json.service';
 import { MatSnackBar } from '@angular/material/snack-bar';
+import { ApiService } from 'src/app/services/api.service';
+import { MessageService } from 'primeng/api';
 
 @Component({
   selector: 'app-bonus-program',
@@ -37,6 +39,8 @@ export class BonusProgramComponent implements OnInit {
     @Inject(DOCUMENT) private document: Document,
     private http: HttpClient,
     private wpJsonService: WpJsonService,
+    private api: ApiService,
+    private messageService: MessageService,
     private _snackBar: MatSnackBar
   ) { }
 
@@ -55,26 +59,17 @@ export class BonusProgramComponent implements OnInit {
       return
     }
     this.loadingBonuses = true;
-    this.wpJsonService.getCustomerInfo(environment.systemId, token, environment.icardProxy).subscribe({
-      next: (res) => {
-        if (res.customer_info?.errorCode === 'Customer_CustomerNotFound' || 'Error' in res) {
-          // this._snackBar.open('Пользователь не найден в системе! Обратитесь к руководству', 'Ок')
-          this.loadingBonuses = false;
-          return
-        }
-        this.userName = res.customer_info.name
-        this.accountData = {
-          CardNumber: res.customer_info.cards[0]?.Number || '',
-          Bonuses: res.customer_info.walletBalances[0].balance
-        }
-        barcode("#barcode")
-          .options({ font: "OCR-B" }) // Will affect all barcodes
-          .EAN13(`${this.accountData.CardNumber}`.padStart(12, "0"), { fontSize: 18, textMargin: 0 })
-          .render();
-        this.loadingBonuses = false;
+    this.api.getUser().subscribe({
+      next: (value) => {
+        this.accountData = value
+        this.userName = value.name
       },
       error: (err) => {
-        console.error('Error: ', err)
+        console.error(err);
+        this.messageService.add({
+          severity: 'error',
+          summary: 'Произошла ошибка! Попробуйте позже'
+        })
       }
     })
   }

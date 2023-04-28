@@ -15,8 +15,8 @@ import { ChangeValue } from '../change-quantity/change-quantity.component';
 export class ProductModalComponent implements OnInit {
   public product!: Product;
   public allData!: AllData;
-  public modifiersGroups!: ModifiersGroup[];
-  public modifiers!: Modifier[];
+  // public modifiersGroups!: ModifiersGroup[];
+  // public modifiers!: Modifier[];
   public cartProduct!: CartProduct;
   public isValidate: boolean = false
 
@@ -30,42 +30,42 @@ export class ProductModalComponent implements OnInit {
 
   ngOnInit(): void {
     this.product = this.config.data.product
-    this.modifiersGroups = this.config.data.modifiersGroups
-    this.modifiers = this.config.data.modifiers
-    this.cartProduct = new CartProduct(this.product.id, this.product.name, this.modifiersFilter(), this.modifiers, this.product.price);
+    // this.modifiersGroups = this.config.data.modifiersGroups
+    // this.modifiers = this.config.data.modifiers
+    this.cartProduct = new CartProduct(this.product.id, this.product.name, this.product.price);
   }
 
-  modifiersFilter(): ModifiersGroup[] {
-    return this.modifiersGroups.filter((value) => this.product.modifiers_group.includes(value.id))
-  }
+  // modifiersFilter(): ModifiersGroup[] {
+  //   return this.modifiersGroups.filter((value) => this.product.modifiers_group.includes(value.id))
+  // }
 
-  optionsFilter(modifierGroup: ModifiersGroup): Modifier[] {
-    return this.modifiers.filter((modifier) => modifier.groupId === modifierGroup.id)
-  }
+  // optionsFilter(modifierGroup: ModifiersGroup): Modifier[] {
+  //   return this.modifiers.filter((modifier) => modifier.groupId === modifierGroup.id)
+  // }
 
-  selectedOptions(modifier: ModifiersGroup): Modifier[] {
-    const cartModifier = this.cartProduct.modifiers.find(cartModifier => cartModifier.id === modifier.id)
-    if (modifier.restrictions.maxQuantity === 1 && modifier.restrictions.minQuantity === 1) {
-      cartModifier?.options.push(this.optionsFilter(modifier)[0])
-    }
-    return cartModifier?.options ?? [];
-  }
+  // selectedOptions(modifier: ModifiersGroup): Modifier[] {
+  //   const cartModifier = this.cartProduct.modifiers.find(cartModifier => cartModifier.id === modifier.id)
+  //   if (modifier.restrictions.maxQuantity === 1 && modifier.restrictions.minQuantity === 1) {
+  //     cartModifier?.options.push(this.optionsFilter(modifier)[0])
+  //   }
+  //   return cartModifier?.options ?? [];
+  // }
 
-  addOption(modifier: ModifiersGroup, option: Modifier) {
-    const modif = this.cartProduct.modifiers.find((modif) => modif.id === modifier.id);
-    const optionSelectedCartIndex = modif?.options.findIndex((modif) => modif.id === option.id)
-    if (modifier.restrictions.maxQuantity === 1 && modifier.restrictions.minQuantity === 1) {
-      if (modif?.options) {
-        modif.options.length = 0
-      }
-    } else {
-      if ((optionSelectedCartIndex || optionSelectedCartIndex === 0) && optionSelectedCartIndex !== -1) {
-        modif?.options.splice(optionSelectedCartIndex, 1)
-        return
-      }
-    }
-    modif?.options.push(option)
-  }
+  // addOption(modifier: ModifiersGroup, option: Modifier) {
+  //   const modif = this.cartProduct.modifiers.find((modif) => modif.id === modifier.id);
+  //   const optionSelectedCartIndex = modif?.options.findIndex((modif) => modif.id === option.id)
+  //   if (modifier.restrictions.maxQuantity === 1 && modifier.restrictions.minQuantity === 1) {
+  //     if (modif?.options) {
+  //       modif.options.length = 0
+  //     }
+  //   } else {
+  //     if ((optionSelectedCartIndex || optionSelectedCartIndex === 0) && optionSelectedCartIndex !== -1) {
+  //       modif?.options.splice(optionSelectedCartIndex, 1)
+  //       return
+  //     }
+  //   }
+  //   modif?.options.push(option)
+  // }
 
   getIsShow(element: HTMLDivElement) {
     const isShow = Object.values(element.attributes).find((value) => value.name === 'isshow')?.value
@@ -97,18 +97,18 @@ export class ProductModalComponent implements OnInit {
     if (event) {
       event.preventDefault()
     }
-    for (let modifiersGroup of this.cartProduct.modifiers) {
-      const isValidModifier = modifiersGroup.allQuantity < modifiersGroup.restrictions.minQuantity
-      if (isValidModifier) {
-        this.messageService.add({
-          severity: 'error',
-          summary: 'Заполните все модификаторы!'
-        });
-        this.isValidate = true
-        return
-      }
-    }
-    this.cartService.changeTerminal(this.config.data.selectedTerminal)
+    // for (let modifiersGroup of this.cartProduct.modifiers) {
+    //   const isValidModifier = modifiersGroup.allQuantity < modifiersGroup.restrictions.minQuantity
+    //   if (isValidModifier) {
+    //     this.messageService.add({
+    //       severity: 'error',
+    //       summary: 'Заполните все модификаторы!'
+    //     });
+    //     this.isValidate = true
+    //     return
+    //   }
+    // }
+    // this.cartService.changeTerminal(this.config.data.selectedTerminal)
     this.cartService.addToCart(this.cartProduct);
     this.dialogRef.close();
   }

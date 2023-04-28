@@ -7,7 +7,7 @@
 >
   <div
     class="cart"
-    *ngIf="!loading && order && !orderConfirmed"
+    *ngIf="!loading && order && !orderConfirmed && isAuth; else authEl"
     [ngStyle]="{ margin: !order.products.length && 0 }"
   >
     <div class="widget_shopping_cart_content" style="opacity: 1">
@@ -45,7 +45,7 @@
               data-title="Product"
             >
               <span>{{ product.name }}</span>
-              <dl
+              <!-- <dl
                 *ngFor="let modifier of product.modifier_data"
                 class="variation"
                 [ngStyle]="{ margin: !modifier.options.length && 0 }"
@@ -73,7 +73,7 @@
                     </p>
                   </dd>
                 </ng-container>
-              </dl>
+              </dl> -->
             </div>
 
             <div
@@ -158,6 +158,7 @@
 
   <app-user-data-order
     *ngIf="orderConfirmed"
+    [isAuth]="isAuth"
     (orderSubmitted)="orderSubmitted($event)"
     (userNotFound)="userNotFound($event)"
   ></app-user-data-order>
@@ -179,3 +180,7 @@
     </div>
   </div>
 </p-sidebar>
+
+<ng-template #authEl>
+  <app-auth *ngIf="!loading && order" (loginConfirmed)="loginConfirmed()"></app-auth>
+</ng-template>

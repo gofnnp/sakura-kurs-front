@@ -10,6 +10,7 @@ import { MessageService } from 'primeng/api';
 import { SnackBarComponent } from 'src/app/components/snack-bar/snack-bar.component';
 import { Order } from 'src/app/models/order';
 import { OrderProduct } from 'src/app/models/order-product';
+import { ApiService } from 'src/app/services/api.service';
 import {
   CartService,
   ProductAmountAction,
@@ -30,12 +31,14 @@ export class CartComponent implements OnInit {
   public visibleSidebar: boolean = false;
   public isFullScreen!: boolean;
   public width!: number;
+  public isAuth = false
 
   constructor(
     private orderService: OrderService,
     private cartService: CartService,
     private messageService: MessageService,
-    private _snackBar: MatSnackBar
+    private _snackBar: MatSnackBar,
+    private api: ApiService
   ) {}
 
   ngOnInit(): void {
@@ -72,11 +75,14 @@ export class CartComponent implements OnInit {
   async loadCart(): Promise<void> {
     this.loading = true;
     this.order = await this.orderService.getOrder(true);
-    if (this.order?.userData?.errorCode === 'Customer_CustomerNotFound') {
-      this.userNotFound()
-      return
-    }
     if (this.order) this.price = this.order.price;
+    
+    if (this.order?.userData?.errorCode) {
+      // this._snackBar.open('Вы не авторизованы!', 'Ок')
+      this.isAuth = false
+    } else {
+      this.isAuth = true
+    }
     this.loading = false;
   }
 
@@ -90,10 +96,30 @@ export class CartComponent implements OnInit {
     this.orderService.removeFromCart(guid);
   }
 
+  loginConfirmed() {
+    this.loadCart()
+  }
+
   confirmOrder(event: Event): void {
     event.preventDefault();
-    this.showAuthoriztion.emit(true);
-    this.orderConfirmed = true;
+    this.api.addOrder(this.order.products).subscribe({
+      next: (value) => {
+        const orderId = value.values.results.insertId
+        this.orderSubmitted(orderId)
+        this.cartService.clearCart();
+      },
+      error: (err) => {
+        console.error(err);
+        this.messageService.add({
+          severity: 'error',
+          summary: 'Произошла ошибка! Попробуйте позже'
+        })
+        
+      }
+    })
+    
+    // this.showAuthoriztion.emit(true);
+    // this.orderConfirmed = true;
     // this.confirm.emit();
   }
 

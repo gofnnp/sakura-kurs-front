@@ -76,6 +76,12 @@ export const PageListMain: Page[] = [
     icon: 'manage_search',
   },
   {
+    code: MainPageCode.Admin,
+    name: 'Панель',
+    resName: 'admin',
+    onSideBar: false,
+  },
+  {
     code: MainPageCode.Cart,
     name: 'Корзина',
     resName: 'cart',

@@ -1,8 +1,8 @@
-<app-date-filter
+<!-- <app-date-filter
   [options]="dateFilterOptions"
   [defaultFilterType]="defaultFilterType"
   (onSubmitFilter)="dateFilter($event)"
-></app-date-filter>
+></app-date-filter> -->
 
 <div class="orders">
   <!-- <h2>{{ currentPage.name }}</h2> -->
@@ -14,7 +14,12 @@
         <th
           class="woocommerce-orders-table__header woocommerce-orders-table__header-order-date"
         >
-          <span class="nobr">Дата</span>
+          <span class="nobr">Дата создания</span>
+        </th>
+        <th
+          class="woocommerce-orders-table__header woocommerce-orders-table__header-order-date"
+        >
+          <span class="nobr">Номер заказа</span>
         </th>
         <!-- <th
           class="woocommerce-orders-table__header woocommerce-orders-table__header-order-status"
@@ -24,17 +29,17 @@
         <th
           class="woocommerce-orders-table__header woocommerce-orders-table__header-order-total"
         >
-          <span class="nobr">Сумма чека</span>
+          <span class="nobr">Дата изменения</span>
         </th>
         <th
           class="woocommerce-orders-table__header woocommerce-orders-table__header-order-bonuses"
         >
-          <span class="nobr">Бонусы</span>
+          <span class="nobr">Статус</span>
         </th>
         <th
           class="woocommerce-orders-table__header woocommerce-orders-table__header-order-actions"
         >
-          <span class="nobr">Действия</span>
+          <span class="nobr">Продукты</span>
         </th>
       </tr>
     </thead>
@@ -45,10 +50,24 @@
       >
         <td
           class="woocommerce-orders-table__cell woocommerce-orders-table__cell-order-date"
-          data-title="Дата"
+          data-title="Номер заказа"
         >
-          <time [dateTime]="purchase.transactionCreateDate">{{
-            moment(purchase.transactionCreateDate).format("DD.MM.YYYY")
+          <span>{{purchase.id}}</span>
+        </td>
+        <td
+          class="woocommerce-orders-table__cell woocommerce-orders-table__cell-order-date"
+          data-title="Дата создания"
+        >
+          <time [dateTime]="purchase.dateCreated">{{
+            moment(purchase.dateCreated).format("DD.MM.YYYY HH.mm")
+          }}</time>
+        </td>
+        <td
+          class="woocommerce-orders-table__cell woocommerce-orders-table__cell-order-date"
+          data-title="Дата изменения"
+        >
+          <time [dateTime]="purchase.dateChanges">{{
+            moment(purchase.dateChanges).format("DD.MM.YYYY HH.mm")
           }}</time>
         </td>
         <!-- <td
@@ -59,51 +78,37 @@
         </td> -->
         <td
           class="woocommerce-orders-table__cell woocommerce-orders-table__cell-order-total"
-          data-title="Сумма чека"
+          data-title="Статус"
         >
           <span class="woocommerce-Price-amount amount">
-            {{ purchase.orderSum }}
+            {{ purchase.status_name }}
           </span>
         </td>
         <td
-          class="woocommerce-orders-table__cell woocommerce-orders-table__cell-order-bonuses"
-          data-title="Бонусы"
-          [ngClass]="{
-            'red-color': purchase.transactionSum
-              ? purchase.transactionSum < 0
-              : false,
-            'green-color': purchase.transactionSum
-              ? purchase.transactionSum > 0
-              : false
-          }"
-        >
-          {{ purchase.transactionSum }}
-        </td>
-        <td
-          *ngIf="purchase.more_info"
+          *ngIf="purchase.products"
           class="woocommerce-orders-table__cell woocommerce-orders-table__cell-order-actions"
-          data-title="Действия"
+          data-title="Продукты"
         >
           <button
             mat-stroked-button
-            (click)="showPurchaseInfo(purchase.more_info)"
+            (click)="showPurchaseProducts(purchase.products)"
           >
-            Подробнее
+            Посмотреть
           </button>
         </td>
       </tr>
     </tbody>
   </table>
   <p
-    *ngIf="filteredOfDatePurchases.length !== purchasesShortArray.length && purchasesShortArray.length"
+    *ngIf="purchases.length !== purchasesShortArray.length && purchasesShortArray.length"
     class="show-more-orders"
     (click)="getMoreOrders()"
   >
     Показать больше
   </p>
-  <p *ngIf="!purchasesShortArray.length && !ordersLoadingStatus" class="show-more-orders">
+  <!-- <p *ngIf="!purchasesShortArray.length && !ordersLoadingStatus" class="show-more-orders">
     Данные не найдены
-  </p>
+  </p> -->
   <p-progressSpinner
     *ngIf="ordersLoadingStatus"
     [style]="{ width: '100%' }"

@@ -81,9 +81,13 @@ export class AccountComponent implements OnInit {
     });
   }
 
-  phoneConfirmed(): void {
-    this.refSystem();
+  loginConfirmed(): void {
+    // this.refSystem();
     this.showAuthoriztion = false
+    this.router.navigate(['/account'], {
+      relativeTo: this.route,
+      queryParamsHandling: 'merge',
+    });
     this.checkAuthorization(true)
   }
 
@@ -143,6 +147,14 @@ export class AccountComponent implements OnInit {
             },
           });
       }
+    });
+  }
+
+  logOut() {
+    this.cookiesService.deleteCookie('token')
+    this.router.navigate(['/account/auth'], {
+      relativeTo: this.route,
+      queryParamsHandling: 'merge',
     });
   }
 

@@ -24,4 +24,5 @@ export const environment = {
   icardProxy: 'http://192.168.0.14:4200/icard-proxy/',
   clientName: 'sakura',
   cities: ['Менделеевск'],
+  sakuraApi: 'http://127.0.0.1:3500/api/'
 };

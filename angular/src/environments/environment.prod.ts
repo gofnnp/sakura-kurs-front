@@ -24,4 +24,5 @@ export const environment = {
   icardProxy: 'https://sakura.lk.crm4retail.ru/api/icard-proxy/',
   clientName: 'sakura',
   cities: ['Менделеевск'],
+  sakuraApi: 'sakura.ru-academy.online/api/'
 }

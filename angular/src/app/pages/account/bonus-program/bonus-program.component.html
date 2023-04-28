@@ -5,7 +5,7 @@
     <div class="card-container">
       <div class="card-container__header">
         <img src="./assets/logo.png" alt="Логотип карта" />
-        <span *ngIf="accountData">#{{ accountData.CardNumber }}</span>
+        <span *ngIf="accountData">{{ accountData.email }}</span>
       </div>
       <div class="card-container__decorative-pattern">
         <!-- <div class="imgs-row"></div>
@@ -27,12 +27,12 @@
               >Не задано</span
             >
           </div>
-          <div *ngIf="accountData" class="info__row">
+          <!-- <div *ngIf="accountData" class="info__row">
             <span class="key">Баланс карты</span>
             <span class="value">{{ accountData.Bonuses }}</span>
-          </div>
+          </div> -->
         </div>
-        <div class="card-container__barcode-container">
+        <!-- <div class="card-container__barcode-container">
           <svg
             id="barcode"
             [ngClass]="{
@@ -46,7 +46,7 @@
             strokeWidth="2"
             styleClass="angular-spinner"
           ></p-progressSpinner>
-        </div>
+        </div> -->
       </div>
     </div>
   </div>

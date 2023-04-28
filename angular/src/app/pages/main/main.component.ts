@@ -62,7 +62,7 @@ export class MainComponent implements OnInit {
 
   ngOnInit(): void {
     this.appendAccount();
-    this.store.dispatch(ConfigActions.getConfig());
+    // this.store.dispatch(ConfigActions.getConfig());
     // this.checkRequestPermission()
   }
 

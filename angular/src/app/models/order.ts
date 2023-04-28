@@ -8,9 +8,9 @@ export interface OrderInfo {
   products: OrderProduct[];
   userData: UserData | null;
   deliveryData?: DeliveryData;
-  phone: string;
+  // phone: string;
   token: string | undefined;
-  terminal_id: string;
+  // terminal_id: string;
 }
 
 export class Order {
@@ -18,9 +18,9 @@ export class Order {
   public products: OrderProduct[];
   public userData!: UserData | null;
   public deliveryData?: DeliveryData;
-  public phone: string;
+  // public phone: string;
   public token: string | undefined;
-  public terminal_id: string;
+  // public terminal_id: string;
 
   constructor(
     orderInfo: OrderInfo
@@ -28,9 +28,9 @@ export class Order {
     this.products = orderInfo.products;
     this.userData = orderInfo.userData;
     this.deliveryData = orderInfo.deliveryData;
-    this.phone = orderInfo.phone;
+    // this.phone = orderInfo.phone;
     this.token = orderInfo.token;
-    this.terminal_id = orderInfo.terminal_id;
+    // this.terminal_id = orderInfo.terminal_id;
   }
 
   get price(): number {
@@ -41,28 +41,28 @@ export class Order {
     const date = moment(this.deliveryData?.deliveryDate ?? Date.now());
     return {
       formname: "Cart",
-      paymentsystem: this.deliveryData?.paymentMethod?.type,
-      phone: this.phone,
+      // paymentsystem: this.deliveryData?.paymentMethod?.type,
+      // phone: this.phone,
       persons: 1,
-      name: this.userData?.first_name,
+      name: this.userData?.name,
       payment: {
         orderid: this.deliveryData?.orderid,
         delivery_price: 0,
         products: this.products.map(product => {
           return product.toJson();
         }),
-        delivery_fio: this.userData?.first_name,
+        delivery_fio: this.userData?.name,
         subtotal: this.price,
         delivery_comment: this.deliveryData?.comment,
         delivery: this.deliveryData?.deliveryType?.name,
-        delivery_address: {
-          street: this.userData?.street || '',
-          house: this.userData?.house || '',
-          flat: '',
-          city: ''
-        },
+        // delivery_address: {
+        //   street: this.userData?.street || '',
+        //   house: this.userData?.house || '',
+        //   flat: '',
+        //   city: ''
+        // },
         amount: this.price,
-        terminal_id: this.userData?.selectedTerminal?.id || this.terminal_id
+        // terminal_id: this.userData?.selectedTerminal?.id || this.terminal_id
      },
     }
   }

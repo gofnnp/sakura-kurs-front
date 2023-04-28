@@ -1,4 +1,4 @@
-import { Component, EventEmitter, OnDestroy, OnInit, Output } from '@angular/core';
+import { Component, EventEmitter, Input, OnDestroy, OnInit, Output } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { DeliveryData, DeliveryType, PaymentMethod, UserData } from 'src/app/interface/data';
 import { paymentMethods } from "../../app.constants";
@@ -21,16 +21,16 @@ import { GetTerminalsService } from 'src/app/services/get-terminals.service';
 
 
 @Component({
-  selector: 'app-user-data-order',
+  selector: 'app-user-data-order[isAuth]',
   templateUrl: './user-data-order.component.html',
   styleUrls: ['./user-data-order.component.scss']
 })
 export class UserDataOrderComponent implements OnInit, OnDestroy {
-
+  @Input() isAuth!: boolean
   @Output() orderSubmitted = new EventEmitter<number>();
   @Output() userNotFound = new EventEmitter<null>();
   readonly cities = environment.cities;
-  public paymentMethods!: PaymentMethod[];
+  // public paymentMethods!: PaymentMethod[];
   public loading = false;
   public hasError = false;
   public mainFormGroup!: FormGroup;
@@ -45,20 +45,16 @@ export class UserDataOrderComponent implements OnInit, OnDestroy {
   private intervalTimeDelivery!: any
 
   public userData: UserData = {
+    id: 0,
     name: '',
-    first_name: null,
-    last_name: null,
-    street: null,
-    house: null,
-    flat: null,
-    city: this.cities[0],
-    phone: null,
-    selectedTerminal: null
+    second_name: '',
+    email: '',
+    role_name: ''
   };
   public deliverData: DeliveryData = {
     deliveryDate: null,
     deliveryType: null,
-    paymentMethod: null,
+    // paymentMethod: null,
     comment: '',
     persons: 1,
     orderid: 0
@@ -66,7 +62,7 @@ export class UserDataOrderComponent implements OnInit, OnDestroy {
   public terminalList!: any;
   public selectedTerminal!: any;
 
-  checkoutConfig$ = this.store.select(fromConfig.selectCheckout);
+  // checkoutConfig$ = this.store.select(fromConfig.selectCheckout);
   checkoutConfig!: any;
 
   constructor(
@@ -84,22 +80,24 @@ export class UserDataOrderComponent implements OnInit, OnDestroy {
   ) { }
 
   async ngOnInit() {
-    this.checkAuthorization(true)
+    // this.checkAuthorization(true)
+    this.showAuthoriztion = !this.isAuth
+    
     this._createMainForm();
-    this.getTerminalList();
-    this.checkoutConfig$.subscribe({
-      next: (value: any) => {
-        this.checkoutConfig = value
-      }
-    })
-    this.deliverData.deliveryDate = moment().add(this.checkoutConfig?.timeDelivery?.changeTime?.defaultValue || 0, 'minutes').toDate()
-    this.intervalTimeDelivery = setInterval(() => {
-      this.mainFormGroup.controls['deliveryDataForm'].patchValue({
-        deliveryDate: moment().add(this.checkoutConfig?.timeDelivery?.changeTime?.defaultValue || 0, 'minutes').toDate()
-      })
-    }, 60_000)
-    this.paymentMethods = this.checkoutConfig.payments.values
-    this.deliverData.paymentMethod = this.paymentMethods[this.checkoutConfig.payments.default]
+    // this.getTerminalList();
+    // this.checkoutConfig$.subscribe({
+    //   next: (value: any) => {
+    //     this.checkoutConfig = value
+    //   }
+    // })
+    // this.deliverData.deliveryDate = moment().add(this.checkoutConfig?.timeDelivery?.changeTime?.defaultValue || 60, 'minutes').toDate()
+    // this.intervalTimeDelivery = setInterval(() => {
+    //   this.mainFormGroup.controls['deliveryDataForm'].patchValue({
+    //     deliveryDate: moment().add(this.checkoutConfig?.timeDelivery?.changeTime?.defaultValue || 60, 'minutes').toDate()
+    //   })
+    // }, 60_000)
+    // this.paymentMethods = this.checkoutConfig.payments.values
+    // this.deliverData.paymentMethod = this.paymentMethods[this.checkoutConfig.payments.default]
 
   }
 
@@ -117,11 +115,11 @@ export class UserDataOrderComponent implements OnInit, OnDestroy {
     this.selectedTerminal = _getTerminals.active
   }
 
-  checkAuthorization(showAuthoriztion: boolean, forced = false) {
-    if (!this.getToken() || forced) {
-      this.showAuthoriztion = showAuthoriztion
-    }
-  }
+  // checkAuthorization(showAuthoriztion: boolean, forced = false) {
+  //   if (!this.getToken() || forced) {
+  //     this.showAuthoriztion = showAuthoriztion
+  //   }
+  // }
 
   getToken(): string | void {
     return this.cookiesService.getItem('token');
@@ -130,7 +128,7 @@ export class UserDataOrderComponent implements OnInit, OnDestroy {
   phoneConfirmed() {
     this._createMainForm();
     this.showAuthoriztion = false
-    this.checkAuthorization(true)
+    // this.checkAuthorization(true)
   }
 
   changeDeliveryType(event: any) {
@@ -145,18 +143,18 @@ export class UserDataOrderComponent implements OnInit, OnDestroy {
     const streetValidators = name === 'Доставка' ? [Validators.required, Validators.minLength(2), Validators.maxLength(255),] : []
     const houseValidators = name === 'Доставка' ? [Validators.required, Validators.maxLength(10),] : []
     const userDataForm = this.fb.group({
-      phone: [this.userData.phone],
-      first_name: [this.userData.first_name, [Validators.required, Validators.minLength(2), Validators.maxLength(255),]],
+      // phone: [this.userData.phone],
+      first_name: [this.userData.name, [Validators.required, Validators.minLength(2), Validators.maxLength(255),]],
       // last_name: [this.userData.last_name, [Validators.required, Validators.minLength(2), Validators.maxLength(255),]],
-      street: [this.userData.street, streetValidators],
-      house: [this.userData.house, houseValidators],
-      flat: [this.userData.flat, []],
+      // street: [this.userData.street, streetValidators],
+      // house: [this.userData.house, houseValidators],
+      // flat: [this.userData.flat, []],
       // city: [this.userData.city, [Validators.required]],
     });
     const deliveryDataForm = this.fb.group({
       deliveryDate: [this.deliverData.deliveryDate, []],
       deliveryType: [this.deliverData.deliveryType, [Validators.required]],
-      paymentMethod: [this.deliverData.paymentMethod, [Validators.required]],
+      // paymentMethod: [this.deliverData.paymentMethod, [Validators.required]],
       // persons: [this.deliverData.persons, [Validators.required, Validators.minLength(2), Validators.maxLength(255),]],
       comment: [comment, [Validators.maxLength(255),]],
     });
@@ -188,7 +186,7 @@ export class UserDataOrderComponent implements OnInit, OnDestroy {
   async submitOrder() {
     this.loading = true;
     const userData: UserData = this.mainFormGroup.controls['userDataForm'].getRawValue();
-    userData.phone = this.userData.phone;
+    // userData.phone = this.userData.phone;
     const deliveryData = this.mainFormGroup.controls['deliveryDataForm'].getRawValue()
     deliveryData.orderid = Math.floor(Math.random() * (10 ** 12))
     this.orderService.setUserData(userData);
@@ -211,10 +209,10 @@ export class UserDataOrderComponent implements OnInit, OnDestroy {
     try {
       this.loading = true;
       const userDataForm = await this._createUserDataForm();
-      const deliveryDataForm = await this._createDeliveryDataForm();
+      // const deliveryDataForm = await this._createDeliveryDataForm();
       this.mainFormGroup = this.fb.group({
         userDataForm,
-        deliveryDataForm,
+        // deliveryDataForm,
       });
       this.loading = false;
     }
@@ -230,37 +228,38 @@ export class UserDataOrderComponent implements OnInit, OnDestroy {
 
   private async _createUserDataForm(): Promise<FormGroup> {
     this.order = await this.orderService.getOrder(true);
-    if (this.order.userData?.errorCode === "Customer_CustomerNotFound") {
-      this.userNotFound.emit(null)
-    }
+    // if (this.order.userData?.errorCode === "Customer_CustomerNotFound") {
+    //   this.userNotFound.emit(null)
+    // }
     this.userData = Object.assign({}, this.userData, this.order.userData);
-    this.userData.city = this.cities[0];
-    this.userData.phone = this.order.phone;
+    
+    // this.userData.city = this.cities[0];
+    // this.userData.phone = this.order.phone;
     // await this.autoCompleteService.setCity(this.userData.city);
     const isSelfDelivery = this.deliverData.deliveryType?.name === "Самовывоз"
     return this.fb.group({
-      selectedTerminal: [{ value: this.selectedTerminal, disabled: true }, []],
-      phone: [this.userData.phone],
+      // selectedTerminal: [{ value: this.selectedTerminal, disabled: true }, []],
+      // phone: [this.userData.phone],
       first_name: [this.userData.name, [Validators.required, Validators.minLength(2), Validators.maxLength(255),]],
       // last_name: [this.userData.last_name, [Validators.required, Validators.minLength(2), Validators.maxLength(255),]],
-      street: [{ value: this.userData.street, disabled: isSelfDelivery }, isSelfDelivery ?? [Validators.required, Validators.minLength(2), Validators.maxLength(255),]],
-      house: [{ value: this.userData.house, disabled: isSelfDelivery }, isSelfDelivery ?? [Validators.required, Validators.maxLength(10), Validators.pattern('^\\d+[-|\\d]+\\d+$|^\\d*$')]],
-      flat: [this.userData.flat, []],
+      // street: [{ value: this.userData.street, disabled: isSelfDelivery }, isSelfDelivery ?? [Validators.required, Validators.minLength(2), Validators.maxLength(255),]],
+      // house: [{ value: this.userData.house, disabled: isSelfDelivery }, isSelfDelivery ?? [Validators.required, Validators.maxLength(10), Validators.pattern('^\\d+[-|\\d]+\\d+$|^\\d*$')]],
+      // flat: [this.userData.flat, []],
       // city: [this.userData.city, [Validators.required]],
     });
   }
 
-  private async _createDeliveryDataForm(): Promise<FormGroup> {
-    this.deliveryTypes = this.checkoutConfig.delivery.filter((value: any) => value.isPickUp);
-    this.deliverData.deliveryType = this.deliveryTypes[0];
-    return this.fb.group({
-      deliveryDate: [{ value: this.deliverData.deliveryDate, disabled: this.checkoutConfig.timeDelivery.changeTime.disabled }, []],
-      deliveryType: [{ value: this.deliverData.deliveryType, disabled: this.checkoutConfig.delivery.disabled || this.deliveryTypes.length < 2 }, [Validators.required]],
-      paymentMethod: [{ value: this.deliverData.paymentMethod, disabled: this.checkoutConfig.payments.disabled }, [Validators.required]],
-      persons: [this.deliverData.persons, [Validators.required, Validators.minLength(2), Validators.maxLength(255),]],
-      comment: [this.deliverData.comment, [Validators.maxLength(255),]]
-    });
-  }
+  // private async _createDeliveryDataForm(): Promise<FormGroup> {
+  //   this.deliveryTypes = this.checkoutConfig.delivery.filter((value: any) => value.isPickUp);
+  //   this.deliverData.deliveryType = this.deliveryTypes[0];
+  //   return this.fb.group({
+  //     deliveryDate: [{ value: this.deliverData.deliveryDate, disabled: this.checkoutConfig.timeDelivery.changeTime.disabled }, []],
+  //     deliveryType: [{ value: this.deliverData.deliveryType, disabled: this.checkoutConfig.delivery.disabled || this.deliveryTypes.length < 2 }, [Validators.required]],
+  //     // paymentMethod: [{ value: this.deliverData.paymentMethod, disabled: this.checkoutConfig.payments.disabled }, [Validators.required]],
+  //     persons: [this.deliverData.persons, [Validators.required, Validators.minLength(2), Validators.maxLength(255),]],
+  //     comment: [this.deliverData.comment, [Validators.maxLength(255),]]
+  //   });
+  // }
 
   ngOnDestroy(): void {
     clearInterval(this.intervalTimeDelivery)

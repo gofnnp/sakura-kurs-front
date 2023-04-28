@@ -15,6 +15,6 @@ export class AppComponent implements OnInit {
 
   ngOnInit() {
     this.primengConfig.ripple = false;
-    this.store.dispatch(ConfigActions.getConfig());
+    // this.store.dispatch(ConfigActions.getConfig());
   }
 }

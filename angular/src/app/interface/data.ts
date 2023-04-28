@@ -13,6 +13,7 @@ export enum MainPageCode {
   Products,
   Cart,
   Info,
+  Admin
 }
 
 export interface Page {
@@ -32,36 +33,52 @@ export interface UserDataForm {
   gender: string;
 }
 
+// export interface BonusProgramAccount {
+//   // BonusProgramName: string;
+//   // BonusProgramTypeID: string;
+//   CardNumber: number;
+//   Bonuses: number;
+//   // HoldedBonuses: number;
+//   // BonusProgramAccounts: BonusProgramAccount[];
+//   // DateBonusBurn: string;
+//   // _links: any[];
+//   // _embedded: any;
+// }
+
 export interface BonusProgramAccount {
-  // BonusProgramName: string;
-  // BonusProgramTypeID: string;
-  CardNumber: number;
-  Bonuses: number;
-  // HoldedBonuses: number;
-  // BonusProgramAccounts: BonusProgramAccount[];
-  // DateBonusBurn: string;
-  // _links: any[];
-  // _embedded: any;
+  email: string;
+  name: string;
+  role_name: string;
+  second_name: string;
+  id: number;
 }
 
+// export interface Purchase {
+//   // PurchaseId?: string;
+//   // CustomerId?: string;
+//   // PurchaseDate: string;
+//   // PurchaseState?: number;
+//   // CardNumber?: number;
+//   // Address?: string
+//   // CheckSummary?: number
+//   // BonusSummary?: number
+//   // ID: string;
+//   // Transactions: Transaction[];
+//   // IsSingleTransaction?: boolean;
+//   orderNumber: number;
+//   transactionCreateDate: string;
+//   orderSum: number;
+//   transactionSum: number;
+//   transactionType: 'CancelPayFromWallet' | 'PayFromWallet' | 'RefillWallet';
+//   more_info: PurchaseInfo | null;
+// }
+
 export interface Purchase {
-  // PurchaseId?: string;
-  // CustomerId?: string;
-  // PurchaseDate: string;
-  // PurchaseState?: number;
-  // CardNumber?: number;
-  // Address?: string
-  // CheckSummary?: number
-  // BonusSummary?: number
-  // ID: string;
-  // Transactions: Transaction[];
-  // IsSingleTransaction?: boolean;
-  orderNumber: number;
-  transactionCreateDate: string;
-  orderSum: number;
-  transactionSum: number;
-  transactionType: 'CancelPayFromWallet' | 'PayFromWallet' | 'RefillWallet';
-  more_info: PurchaseInfo | null;
+  id: number;
+  dateCreated: string;
+  dateChanges: string;
+  status_name: string;
+  products: Product[];
 }
 
 export interface PurchaseInfo {
@@ -137,11 +154,12 @@ export interface Product {
   description: string;
   stock_status: string;
   currency_symbol: string;
-  modifier_data: CartModifier[];
+  amount: number;
+  // modifier_data: CartModifier[];
   short_description: string;
   guid: string;
-  groupId: string;
-  modifiers_group: string[];
+  group_id: string;
+  // modifiers_group: string[];
 }
 
 export interface AllData {
@@ -155,7 +173,7 @@ export interface AllData {
 
 export interface Group {
   id: string;
-  label: string;
+  name: string;
 }
 
 export interface ModifiersGroup {
@@ -245,7 +263,7 @@ export interface OrderModifier {
 }
 
 export interface DeliveryData {
-  paymentMethod: PaymentMethod | null;
+  // paymentMethod: PaymentMethod | null;
   deliveryDate: Date | null;
   deliveryType: DeliveryType | null;
   persons: number;
@@ -258,17 +276,26 @@ export interface PaymentMethod {
   label: string;
 }
 
+// export interface UserData {
+//   first_name: string | null;
+//   last_name: string | null;
+//   street: string | null;
+//   house: string | null;
+//   flat: string | null;
+//   city: string;
+//   phone: string | null;
+//   selectedTerminal: ITerminal | null;
+//   name: string;
+//   errorCode?: string;
+// }
+
 export interface UserData {
-  first_name: string | null;
-  last_name: string | null;
-  street: string | null;
-  house: string | null;
-  flat: string | null;
-  city: string;
-  phone: string | null;
-  selectedTerminal: ITerminal | null;
+  id: number;
   name: string;
-  errorCode?: string;
+  second_name: string;
+  email: string;
+  role_name: string;
+  errorCode?: number;
 }
 
 export interface ITerminal {

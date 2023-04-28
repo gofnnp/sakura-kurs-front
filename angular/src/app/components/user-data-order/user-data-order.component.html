@@ -53,7 +53,7 @@
           />
         </p>
       </div>
-      <p сlass="form-row form-row-wide">
+      <!-- <p сlass="form-row form-row-wide">
         <label class="terminal-list-label">Пункты самовывоза</label>
         <p-dropdown
           *ngIf="deliverData.deliveryType?.name === 'Самовывоз'"
@@ -62,7 +62,7 @@
           placeholder="Пункты выдачи"
           optionLabel="label"
         ></p-dropdown>
-      </p>
+      </p> -->
       <!-- <div *ngIf="deliverData.deliveryType?.name === 'Самовывоз'" class="terminal-list-container">
                 <div *ngFor="let terminal of terminalList" [ngClass]="{
                     'terminal-container': true,
@@ -74,7 +74,7 @@
                 </div>
             </div> -->
     </div>
-    <div formGroupName="deliveryDataForm">
+    <!-- <div formGroupName="deliveryDataForm">
       <p сlass="form-row form-row-wide">
         <label class="terminal-list-label">Способ получения</label>
         <p-dropdown
@@ -105,11 +105,11 @@
           placeholder="Тип оплаты"
         >
         </p-dropdown>
-        <!-- *Оплата бонусами -->
+        *Оплата бонусами
       </p>
-      <!-- <p сlass="form-row form-row-last">
+      <p сlass="form-row form-row-last">
                 <input [maxLength]="255" id="promo-code" pInputText placeholder="Промокод" type="text">
-            </p> -->
+            </p>
       <p сlass="form-row form-row-wide">
         <textarea
           [maxLength]="255"
@@ -120,7 +120,7 @@
           rows="1"
         ></textarea>
       </p>
-    </div>
+    </div> -->
     <div class="bootom-info">
       <div class="subtotal">
         <span class="products-count">Товаров: {{ order.products.length }}</span>

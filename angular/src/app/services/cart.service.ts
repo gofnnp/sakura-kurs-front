@@ -1,9 +1,9 @@
 import { Injectable } from '@angular/core';
-import { CookiesService } from "./cookies.service";
-import { Cart } from "../interface/data";
+import { CookiesService } from './cookies.service';
+import { Cart } from '../interface/data';
 import { isEqual } from 'lodash/fp';
-import { CartProduct } from "../models/cart-product";
-import { Subject } from "rxjs";
+import { CartProduct } from '../models/cart-product';
+import { Subject } from 'rxjs';
 import { update } from 'lodash';
 import { WpJsonService } from './wp-json.service';
 
@@ -13,14 +13,13 @@ export enum ProductAmountAction {
 }
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class CartService {
-
   constructor(
     private cookieService: CookiesService,
-    private wpJsonService: WpJsonService,
-  ) { }
+    private wpJsonService: WpJsonService
+  ) {}
 
   private cart!: Cart;
 
@@ -28,20 +27,21 @@ export class CartService {
 
   public selectedTerminal$ = new Subject<Object>();
 
-
   getCart() {
     return this._getCartProducts();
   }
 
-
   addToCart(product: CartProduct): void {
     const cart = this._getCartProducts();
     cart.products = cart.products ?? [];
-    const sameProduct = cart.products.find((value) => value.id === product.id && isEqual(value.modifiers, product.modifiers));
+    const sameProduct = cart.products.find(
+      (value) =>
+        value.id === product.id
+        // && isEqual(value.modifiers, product.modifiers)
+    );
     if (sameProduct) {
       sameProduct.amount++;
-    }
-    else {
+    } else {
       cart.products.push(product);
       this.cartCount$.next(cart.products.length);
     }
@@ -63,8 +63,6 @@ export class CartService {
     // if(!cart.products){
     //   return;
     // }
-
-
     // const updateProduct = cart.products.find((value) => Number(value.id) === product.id)
     // if (updateProduct) {
     //   updateProduct.modifiers = JSON.parse(JSON.stringify(product.modifiers))
@@ -72,18 +70,22 @@ export class CartService {
     // localStorage.setItem('cart', JSON.stringify(cart));
   }
 
-  changeAmountProduct(productTempId: string, action: ProductAmountAction): void {
+  changeAmountProduct(
+    productTempId: string,
+    action: ProductAmountAction
+  ): void {
     const cart = this._getCartProducts();
     if (!cart.products) {
       return;
     }
-    const product: CartProduct | undefined = cart.products.find((value) => value.guid === productTempId);
+    const product: CartProduct | undefined = cart.products.find(
+      (value) => value.guid === productTempId
+    );
     if (product && action === ProductAmountAction.increment) {
-      product.amount++
+      product.amount++;
       // product.increment();
-    }
-    else if (product && action === ProductAmountAction.decrement) {
-      product.amount--
+    } else if (product && action === ProductAmountAction.decrement) {
+      product.amount--;
       // product.decrement();
     }
     localStorage.setItem('cart', JSON.stringify(cart));
@@ -92,7 +94,7 @@ export class CartService {
 
   changeTerminal(terminal: any) {
     this.cookieService.setCookie('selectedTerminal', JSON.stringify(terminal));
-    this.selectedTerminal$.next(terminal)
+    this.selectedTerminal$.next(terminal);
   }
 
   clearCart() {

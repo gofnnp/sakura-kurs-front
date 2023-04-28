@@ -1,80 +1,58 @@
 <div class="woocommerce-notices-wrapper"></div>
-<ng-container *ngIf="!isCodeConfirm; else confirmPhoneField">
+<ng-container *ngIf="isShowAuth; else registration">
   <form
     class="woocommerce-form woocommerce-form-login login"
-    (submit)="getCode($event)"
+    [formGroup]="authFrom"
+    (ngSubmit)="logIn()"
   >
     <h2>Вход</h2>
     <p
       class="woocommerce-form-row woocommerce-form-row--wide form-row form-row-wide"
     >
-      <label for="phone">Введите Ваш номер телефона</label>
-      <p-inputMask
-        mask="+7 (999) 999-99-99"
-        characterPattern="[0-9]"
-        styleClass="woocommerce-Input woocommerce-Input--text input-text"
-        name="phone"
-        type="tel"
-        inputId="phone"
-        autocomplete="phone"
-        placeholder="+7 (000) 000-00-00"
-        mask="+7 (999) 999-9999"
-        [unmask]="false"
-        [(ngModel)]="phone"
-      ></p-inputMask>
+      <mat-form-field
+        [style]="{
+          width: '100%'
+        }"
+        class="example-full-width"
+      >
+        <mat-label>Email</mat-label>
+        <input
+          formControlName="email"
+          type="email"
+          autocomplete="off"
+          matInput
+          placeholder="Email"
+          value=""
+          email="true"
+        />
+      </mat-form-field>
+    </p>
+    <p
+      class="woocommerce-form-row woocommerce-form-row--wide form-row form-row-wide"
+    >
+      <mat-form-field
+        [style]="{
+          width: '100%'
+        }"
+        class="example-full-width"
+      >
+        <mat-label>Пароль</mat-label>
+        <input
+          formControlName="password"
+          type="password"
+          matInput
+          placeholder="Пароль"
+          value=""
+        />
+      </mat-form-field>
     </p>
     <p class="form-row">
       <button
         type="submit"
         class="woocommerce-button button woocommerce-form-login__submit"
         name="login"
-        value="Получить код"
-        [disabled]="loading || phone.length < 10"
-      >
-        {{ loading ? "" : "Получить код" }}
-        <p-progressSpinner
-          *ngIf="loading"
-          [style]="{ width: '16px', height: '16px' }"
-          strokeWidth="2"
-          styleClass="angular-spinner"
-        ></p-progressSpinner>
-      </button>
-    </p>
-    <!-- <div class="decoration-pattern" style="background: url('./assets/card-decorative-pattern.png') no-repeat;"></div> -->
-  </form>
-</ng-container>
-<ng-template #confirmPhoneField>
-  <form
-    class="woocommerce-form woocommerce-form-login login"
-    action="false"
-    (submit)="confirmCode($event)"
-  >
-  <h2>Вход</h2>
-    <p
-      class="woocommerce-form-row woocommerce-form-row--wide form-row form-row-wide"
-    >
-      <label for="code">
-        Введите код из смс, которое пришло на Ваш номер телефона
-      </label>
-      <input
-        pInputText
-        type="number"
-        pattern="\d*"
-        class="woocommerce-Input woocommerce-Input--text input-text"
-        name="code"
-        id="code"
-        autocomplete="code"
-        placeholder="00-00"
-        [(ngModel)]="code"
-      />
-    </p>
-    <p class="form-row" style="margin-bottom: 6px;">
-      <button
-        type="submit"
-        class="woocommerce-button button woocommerce-form-login__submit"
-        name="login"
         value="Войти"
-        [disabled]="loading"
+        [disabled]="authFrom.invalid || !authFrom.touched"
       >
         {{ loading ? "" : "Войти" }}
         <p-progressSpinner
@@ -85,14 +63,109 @@
         ></p-progressSpinner>
       </button>
     </p>
-    <p class="form-row" style="margin-top: 6px">
-      Не пришел код? 
-      <span class="resend-code" (click)="getCode($event)">Отправить повторно </span>
-      <span *ngIf="timeLeft">через {{timeLeft}}с</span>
+    <p class="form-row">
+      <span style="cursor: pointer;" (click)="changePage('reg')">Регистрация</span>
     </p>
-    <p style="color: red; margin: 0" *ngIf="errorConfirmCode">
+    <!-- <div class="decoration-pattern" style="background: url('./assets/card-decorative-pattern.png') no-repeat;"></div> -->
+  </form>
+</ng-container>
+<ng-template #registration>
+  <form
+    class="woocommerce-form woocommerce-form-login login"
+    action="false"
+    [formGroup]="signUpForm"
+    (ngSubmit)="signUp()"
+  >
+    <h2>Регистрация</h2>
+    <p
+      class="woocommerce-form-row woocommerce-form-row--wide form-row form-row-wide"
+    >
+      <mat-form-field
+        [style]="{
+          width: '100%'
+        }"
+        class="example-full-width"
+      >
+        <mat-label>Имя</mat-label>
+        <input
+          formControlName="name"
+          type="text"
+          matInput
+          placeholder="Имя"
+          value=""
+        />
+      </mat-form-field>
+    </p>
+    <p
+      class="woocommerce-form-row woocommerce-form-row--wide form-row form-row-wide"
+    >
+      <mat-form-field
+        [style]="{
+          width: '100%'
+        }"
+        class="example-full-width"
+      >
+        <mat-label>Email</mat-label>
+        <input
+          formControlName="email"
+          type="email"
+          autocomplete="off"
+          matInput
+          placeholder="Email"
+          value=""
+          email="true"
+        />
+      </mat-form-field>
+    </p>
+    <p
+      class="woocommerce-form-row woocommerce-form-row--wide form-row form-row-wide"
+    >
+      <mat-form-field
+        [style]="{
+          width: '100%'
+        }"
+        class="example-full-width"
+      >
+        <mat-label>Пароль</mat-label>
+        <input
+          formControlName="password"
+          type="password"
+          matInput
+          placeholder="Пароль"
+          value=""
+        />
+      </mat-form-field>
+    </p>
+    <p class="form-row" style="margin-bottom: 6px">
+      <button
+        type="submit"
+        class="woocommerce-button button woocommerce-form-login__submit"
+        name="login"
+        value="Регистрация"
+        [disabled]="loading"
+      >
+        {{ loading ? "" : "Регистрация" }}
+        <p-progressSpinner
+          *ngIf="loading"
+          [style]="{ width: '16px', height: '16px' }"
+          strokeWidth="2"
+          styleClass="angular-spinner"
+        ></p-progressSpinner>
+      </button>
+    </p>
+    <p class="form-row">
+      <span style="cursor: pointer;" (click)="changePage('auth')">Войти</span>
+    </p>
+    <!-- <p class="form-row" style="margin-top: 6px">
+      Не пришел код?
+      <span class="resend-code" (click)="logIn()"
+        >Отправить повторно
+      </span>
+      <span *ngIf="timeLeft">через {{ timeLeft }}с</span>
+    </p> -->
+    <!-- <p style="color: red; margin: 0" *ngIf="errorConfirmCode">
       Пароль введен неверно
-    </p>
+    </p> -->
     <!-- <div class="decoration-pattern" style="background: url('./assets/card-decorative-pattern.png') no-repeat;"></div> -->
   </form>
 </ng-template>

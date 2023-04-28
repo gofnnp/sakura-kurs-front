@@ -36,6 +36,14 @@ div.cdk-overlay-container {
     height: 41.67px;
 }
 
+table.mat-table {
+    width: 100%;
+}
+
+.mat-form-field-wrapper {
+    padding-bottom: 0;
+}
+
 .mat-snack-bar-container {
     transform: scale(1);
     opacity: 1;

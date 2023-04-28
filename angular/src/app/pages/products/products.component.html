@@ -12,26 +12,26 @@
         }"
       >
         <span>
-          {{ group.label }}
+          {{ group.name }}
         </span>
       </div>
     </div>
-    <button mat-stroked-button [disabled]="!!cartService.cartCount" (click)="showTerminals()">
+    <!-- <button mat-stroked-button [disabled]="!!cartService.cartCount" (click)="showTerminals()">
       {{ selectedTerminal.label }}
-    </button>
+    </button> -->
   </div>
   <div
-    *ngIf="selectedGroup && selectedGroup.label !== 'Все'"
+    *ngIf="selectedGroup && selectedGroup.name !== 'Все'"
     class="products-container__category-name-container"
   >
-    <h1>{{ selectedGroup.label }}</h1>
+    <h1>{{ selectedGroup.name }}</h1>
     <div class="bread-crumbs">
       <span class="all" (click)="changeGroup(groups[0])">Все </span>
       >
-      <span class="selected-category"> {{ selectedGroup.label }}</span>
+      <span class="selected-category"> {{ selectedGroup.name }}</span>
     </div>
   </div>
-  <ng-container *ngIf="selectedGroup && selectedGroup.label === 'Все'">
+  <ng-container *ngIf="selectedGroup && selectedGroup.name === 'Все'">
     <div
       *ngFor="let group of groups.slice(1)"
       [ngClass]="{
@@ -39,7 +39,7 @@
       }"
     >
       <div class="header">
-        <h2>{{ group.label }}</h2>
+        <h2>{{ group.name }}</h2>
         <button (click)="changeGroup(group)">В категорию</button>
       </div>
       <div class="products-container__items">
@@ -69,7 +69,7 @@
       </div>
     </div>
   </ng-container>
-  <ng-container *ngIf="selectedGroup && selectedGroup.label !== 'Все'">
+  <ng-container *ngIf="selectedGroup && selectedGroup.name !== 'Все'">
     <div class="products-container__items">
       <div
         *ngFor="let product of filterByGroup(); trackBy: trackProducts"

@@ -9,7 +9,7 @@
       "
     >
       <li
-        *ngIf="page.onSideBar && !last"
+        *ngIf="(page.onSideBar && !last) || (page.resName === 'admin' && role === 'ADMIN')"
         class="main-menu-container__item"
         [ngClass]="{
           cart: page.resName === 'cart'
